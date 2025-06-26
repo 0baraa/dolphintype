@@ -1,10 +1,10 @@
 <script>
-	import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
-	onMount(async () => {
-		const wordsResponse = await fetch('/english1k.json');
-		const allWords = await wordsResponse.json();
+  onMount(async () => {
+    const wordsResponse = await fetch('/english1k.json');
+    const allWords = await wordsResponse.json();
 
-		console.log(allWords);
-	});
+    console.log(allWords);
+  });
 </script>
