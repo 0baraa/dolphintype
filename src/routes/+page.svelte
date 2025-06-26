@@ -45,7 +45,7 @@
   }
 </script>
 
-<div class="flex flex-wrap justify-center">
+<div class="mx-8 flex flex-wrap justify-center gap-x-4 lg:mx-48">
   <input
     class="pointer-events-auto absolute opacity-0"
     type="text"
@@ -54,8 +54,12 @@
     bind:this={inputElement}
   />
 
-  {#each currentWords as word}
-    <span class="m-1">{word}</span>
+  {#each currentWords as word, i (i)}
+    <div>
+      {#each word as char, j (j)}
+        <span class="text-4xl">{char}</span>
+      {/each}
+    </div>
   {/each}
 </div>
 
