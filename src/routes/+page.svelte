@@ -62,6 +62,13 @@
       typedWords[activeWordIndex] = userInput;
       userInput = '';
       activeWordIndex++;
+    } else if (event.key === 'Backspace') {
+      const isPreviousWordCorrect = wordCorrectness[activeWordIndex - 1];
+      if (userInput === '' && !isPreviousWordCorrect) {
+        event.preventDefault();
+        activeWordIndex--;
+        userInput = typedWords[activeWordIndex];
+      }
     }
   }
 </script>
@@ -107,6 +114,7 @@
     {/each}
   </div>
 
+  <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
   <p>userInput: {userInput}</p>
   <p>typedWords: {typedWords}</p>
 </main>
