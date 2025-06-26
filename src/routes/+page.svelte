@@ -9,6 +9,7 @@
   let userInput = $state('');
 
   let activeWordIndex = $state(0);
+  let typedWords = $state([]);
 
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
@@ -49,6 +50,12 @@
   function handleKeydown(event) {
     if (event.key === ' ') {
       event.preventDefault();
+
+      if (userInput === '') {
+        return;
+      }
+
+      typedWords[activeWordIndex] = userInput;
       userInput = '';
       activeWordIndex++;
     }
@@ -66,17 +73,23 @@
   />
 
   {#each currentWords as word, i (i)}
+    {@const isCompleted = i < activeWordIndex}
+    {@const isActive = i === activeWordIndex}
+
+    {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
+
     <div>
-      {#if i === activeWordIndex}
+      {#if isCompleted || isActive}
         {#each word as char, j (j)}
-          {@const isTyped = j < userInput.length}
-          {@const isCorrect = isTyped && userInput[j] === char}
+          {@const isTyped = j < (inputForThisWord?.length || 0)}
+          {@const isCorrect = isTyped && inputForThisWord[j] === char}
 
           <span
             class="text-4xl"
             class:text-green-500={isTyped && isCorrect}
             class:text-red-500={isTyped && !isCorrect}
-            class:text-gray-500={!isTyped}
+            class:text-gray-500={!isTyped && isActive}
+            class:text-gray-400={isCompleted && !isTyped}
           >
             {char}
           </span>
