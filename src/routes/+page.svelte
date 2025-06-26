@@ -91,7 +91,7 @@
 
       {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
 
-      <div class:bg-red-200={!isWordCorrect}>
+      <div class={[!isWordCorrect && 'underline decoration-red-500 decoration-wavy']}>
         {#if isCompleted || isActive}
           {#each word as char, j (j)}
             {@const isTyped = j < (inputForThisWord?.length || 0)}
