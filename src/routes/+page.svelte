@@ -10,6 +10,7 @@
 
   let activeWordIndex = $state(0);
   let typedWords = $state([]);
+  let wordCorrectness = $state([]);
 
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
@@ -55,6 +56,9 @@
         return;
       }
 
+      const currentWord = currentWords[activeWordIndex];
+      wordCorrectness[activeWordIndex] = userInput === currentWord;
+
       typedWords[activeWordIndex] = userInput;
       userInput = '';
       activeWordIndex++;
@@ -76,10 +80,11 @@
     {#each currentWords as word, i (i)}
       {@const isCompleted = i < activeWordIndex}
       {@const isActive = i === activeWordIndex}
+      {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
 
       {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
 
-      <div>
+      <div class:bg-red-200={!isWordCorrect}>
         {#if isCompleted || isActive}
           {#each word as char, j (j)}
             {@const isTyped = j < (inputForThisWord?.length || 0)}
@@ -102,5 +107,6 @@
     {/each}
   </div>
 
-  <p>Current input: {userInput}</p>
+  <p>userInput: {userInput}</p>
+  <p>typedWords: {typedWords}</p>
 </main>
