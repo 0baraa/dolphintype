@@ -8,6 +8,8 @@
   let inputElement;
   let userInput = $state('');
 
+  let activeWordIndex = $state(0);
+
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
     const allWords = await wordsResponse.json();
@@ -43,6 +45,14 @@
     currentIndex += nextWords.length;
     return nextWords;
   }
+
+  function handleKeydown(event) {
+    if (event.key === ' ') {
+      event.preventDefault();
+      userInput = '';
+      activeWordIndex++;
+    }
+  }
 </script>
 
 <div class="mx-8 flex flex-wrap justify-center gap-x-4 lg:mx-48">
@@ -52,13 +62,28 @@
     id="typinginput"
     bind:value={userInput}
     bind:this={inputElement}
+    onkeydown={handleKeydown}
   />
 
   {#each currentWords as word, i (i)}
     <div>
-      {#each word as char, j (j)}
-        <span class="text-4xl">{char}</span>
-      {/each}
+      {#if i === activeWordIndex}
+        {#each word as char, j (j)}
+          {@const isTyped = j < userInput.length}
+          {@const isCorrect = isTyped && userInput[j] === char}
+
+          <span
+            class="text-4xl"
+            class:text-green-500={isTyped && isCorrect}
+            class:text-red-500={isTyped && !isCorrect}
+            class:text-gray-500={!isTyped}
+          >
+            {char}
+          </span>
+        {/each}
+      {:else}
+        <span class="text-4xl text-gray-400">{word}</span>
+      {/if}
     </div>
   {/each}
 </div>
