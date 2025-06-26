@@ -5,6 +5,9 @@
   let currentIndex = 0;
   let currentWords = $state([]);
 
+  let inputElement;
+  let userInput = $state('');
+
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
     const allWords = await wordsResponse.json();
@@ -13,6 +16,8 @@
     prepareWords(words);
 
     currentWords = getNextWords(100);
+
+    inputElement.focus();
   });
 
   function prepareWords(wordsArray) {
@@ -39,3 +44,19 @@
     return nextWords;
   }
 </script>
+
+<div class="flex flex-wrap justify-center">
+  <input
+    class="pointer-events-auto absolute opacity-0"
+    type="text"
+    id="typinginput"
+    bind:value={userInput}
+    bind:this={inputElement}
+  />
+
+  {#each currentWords as word}
+    <span class="m-1">{word}</span>
+  {/each}
+</div>
+
+<p>Current input: {userInput}</p>
