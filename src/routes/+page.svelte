@@ -62,43 +62,45 @@
   }
 </script>
 
-<div class="mx-8 flex flex-wrap justify-center gap-x-4 lg:mx-48">
-  <input
-    class="pointer-events-auto absolute opacity-0"
-    type="text"
-    id="typinginput"
-    bind:value={userInput}
-    bind:this={inputElement}
-    onkeydown={handleKeydown}
-  />
+<main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+  <div class="mx-8 flex flex-wrap justify-center gap-x-4 lg:mx-48">
+    <input
+      class="pointer-events-auto absolute opacity-0"
+      type="text"
+      id="typinginput"
+      bind:value={userInput}
+      bind:this={inputElement}
+      onkeydown={handleKeydown}
+    />
 
-  {#each currentWords as word, i (i)}
-    {@const isCompleted = i < activeWordIndex}
-    {@const isActive = i === activeWordIndex}
+    {#each currentWords as word, i (i)}
+      {@const isCompleted = i < activeWordIndex}
+      {@const isActive = i === activeWordIndex}
 
-    {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
+      {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
 
-    <div>
-      {#if isCompleted || isActive}
-        {#each word as char, j (j)}
-          {@const isTyped = j < (inputForThisWord?.length || 0)}
-          {@const isCorrect = isTyped && inputForThisWord[j] === char}
+      <div>
+        {#if isCompleted || isActive}
+          {#each word as char, j (j)}
+            {@const isTyped = j < (inputForThisWord?.length || 0)}
+            {@const isCorrect = isTyped && inputForThisWord[j] === char}
 
-          <span
-            class="text-4xl"
-            class:text-green-500={isTyped && isCorrect}
-            class:text-red-500={isTyped && !isCorrect}
-            class:text-gray-500={!isTyped && isActive}
-            class:text-gray-400={isCompleted && !isTyped}
-          >
-            {char}
-          </span>
-        {/each}
-      {:else}
-        <span class="text-4xl text-gray-400">{word}</span>
-      {/if}
-    </div>
-  {/each}
-</div>
+            <span
+              class="text-4xl"
+              class:text-green-500={isTyped && isCorrect}
+              class:text-red-500={isTyped && !isCorrect}
+              class:text-gray-500={!isTyped && isActive}
+              class:text-gray-400={isCompleted && !isTyped}
+            >
+              {char}
+            </span>
+          {/each}
+        {:else}
+          <span class="text-4xl text-gray-400">{word}</span>
+        {/if}
+      </div>
+    {/each}
+  </div>
 
-<p>Current input: {userInput}</p>
+  <p>Current input: {userInput}</p>
+</main>
