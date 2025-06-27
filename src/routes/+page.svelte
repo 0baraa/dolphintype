@@ -101,7 +101,6 @@
           {#each word as char, j (j)}
             {@const isTyped = j < (inputForThisWord?.length || 0)}
             {@const isCorrect = isTyped && inputForThisWord[j] === char}
-
             <span
               class="text-4xl"
               class:text-green-500={isTyped && isCorrect}
@@ -110,6 +109,13 @@
               class:text-gray-400={isCompleted && !isTyped}
             >
               {char}
+            </span>
+          {/each}
+          {@const extraChars =
+            inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : ''}
+          {#each extraChars as extraChar, k (k)}
+            <span class="text-4xl text-red-500">
+              {extraChar}
             </span>
           {/each}
         {:else}
