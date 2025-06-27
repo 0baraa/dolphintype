@@ -1,19 +1,26 @@
 <script>
   import { onMount } from 'svelte';
+  import { Spring } from 'svelte/motion';
 
   let words = [];
   let currentIndex = 0;
   let currentWords = $state([]);
-
   let inputElement;
   let userInput = $state('');
-
   let activeWordIndex = $state(0);
   let typedWords = $state([]);
   let wordCorrectness = $state([]);
-
-  // 2D array: charElements[wordIndex][charIndex]
   let charElements = $state([]);
+
+  // Svelte spring for smooth caret animation
+  const caretPosition = new Spring(
+    { top: 0, left: 0, height: 0 },
+    {
+      precision: 0.98,
+      stiffness: 0.45,
+      damping: 0.95
+    }
+  );
 
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
@@ -31,6 +38,58 @@
       .map(() => []);
 
     inputElement.focus();
+  });
+
+  $effect(() => {
+    // Effect dependencies
+    const wordIndex = activeWordIndex;
+    const charIndex = userInput.length;
+
+    // Clean up
+    if (charElements[wordIndex]) {
+      const currentWord = currentWords[wordIndex] || '';
+      const requiredLength = Math.max(currentWord.length, userInput.length);
+
+      if (charElements[wordIndex].length > requiredLength) {
+        charElements[wordIndex].length = requiredLength;
+      }
+    }
+
+    if (!charElements[wordIndex] || currentWords.length === 0) {
+      // Update the spring's target value using the .target property
+      caretPosition.target = { top: 0, left: 0, height: 0 };
+      return;
+    }
+
+    const wordElements = charElements[wordIndex];
+
+    // We are at the end of the word
+    if (charIndex >= wordElements.length) {
+      const lastCharElement = wordElements[wordElements.length - 1];
+      if (!lastCharElement) {
+        caretPosition.target = { top: 0, left: 0, height: 0 };
+        return;
+      }
+      caretPosition.target = {
+        top: lastCharElement.offsetTop,
+        left: lastCharElement.offsetLeft + lastCharElement.offsetWidth,
+        height: lastCharElement.offsetHeight
+      };
+      return;
+    }
+
+    const targetCharElement = wordElements[charIndex];
+
+    // if (!targetCharElement?.parentElement) {
+    //   return;
+    // }
+
+    // We are not at the end of the word, set caret to be right behind current char
+    caretPosition.target = {
+      top: targetCharElement.offsetTop,
+      left: targetCharElement.offsetLeft,
+      height: targetCharElement.offsetHeight
+    };
   });
 
   function prepareWords(wordsArray) {
@@ -100,7 +159,7 @@
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
   <div
-    class="mx-8 flex cursor-text flex-wrap justify-center gap-x-4 lg:mx-48"
+    class="relative mx-8 flex cursor-text flex-wrap justify-center gap-x-4 lg:mx-48"
     onclick={focusInput}
     onkeydown={handleContainerKeyDown}
     role="button"
@@ -119,12 +178,11 @@
       {@const isCompleted = i < activeWordIndex}
       {@const isActive = i === activeWordIndex}
       {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
-
       {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
 
       <div
         class:no-ligatures={true}
-        class:underline={!isWordCorrect && !isActive}
+        class:underline={!isWordCorrect && isCompleted}
         class:decoration-red-500={!isWordCorrect}
         class:decoration-wavy={!isWordCorrect}
       >
@@ -152,6 +210,13 @@
         {/if}
       </div>
     {/each}
+
+    <div
+      class="absolute w-1 animate-pulse rounded-sm bg-gray-600"
+      style:top="{caretPosition.current.top}px"
+      style:left="{caretPosition.current.left}px"
+      style:height="{caretPosition.current.height}px"
+    ></div>
   </div>
 
   <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
