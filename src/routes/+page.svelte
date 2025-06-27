@@ -12,6 +12,9 @@
   let typedWords = $state([]);
   let wordCorrectness = $state([]);
 
+  // 2D array: charElements[wordIndex][charIndex]
+  let charElements = $state([]);
+
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
     const allWords = await wordsResponse.json();
@@ -20,6 +23,12 @@
     prepareWords(words);
 
     currentWords = getNextWords(100);
+
+    // Pre-fill the charElements array with empty arrays so Svelte can bind to them.
+    // We create an array of empty arrays, one for each word.
+    charElements = Array(currentWords.length)
+      .fill(0)
+      .map(() => []);
 
     inputElement.focus();
   });
@@ -129,11 +138,12 @@
               class:text-red-500={isTyped && !isCorrect}
               class:text-gray-500={!isTyped && isActive}
               class:text-gray-400={isCompleted && !isTyped}
+              bind:this={charElements[i][j]}
             >
               {char}
             </span>
           {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
-            <span class="text-4xl text-red-500">
+            <span class="text-4xl text-red-500" bind:this={charElements[i][word.length + k]}>
               {extraChar}
             </span>
           {/each}
