@@ -49,6 +49,8 @@
   }
 
   function handleKeydown(event) {
+    const currentWord = currentWords[activeWordIndex];
+
     if (event.key === ' ') {
       event.preventDefault();
 
@@ -56,7 +58,6 @@
         return;
       }
 
-      const currentWord = currentWords[activeWordIndex];
       wordCorrectness[activeWordIndex] = userInput === currentWord;
 
       typedWords[activeWordIndex] = userInput;
@@ -69,6 +70,8 @@
         activeWordIndex--;
         userInput = typedWords[activeWordIndex];
       }
+    } else if (userInput.length > currentWord.length + 2) {
+      event.preventDefault();
     }
   }
 </script>
