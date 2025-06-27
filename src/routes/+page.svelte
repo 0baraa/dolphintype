@@ -64,7 +64,7 @@
       activeWordIndex++;
     } else if (event.key === 'Backspace') {
       const isPreviousWordCorrect = wordCorrectness[activeWordIndex - 1];
-      if (userInput === '' && !isPreviousWordCorrect) {
+      if (activeWordIndex > 0 && userInput === '' && !isPreviousWordCorrect) {
         event.preventDefault();
         activeWordIndex--;
         userInput = typedWords[activeWordIndex];
