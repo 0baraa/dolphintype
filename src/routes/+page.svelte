@@ -74,10 +74,29 @@
       event.preventDefault();
     }
   }
+
+  function focusInput() {
+    inputElement?.focus();
+  }
+
+  // Makes the container act like a button so keyboard users can use Enter or Space to focus the input.
+  function handleContainerKeyDown(event) {
+    // Trigger the focus if the user presses Enter or Space on the container
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault(); // Prevent space from scrolling the page
+      focusInput();
+    }
+  }
 </script>
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-  <div class="mx-8 flex flex-wrap justify-center gap-x-4 lg:mx-48">
+  <div
+    class="mx-8 flex cursor-text flex-wrap justify-center gap-x-4 lg:mx-48"
+    onclick={focusInput}
+    onkeydown={handleContainerKeyDown}
+    role="button"
+    tabindex="0"
+  >
     <input
       class="pointer-events-auto absolute opacity-0"
       type="text"
@@ -113,8 +132,6 @@
             >
               {char}
             </span>
-            <!-- This is done to remove the gap between the current word spans and the
-              extra chars spans -->
           {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
             <span class="text-4xl text-red-500">
               {extraChar}
