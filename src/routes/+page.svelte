@@ -197,7 +197,7 @@
         class:no-ligatures={true}
         class:underline={!isWordCorrect && isCompleted}
         class:decoration-red-500={!isWordCorrect}
-        class:decoration-wavy={!isWordCorrect}
+        class:decoration-3={!isWordCorrect}
       >
         {#if isCompleted || isActive}
           {#each word as char, j (j)}
