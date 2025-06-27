@@ -93,7 +93,7 @@
 
       <div
         class:no-ligatures={true}
-        class:underline={!isWordCorrect}
+        class:underline={!isWordCorrect && !isActive}
         class:decoration-red-500={!isWordCorrect}
         class:decoration-wavy={!isWordCorrect}
       >
