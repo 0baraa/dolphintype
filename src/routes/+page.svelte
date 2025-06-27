@@ -11,6 +11,7 @@
   let typedWords = $state([]);
   let wordCorrectness = $state([]);
   let charElements = $state([]);
+  let windowSize = $state({ width: window.innerWidth, height: window.innerHeight });
 
   // Svelte spring for smooth caret animation
   const caretPosition = new Spring(
@@ -38,12 +39,20 @@
       .map(() => []);
 
     inputElement.focus();
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
   });
 
   $effect(() => {
     // Effect dependencies
     const wordIndex = activeWordIndex;
     const charIndex = userInput.length;
+    // Reference windowSize so that effect runs on window resize
+    JSON.stringify(windowSize);
 
     // Clean up
     if (charElements[wordIndex]) {
@@ -87,7 +96,7 @@
     // We are not at the end of the word, set caret to be right behind current char
     caretPosition.target = {
       top: targetCharElement.offsetTop,
-      left: targetCharElement.offsetLeft,
+      left: targetCharElement.offsetLeft - 2,
       height: targetCharElement.offsetHeight
     };
   });
@@ -114,6 +123,10 @@
     const nextWords = words.slice(currentIndex, currentIndex + n);
     currentIndex += nextWords.length;
     return nextWords;
+  }
+
+  function handleWindowResize() {
+    windowSize = { width: window.innerWidth, height: window.innerHeight };
   }
 
   function handleKeydown(event) {
