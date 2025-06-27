@@ -113,10 +113,9 @@
             >
               {char}
             </span>
-          {/each}
-          {@const extraChars =
-            inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : ''}
-          {#each extraChars as extraChar, k (k)}
+            <!-- This is done to remove the gap between the current word spans and the
+              extra chars spans -->
+          {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
             <span class="text-4xl text-red-500">
               {extraChar}
             </span>
