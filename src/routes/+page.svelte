@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { Spring } from 'svelte/motion';
+  import { Tween } from 'svelte/motion';
 
   let words = [];
   let currentIndex = 0;
@@ -13,13 +13,11 @@
   let charElements = $state([]);
   let windowSize = $state({ width: window.innerWidth, height: window.innerHeight });
 
-  // Svelte spring for smooth caret animation
-  const caretPosition = new Spring(
+  // Svelte tween for smooth caret animation
+  const caretPosition = new Tween(
     { top: 0, left: 0, height: 0 },
     {
-      precision: 0.98,
-      stiffness: 0.45,
-      damping: 0.95
+      duration: 100
     }
   );
 
@@ -65,7 +63,7 @@
     }
 
     if (!charElements[wordIndex] || currentWords.length === 0) {
-      // Update the spring's target value using the .target property
+      // Update the tween's target value using the .target property
       caretPosition.target = { top: 0, left: 0, height: 0 };
       return;
     }
