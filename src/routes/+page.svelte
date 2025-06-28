@@ -16,6 +16,7 @@
   let maxRowHeight = $state('');
   let rowCount = $state(3);
   let rowGap = $state(20);
+  let scrollOffset = $state(0);
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -197,9 +198,8 @@
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
   <div
-    class="relative mx-8 flex cursor-text flex-wrap justify-center gap-x-4 overflow-hidden text-4xl lg:mx-48"
+    class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl lg:mx-48"
     style:max-height={maxRowHeight}
-    style:row-gap="{rowGap}px"
     onclick={focusInput}
     onkeydown={handleContainerKeyDown}
     role="button"
@@ -214,48 +214,53 @@
       onkeydown={handleKeydown}
     />
 
-    {#each currentWords as word, i (i)}
-      {@const isCompleted = i < activeWordIndex}
-      {@const isActive = i === activeWordIndex}
-      {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
-      {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
+    <div
+      class="flex flex-wrap justify-center gap-x-4 transition-transform duration-200 ease-in-out"
+      style:row-gap="{rowGap}px"
+      style:transform="translateY({scrollOffset}px)"
+    >
+      {#each currentWords as word, i (i)}
+        {@const isCompleted = i < activeWordIndex}
+        {@const isActive = i === activeWordIndex}
+        {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
+        {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
+
+        <div
+          class:underline={!isWordCorrect && isCompleted}
+          class:decoration-red-500={!isWordCorrect}
+          class:decoration-3={!isWordCorrect}
+        >
+          {#if isCompleted || isActive}
+            {#each word as char, j (j)}
+              {@const isTyped = j < (inputForThisWord?.length || 0)}
+              {@const isCorrect = isTyped && inputForThisWord[j] === char}
+              <span
+                class:text-green-500={isTyped && isCorrect}
+                class:text-red-500={isTyped && !isCorrect}
+                class:text-gray-500={!isTyped && isActive}
+                class:text-gray-400={isCompleted && !isTyped}
+                bind:this={charElements[i][j]}
+              >
+                {char}
+              </span>
+            {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
+              <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
+                {extraChar}
+              </span>
+            {/each}
+          {:else}
+            <span class="text-gray-400">{word}</span>
+          {/if}
+        </div>
+      {/each}
 
       <div
-        class:no-ligatures={true}
-        class:underline={!isWordCorrect && isCompleted}
-        class:decoration-red-500={!isWordCorrect}
-        class:decoration-3={!isWordCorrect}
-      >
-        {#if isCompleted || isActive}
-          {#each word as char, j (j)}
-            {@const isTyped = j < (inputForThisWord?.length || 0)}
-            {@const isCorrect = isTyped && inputForThisWord[j] === char}
-            <span
-              class:text-green-500={isTyped && isCorrect}
-              class:text-red-500={isTyped && !isCorrect}
-              class:text-gray-500={!isTyped && isActive}
-              class:text-gray-400={isCompleted && !isTyped}
-              bind:this={charElements[i][j]}
-            >
-              {char}
-            </span>
-          {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
-            <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
-              {extraChar}
-            </span>
-          {/each}
-        {:else}
-          <span class="text-gray-400">{word}</span>
-        {/if}
-      </div>
-    {/each}
-
-    <div
-      class="absolute w-1 animate-pulse rounded-sm bg-gray-600"
-      style:top="{caretPosition.current.top}px"
-      style:left="{caretPosition.current.left}px"
-      style:height="{caretPosition.current.height}px"
-    ></div>
+        class="absolute w-1 animate-pulse rounded-sm bg-gray-600"
+        style:top="{caretPosition.current.top}px"
+        style:left="{caretPosition.current.left}px"
+        style:height="{caretPosition.current.height}px"
+      ></div>
+    </div>
   </div>
 
   <!-- <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
