@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { tick } from 'svelte';
   import { Tween } from 'svelte/motion';
 
   let words = [];
@@ -12,12 +13,15 @@
   let wordCorrectness = $state([]);
   let charElements = $state([]);
   let windowSize = $state({ width: window.innerWidth, height: window.innerHeight });
+  let maxRowHeight = $state('');
+  let rowCount = $state(3);
+  let rowGap = $state(20);
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
     { top: 0, left: 0, height: 0 },
     {
-      duration: 100
+      duration: 80
     }
   );
 
@@ -35,6 +39,29 @@
     charElements = Array(currentWords.length)
       .fill(0)
       .map(() => []);
+
+    // Set initial caret position correctly after mount using tick()
+    await tick();
+
+    const initialChar = charElements[0]?.[0];
+    if (initialChar) {
+      // Get the parent div of the first character, which is our word div
+      const rowElement = initialChar.parentElement;
+
+      if (rowElement) {
+        const rowHeight = rowElement.offsetHeight; // This is the true height of one line of words
+        const buffer = 10;
+
+        // Calculate the total height of rows plus n-1  gaps between them
+        maxRowHeight = `${rowHeight * rowCount + rowGap * (rowCount - 1) + buffer}px`;
+      }
+
+      caretPosition.set({
+        top: initialChar.offsetTop,
+        left: initialChar.offsetLeft - 2,
+        height: initialChar.offsetHeight
+      });
+    }
 
     inputElement.focus();
 
@@ -170,7 +197,9 @@
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
   <div
-    class="relative mx-8 flex cursor-text flex-wrap justify-center gap-x-4 lg:mx-48"
+    class="relative mx-8 flex cursor-text flex-wrap justify-center gap-x-4 overflow-hidden lg:mx-48"
+    style:max-height={maxRowHeight}
+    style:row-gap="{rowGap}px"
     onclick={focusInput}
     onkeydown={handleContainerKeyDown}
     role="button"
@@ -230,7 +259,7 @@
     ></div>
   </div>
 
-  <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
+  <!-- <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
   <p>userInput: {userInput}</p>
-  <p>typedWords: {typedWords}</p>
+  <p>typedWords: {typedWords}</p> -->
 </main>
