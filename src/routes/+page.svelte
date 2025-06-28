@@ -16,6 +16,7 @@
   let maxRowHeight = $state('');
   let rowCount = $state(3);
   let rowGap = $state(20);
+  let rowHeight;
   let scrollOffset = $state(0);
 
   // Svelte tween for smooth caret animation
@@ -50,7 +51,7 @@
       const rowElement = initialChar.parentElement;
 
       if (rowElement) {
-        const rowHeight = rowElement.offsetHeight; // This is the true height of one line of words
+        rowHeight = rowElement.offsetHeight; // This is the true height of one line of words
         const buffer = 10;
 
         // Calculate the total height of rows plus n-1  gaps between them
@@ -90,23 +91,31 @@
       }
     }
 
-    if (!charElements[wordIndex] || currentWords.length === 0) {
-      // Update the tween's target value using the .target property
+    if (!charElements[wordIndex]?.[0] || rowHeight === 0) {
+      scrollOffset = 0; // Reset scroll
       caretPosition.target = { top: 0, left: 0, height: 0 };
       return;
     }
 
+    const activeWordElement = charElements[wordIndex][0].parentElement;
+    if (!activeWordElement) return;
+
+    // Calculate scroll offset
+    const activeRowIndex = Math.floor(activeWordElement.offsetTop / (rowHeight + rowGap));
+    let newScrollOffset = 0;
+    if (activeRowIndex >= 2) {
+      newScrollOffset = -((activeRowIndex - 1) * (rowHeight + rowGap));
+    }
+    scrollOffset = newScrollOffset; // Update the scroll state variable
+
+    // 2. Calculate caret position, USING the newScrollOffset
     const wordElements = charElements[wordIndex];
 
-    // We are at the end of the word
     if (charIndex >= wordElements.length) {
       const lastCharElement = wordElements[wordElements.length - 1];
-      if (!lastCharElement) {
-        caretPosition.target = { top: 0, left: 0, height: 0 };
-        return;
-      }
+      if (!lastCharElement) return;
       caretPosition.target = {
-        top: lastCharElement.offsetTop,
+        top: lastCharElement.offsetTop + newScrollOffset,
         left: lastCharElement.offsetLeft + lastCharElement.offsetWidth,
         height: lastCharElement.offsetHeight
       };
@@ -114,14 +123,9 @@
     }
 
     const targetCharElement = wordElements[charIndex];
-
-    // if (!targetCharElement?.parentElement) {
-    //   return;
-    // }
-
-    // We are not at the end of the word, set caret to be right behind current char
+    if (!targetCharElement?.parentElement) return;
     caretPosition.target = {
-      top: targetCharElement.offsetTop,
+      top: targetCharElement.offsetTop + newScrollOffset,
       left: targetCharElement.offsetLeft - 2,
       height: targetCharElement.offsetHeight
     };
@@ -215,7 +219,7 @@
     />
 
     <div
-      class="flex flex-wrap justify-center gap-x-4 transition-transform duration-200 ease-in-out"
+      class="flex flex-wrap justify-start gap-x-4 transition-transform duration-150 ease-in-out"
       style:row-gap="{rowGap}px"
       style:transform="translateY({scrollOffset}px)"
     >
@@ -253,14 +257,14 @@
           {/if}
         </div>
       {/each}
-
-      <div
-        class="absolute w-1 animate-pulse rounded-sm bg-gray-600"
-        style:top="{caretPosition.current.top}px"
-        style:left="{caretPosition.current.left}px"
-        style:height="{caretPosition.current.height}px"
-      ></div>
     </div>
+
+    <div
+      class="absolute w-1 animate-pulse rounded-sm bg-gray-600"
+      style:top="{caretPosition.current.top}px"
+      style:left="{caretPosition.current.left}px"
+      style:height="{caretPosition.current.height}px"
+    ></div>
   </div>
 
   <!-- <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
