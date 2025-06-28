@@ -197,7 +197,7 @@
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
   <div
-    class="relative mx-8 flex cursor-text flex-wrap justify-center gap-x-4 overflow-hidden lg:mx-48"
+    class="relative mx-8 flex cursor-text flex-wrap justify-center gap-x-4 overflow-hidden text-4xl lg:mx-48"
     style:max-height={maxRowHeight}
     style:row-gap="{rowGap}px"
     onclick={focusInput}
@@ -231,7 +231,6 @@
             {@const isTyped = j < (inputForThisWord?.length || 0)}
             {@const isCorrect = isTyped && inputForThisWord[j] === char}
             <span
-              class="text-4xl"
               class:text-green-500={isTyped && isCorrect}
               class:text-red-500={isTyped && !isCorrect}
               class:text-gray-500={!isTyped && isActive}
@@ -241,12 +240,12 @@
               {char}
             </span>
           {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
-            <span class="text-4xl text-red-500" bind:this={charElements[i][word.length + k]}>
+            <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
               {extraChar}
             </span>
           {/each}
         {:else}
-          <span class="text-4xl text-gray-400">{word}</span>
+          <span class="text-gray-400">{word}</span>
         {/if}
       </div>
     {/each}
