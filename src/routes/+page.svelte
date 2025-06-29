@@ -41,7 +41,7 @@
     words = allWords.words;
     prepareWords(words);
 
-    currentWords = getNextWords(100);
+    currentWords = getNextWords(500);
 
     // Pre-fill the charElements array with empty arrays so Svelte can bind to them.
     // We create an array of empty arrays, one for each word.
@@ -245,6 +245,8 @@
     return Math.round(grossWPM);
   }
 
+  function restartTest() {}
+
   function focusInput() {
     inputElement?.focus();
   }
@@ -350,6 +352,15 @@
         style:height="{caretPosition.current.height}px"
         class:blink-caret={testStartTime == 0}
       ></div>
+    </div>
+
+    <div
+      class="absolute m-4 flex cursor-pointer space-x-4 rounded-lg bg-gray-100 p-2 text-sm duration-300 hover:bg-gray-300 md:space-x-10 md:text-2xl"
+      style="top: 10rem; left: 50%; transform: translateX(-50%);"
+      class:opacity-0={testStartTime != 0}
+      class:pointer-events-none={testStartTime != 0}
+    >
+      <img src="/restart.svg" alt="Timer" width="30" height="30" />
     </div>
   </div>
 </main>
