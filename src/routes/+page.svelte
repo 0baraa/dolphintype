@@ -260,93 +260,96 @@
 </script>
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-  <div
-    class="m-4 flex space-x-10 rounded-lg bg-gray-200 p-2 text-2xl text-gray-400 transition-opacity duration-300"
-    class:opacity-0={testStartTime != 0}
-    class:pointer-events-none={testStartTime != 0}
-  >
-    <img src="/timer.svg" alt="Timer" width="30" height="30" />
-    <button
-      onclick={() => (timerDuration = 15)}
-      class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
-      class:text-gray-600={timerDuration === 15}>15</button
-    >
-    <button
-      onclick={() => (timerDuration = 30)}
-      class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
-      class:text-gray-600={timerDuration === 30}>30</button
-    >
-    <button
-      onclick={() => (timerDuration = 60)}
-      class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
-      class:text-gray-600={timerDuration === 60}>60</button
-    >
-  </div>
-
-  <div
-    class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl lg:mx-48"
-    style:max-height={maxRowHeight}
-    onclick={focusInput}
-    onkeydown={handleContainerKeyDown}
-    role="button"
-    tabindex="0"
-  >
-    <input
-      class="pointer-events-auto absolute opacity-0"
-      type="text"
-      id="typinginput"
-      bind:value={userInput}
-      bind:this={inputElement}
-      onkeydown={handleKeydown}
-    />
-
+  <div class="relative">
     <div
-      class="flex flex-wrap justify-start gap-x-4 transition-transform duration-150 ease-in-out"
-      style:row-gap="{rowGap}px"
-      style:transform="translateY({scrollOffset}px)"
+      class="absolute m-4 flex space-x-4 rounded-lg bg-gray-200 p-2 text-sm text-gray-400 transition-opacity duration-300 md:space-x-10 md:text-2xl"
+      style="top: -5rem; left: 50%; transform: translateX(-50%);"
+      class:opacity-0={testStartTime != 0}
+      class:pointer-events-none={testStartTime != 0}
     >
-      {#each currentWords as word, i (i)}
-        {@const isCompleted = i < activeWordIndex}
-        {@const isActive = i === activeWordIndex}
-        {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
-        {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
-
-        <div
-          class:underline={!isWordCorrect && isCompleted}
-          class:decoration-red-500={!isWordCorrect}
-          class:decoration-3={!isWordCorrect}
-        >
-          {#if isCompleted || isActive}
-            {#each word as char, j (j)}
-              {@const isTyped = j < (inputForThisWord?.length || 0)}
-              {@const isCorrect = isTyped && inputForThisWord[j] === char}
-              <span
-                class:text-green-500={isTyped && isCorrect}
-                class:text-red-500={isTyped && !isCorrect}
-                class:text-gray-500={!isTyped && isActive}
-                class:text-gray-400={isCompleted && !isTyped}
-                bind:this={charElements[i][j]}
-              >
-                {char}
-              </span>
-            {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
-              <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
-                {extraChar}
-              </span>
-            {/each}
-          {:else}
-            <span class="text-gray-400">{word}</span>
-          {/if}
-        </div>
-      {/each}
+      <img src="/timer.svg" alt="Timer" width="30" height="30" />
+      <button
+        onclick={() => (timerDuration = 15)}
+        class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
+        class:text-gray-600={timerDuration === 15}>15</button
+      >
+      <button
+        onclick={() => (timerDuration = 30)}
+        class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
+        class:text-gray-600={timerDuration === 30}>30</button
+      >
+      <button
+        onclick={() => (timerDuration = 60)}
+        class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
+        class:text-gray-600={timerDuration === 60}>60</button
+      >
     </div>
 
     <div
-      class="absolute w-1 rounded-sm bg-gray-600"
-      style:top="{caretPosition.current.top}px"
-      style:left="{caretPosition.current.left}px"
-      style:height="{caretPosition.current.height}px"
-      class:blink-caret={testStartTime == 0}
-    ></div>
+      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl lg:mx-48"
+      style:max-height={maxRowHeight}
+      onclick={focusInput}
+      onkeydown={handleContainerKeyDown}
+      role="button"
+      tabindex="0"
+    >
+      <input
+        class="pointer-events-auto absolute opacity-0"
+        type="text"
+        id="typinginput"
+        bind:value={userInput}
+        bind:this={inputElement}
+        onkeydown={handleKeydown}
+      />
+
+      <div
+        class="flex flex-wrap justify-start gap-x-4 transition-transform duration-150 ease-in-out"
+        style:row-gap="{rowGap}px"
+        style:transform="translateY({scrollOffset}px)"
+      >
+        {#each currentWords as word, i (i)}
+          {@const isCompleted = i < activeWordIndex}
+          {@const isActive = i === activeWordIndex}
+          {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
+          {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
+
+          <div
+            class:underline={!isWordCorrect && isCompleted}
+            class:decoration-red-500={!isWordCorrect}
+            class:decoration-3={!isWordCorrect}
+          >
+            {#if isCompleted || isActive}
+              {#each word as char, j (j)}
+                {@const isTyped = j < (inputForThisWord?.length || 0)}
+                {@const isCorrect = isTyped && inputForThisWord[j] === char}
+                <span
+                  class:text-green-500={isTyped && isCorrect}
+                  class:text-red-500={isTyped && !isCorrect}
+                  class:text-gray-500={!isTyped && isActive}
+                  class:text-gray-400={isCompleted && !isTyped}
+                  bind:this={charElements[i][j]}
+                >
+                  {char}
+                </span>
+              {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
+                <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
+                  {extraChar}
+                </span>
+              {/each}
+            {:else}
+              <span class="text-gray-400">{word}</span>
+            {/if}
+          </div>
+        {/each}
+      </div>
+
+      <div
+        class="absolute w-1 rounded-sm bg-gray-600"
+        style:top="{caretPosition.current.top}px"
+        style:left="{caretPosition.current.left}px"
+        style:height="{caretPosition.current.height}px"
+        class:blink-caret={testStartTime == 0}
+      ></div>
+    </div>
   </div>
 </main>
