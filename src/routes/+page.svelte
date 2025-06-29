@@ -18,6 +18,8 @@
   let rowGap = $state(20);
   let rowHeight;
   let scrollOffset = $state(0);
+  let testStartTime = $state(0);
+  let timerDuration = 15;
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -162,6 +164,13 @@
   function handleKeydown(event) {
     const currentWord = currentWords[activeWordIndex];
 
+    if (testStartTime === 0) {
+      // Only printable keys can start a test
+      if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        startTimer(timerDuration);
+      }
+    }
+
     if (event.key === ' ') {
       event.preventDefault();
 
@@ -184,6 +193,20 @@
     } else if (userInput.length > currentWord.length + 2) {
       event.preventDefault();
     }
+  }
+
+  function startTimer(timerDuration) {
+    testStartTime = Date.now();
+
+    let interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
+      const remaining = timerDuration - elapsed;
+
+      if (remaining <= 0) {
+        clearInterval(interval);
+        inputElement.disabled = true;
+      }
+    }, 1000);
   }
 
   function focusInput() {
@@ -271,3 +294,5 @@
   <p>userInput: {userInput}</p>
   <p>typedWords: {typedWords}</p> -->
 </main>
+
+<!-- WPM = (correctCharacters / 5) / (seconds / 60) -->
