@@ -264,26 +264,25 @@
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
   <div class="relative">
     <div
-      class="absolute m-4 flex space-x-4 rounded-lg bg-gray-200 p-2 text-sm text-gray-400 transition-opacity duration-300 md:space-x-10 md:text-2xl"
-      style="top: -5rem; left: 50%; transform: translateX(-50%);"
+      class="absolute flex space-x-10 rounded-lg bg-gray-100 p-2 text-2xl text-gray-400 transition-opacity duration-300"
+      style="top: -2.5em; left: 50%; transform: translateX(-50%);"
       class:opacity-0={testStartTime != 0}
       class:pointer-events-none={testStartTime != 0}
     >
-      <img src="/timer.svg" alt="Timer" width="30" height="30" />
       <button
         onclick={() => (timerDuration = 15)}
-        class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
-        class:text-gray-600={timerDuration === 15}>15</button
+        class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
+        class:text-gray-600={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
       >
       <button
         onclick={() => (timerDuration = 30)}
-        class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
-        class:text-gray-600={timerDuration === 30}>30</button
+        class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
+        class:text-gray-600={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
       <button
         onclick={() => (timerDuration = 60)}
-        class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
-        class:text-gray-600={timerDuration === 60}>60</button
+        class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
+        class:text-gray-600={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
       >
     </div>
 
@@ -355,8 +354,8 @@
     </div>
 
     <div
-      class="absolute m-4 flex cursor-pointer space-x-4 rounded-lg bg-gray-100 p-2 text-sm duration-300 hover:bg-gray-300 md:space-x-10 md:text-2xl"
-      style="top: 10rem; left: 50%; transform: translateX(-50%);"
+      class="absolute flex cursor-pointer rounded-lg bg-gray-100 p-2 text-sm duration-300 hover:bg-gray-300 md:space-x-10 md:text-2xl"
+      style="top: 11rem; left: 50%; transform: translateX(-50%);"
       class:opacity-0={testStartTime != 0}
       class:pointer-events-none={testStartTime != 0}
     >
