@@ -5,4 +5,18 @@
   .no-ligatures {
     font-feature-settings: 'liga' 0;
   }
+
+  @keyframes blink-caret {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .blink-caret {
+    animation: blink-caret 1s steps(1, start) infinite;
+  }
 }

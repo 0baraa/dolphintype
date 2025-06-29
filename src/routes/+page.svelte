@@ -342,10 +342,11 @@
     </div>
 
     <div
-      class="absolute w-1 animate-pulse rounded-sm bg-gray-600"
+      class="absolute w-1 rounded-sm bg-gray-600"
       style:top="{caretPosition.current.top}px"
       style:left="{caretPosition.current.left}px"
       style:height="{caretPosition.current.height}px"
+      class:blink-caret={testStartTime == 0}
     ></div>
   </div>
 </main>
