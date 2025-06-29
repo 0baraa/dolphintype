@@ -20,8 +20,8 @@
   let rowHeight;
   let scrollOffset = $state(0);
   let testStartTime = $state(0);
-  let timerDuration = 30;
-  let timeRemaining = $state(timerDuration);
+  let timerDuration = $state(30);
+  let timeRemaining = $derived(timerDuration);
   let wpm = $state(0);
 
   // Svelte tween for smooth caret animation
@@ -260,9 +260,27 @@
 </script>
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-  <div class="flex gap-x-8 text-3xl">
-    <div>{timeRemaining}</div>
-    <div>wpm {wpm}</div>
+  <div
+    class="m-4 flex space-x-10 rounded-lg bg-gray-200 p-2 text-2xl text-gray-400 transition-opacity duration-300"
+    class:opacity-0={testStartTime != 0}
+    class:pointer-events-none={testStartTime != 0}
+  >
+    <img src="/timer.svg" alt="Timer" width="30" height="30" />
+    <button
+      onclick={() => (timerDuration = 15)}
+      class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
+      class:text-gray-600={timerDuration === 15}>15</button
+    >
+    <button
+      onclick={() => (timerDuration = 30)}
+      class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
+      class:text-gray-600={timerDuration === 30}>30</button
+    >
+    <button
+      onclick={() => (timerDuration = 60)}
+      class="cursor-pointer transition-colors duration-150 hover:text-gray-600"
+      class:text-gray-600={timerDuration === 60}>60</button
+    >
   </div>
 
   <div
@@ -330,8 +348,4 @@
       style:height="{caretPosition.current.height}px"
     ></div>
   </div>
-
-  <!-- <p>activeWordIndex: {activeWordIndex} ({currentWords[activeWordIndex]})</p>
-  <p>userInput: {userInput}</p>
-  <p>typedWords: {typedWords}</p> -->
 </main>
