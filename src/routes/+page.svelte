@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { tick } from 'svelte';
+  import { quadOut } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
 
   let words = [];
@@ -19,13 +20,17 @@
   let rowHeight;
   let scrollOffset = $state(0);
   let testStartTime = $state(0);
-  let timerDuration = 15;
+  let timerDuration = 30;
+  let timeRemaining = $state(timerDuration);
+  let wpm = $state(0);
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
     { top: 0, left: 0, height: 0 },
     {
-      duration: 80
+      delay: 0,
+      easing: quadOut,
+      duration: 65
     }
   );
 
@@ -56,7 +61,8 @@
         rowHeight = rowElement.offsetHeight; // This is the true height of one line of words
         const buffer = 10;
 
-        // Calculate the total height of rows plus n-1  gaps between them
+        // Calculate the total height of rows plus n-1 gaps between them
+
         maxRowHeight = `${rowHeight * rowCount + rowGap * (rowCount - 1) + buffer}px`;
       }
 
@@ -110,7 +116,7 @@
     }
     scrollOffset = newScrollOffset; // Update the scroll state variable
 
-    // 2. Calculate caret position, USING the newScrollOffset
+    // Calculate caret position, using the newScrollOffset
     const wordElements = charElements[wordIndex];
 
     if (charIndex >= wordElements.length) {
@@ -200,13 +206,43 @@
 
     let interval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
-      const remaining = timerDuration - elapsed;
+      timeRemaining = timerDuration - elapsed;
 
-      if (remaining <= 0) {
+      if (timeRemaining <= 0) {
         clearInterval(interval);
         inputElement.disabled = true;
+        wpm = calculateWPM();
       }
     }, 1000);
+  }
+
+  function calculateWPM() {
+    // Calculate correct characters from all completed words
+    let totalCorrectChars = 0;
+    for (let i = 0; i < activeWordIndex; i++) {
+      if (wordCorrectness[i] === true) {
+        totalCorrectChars += currentWords[i].length + 1;
+      }
+    }
+
+    // Add correct characters from the final active word (the one the user was typing when the test ended)
+    const activeWord = currentWords[activeWordIndex];
+    if (activeWord) {
+      for (let i = 0; i < userInput.length; i++) {
+        if (userInput[i] === activeWord[i]) {
+          totalCorrectChars++;
+        }
+      }
+    }
+
+    // Calculate WPM using the standard formula (a word is 5 characters)
+    // We use the actual elapsed time for accuracy, but cap it at the test duration.
+    const elapsedSeconds = (Date.now() - testStartTime) / 1000;
+    const elapsedMinutes = Math.min(elapsedSeconds, timerDuration) / 60;
+
+    const grossWPM = totalCorrectChars / 5 / elapsedMinutes;
+
+    return Math.round(grossWPM);
   }
 
   function focusInput() {
@@ -224,6 +260,11 @@
 </script>
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+  <div class="flex gap-x-8 text-3xl">
+    <div>{timeRemaining}</div>
+    <div>wpm {wpm}</div>
+  </div>
+
   <div
     class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl lg:mx-48"
     style:max-height={maxRowHeight}
@@ -294,5 +335,3 @@
   <p>userInput: {userInput}</p>
   <p>typedWords: {typedWords}</p> -->
 </main>
-
-<!-- WPM = (correctCharacters / 5) / (seconds / 60) -->
