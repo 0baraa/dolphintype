@@ -22,8 +22,9 @@
   let scrollOffset = $state(0);
   let testStartTime = $state(0);
   let timerDuration = $state(30);
-  let timeRemaining = $state(0);
+  let timeRemaining = $derived(timerDuration);
   let wpm = $state(0);
+  let interval;
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -209,7 +210,7 @@
   function startTimer(timerDuration) {
     testStartTime = Date.now();
 
-    let interval = setInterval(() => {
+    interval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
       timeRemaining = timerDuration - elapsed;
 
@@ -218,6 +219,7 @@
         // inputElement.disabled = true;
         wpm = calculateWPM();
         // showTestResults();
+        testStartTime = 0;
       }
     }, 1000);
   }
@@ -254,6 +256,12 @@
   function showTestResults() {}
 
   async function restartTest() {
+    // We get large negative value sometimes without this
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+
     currentIndex = 0;
     words = allWords.words;
     prepareWords(words);
@@ -264,6 +272,7 @@
     typedWords = [];
     testStartTime = 0;
     scrollOffset = 0;
+    timeRemaining = timerDuration;
     focusInput();
   }
 
@@ -304,6 +313,15 @@
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
       >
+    </div>
+
+    <div
+      class="absolute p-2 text-8xl text-gray-400 transition-opacity duration-300"
+      style="top: -1.2em; left: 50%; transform: translateX(-50%);"
+      class:opacity-0={testStartTime == 0}
+      ontransitionend={() => (timeRemaining = timerDuration)}
+    >
+      {timeRemaining}
     </div>
 
     <div
