@@ -304,17 +304,26 @@
       class:pointer-events-none={testPhase === 'running' || testPhase === 'finished'}
     >
       <button
-        onclick={() => (timerDuration = 15)}
+        onclick={() => {
+          timerDuration = 15;
+          focusInput();
+        }}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
       >
       <button
-        onclick={() => (timerDuration = 30)}
+        onclick={() => {
+          timerDuration = 30;
+          focusInput();
+        }}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
       <button
-        onclick={() => (timerDuration = 60)}
+        onclick={() => {
+          timerDuration = 60;
+          focusInput();
+        }}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
       >
