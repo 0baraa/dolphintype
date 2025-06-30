@@ -25,6 +25,7 @@
   let timeRemaining = $derived(timerDuration);
   let wpm = $state(0);
   let interval;
+  let testPhase = $state('waiting');
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -174,12 +175,14 @@
   }
 
   function handleKeydown(event) {
+    console.log(testPhase);
+
     const currentWord = currentWords[activeWordIndex];
 
-    if (testStartTime === 0) {
+    if (testPhase != 'running') {
       // Only printable keys can start a test
       if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
-        startTimer(timerDuration);
+        startTest();
       }
     }
 
@@ -207,7 +210,8 @@
     }
   }
 
-  function startTimer(timerDuration) {
+  function startTest() {
+    testPhase = 'running';
     testStartTime = Date.now();
 
     interval = setInterval(() => {
@@ -219,7 +223,8 @@
         // inputElement.disabled = true;
         wpm = calculateWPM();
         // showTestResults();
-        testStartTime = 0;
+        // testStartTime = 0;
+        testPhase = 'finished';
       }
     }, 1000);
   }
@@ -256,6 +261,7 @@
   function showTestResults() {}
 
   async function restartTest() {
+    testPhase = 'waiting';
     // We get large negative value sometimes without this
     if (interval) {
       clearInterval(interval);
@@ -270,7 +276,7 @@
     userInput = '';
     wordCorrectness = [];
     typedWords = [];
-    testStartTime = 0;
+    // testStartTime = 0;
     scrollOffset = 0;
     timeRemaining = timerDuration;
     focusInput();
@@ -295,8 +301,8 @@
     <div
       class="absolute flex space-x-10 rounded-lg bg-gray-100 p-2 text-2xl text-gray-400 transition-opacity duration-300"
       style="top: -2.5em; left: 50%; transform: translateX(-50%);"
-      class:opacity-0={testStartTime != 0}
-      class:pointer-events-none={testStartTime != 0}
+      class:opacity-0={testPhase === 'running'}
+      class:pointer-events-none={testPhase === 'running'}
     >
       <button
         onclick={() => (timerDuration = 15)}
@@ -318,7 +324,7 @@
     <div
       class="absolute p-2 text-8xl text-gray-400 transition-opacity duration-300"
       style="top: -1.2em; left: 50%; transform: translateX(-50%);"
-      class:opacity-0={testStartTime == 0}
+      class:opacity-0={testPhase != 'running'}
       ontransitionend={() => (timeRemaining = timerDuration)}
     >
       {timeRemaining}
@@ -388,7 +394,7 @@
         style:top="{caretPosition.current.top}px"
         style:left="{caretPosition.current.left}px"
         style:height="{caretPosition.current.height}px"
-        class:blink-caret={testStartTime == 0}
+        class:blink-caret={testPhase === 'waiting'}
       ></div>
     </div>
 
