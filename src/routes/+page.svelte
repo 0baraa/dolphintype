@@ -39,7 +39,7 @@
   );
 
   onMount(async () => {
-    const wordsResponse = await fetch('/english1k.json');
+    const wordsResponse = await fetch('/english200.json');
     allWords = await wordsResponse.json();
 
     words = allWords.words;
@@ -148,11 +148,10 @@
   }
 
   function prepareWords(wordsArray) {
-    words = fisherYatesShuffle([...wordsArray]);
-    currentIndex = 0;
+    words = shuffleArray([...wordsArray]);
   }
 
-  function fisherYatesShuffle(array) {
+  function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -161,14 +160,29 @@
   }
 
   function getNextWords(n) {
-    if (currentIndex + n > words.length) {
-      words = fisherYatesShuffle([...words]);
-      currentIndex = 0;
+    if (words.length === 0) {
+      return [];
     }
 
-    const nextWords = words.slice(currentIndex, currentIndex + n);
-    currentIndex += nextWords.length;
-    return nextWords;
+    const newWordList = [];
+
+    // Keep track of the last word we added to the list
+    let lastWord = null;
+
+    for (let i = 0; i < n; i++) {
+      let nextWord;
+
+      // This loop will continue until we find a word that is different from the last one
+      do {
+        const randomIndex = Math.floor(Math.random() * words.length);
+        nextWord = words[randomIndex];
+      } while (nextWord === lastWord && words.length > 1);
+
+      newWordList.push(nextWord);
+      lastWord = nextWord;
+    }
+
+    return newWordList;
   }
 
   function handleWindowResize() {
