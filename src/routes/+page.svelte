@@ -21,11 +21,12 @@
   let rowHeight = $state(0);
   let scrollOffset = $state(0);
   let testStartTime = $state(0);
-  let timerDuration = $state(1);
+  let timerDuration = $state(30);
   let timeRemaining = $derived(timerDuration);
   let wpm = $state(0);
   let interval;
   let testPhase = $state('waiting');
+  let restarting = $state(false);
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -175,8 +176,6 @@
   }
 
   function handleKeydown(event) {
-    console.log(testPhase);
-
     const currentWord = currentWords[activeWordIndex];
 
     if (testPhase !== 'running') {
@@ -222,8 +221,6 @@
         clearInterval(interval);
         inputElement.disabled = true;
         wpm = calculateWPM();
-        // showTestResults();
-        // testStartTime = 0;
         testPhase = 'finished';
       }
     }, 1000);
@@ -259,7 +256,11 @@
   }
 
   async function restartTest() {
+    restarting = true;
     testPhase = 'waiting';
+    scrollOffset = 0;
+    // Wait 200ms to let words box div opacity reach 0
+    await new Promise((resolve) => setTimeout(resolve, 200));
     // We get large negative value sometimes without this
     if (interval) {
       clearInterval(interval);
@@ -275,10 +276,9 @@
     userInput = '';
     wordCorrectness = [];
     typedWords = [];
-    // testStartTime = 0;
-    scrollOffset = 0;
     timeRemaining = timerDuration;
     focusInput();
+    restarting = false;
   }
 
   function focusInput() {
@@ -308,7 +308,7 @@
           timerDuration = 15;
           focusInput();
         }}
-        class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
+        class="cursor-pointer rounded-lg p-2 transition-colors duration-300 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
       >
       <button
@@ -316,7 +316,7 @@
           timerDuration = 30;
           focusInput();
         }}
-        class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
+        class="cursor-pointer rounded-lg p-2 transition-colors duration-300 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
       <button
@@ -339,7 +339,7 @@
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-200 sm:text-7xl"
+      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-300 sm:text-7xl"
       style="top: -1.4em; left: 50%; transform: translateX(-50%);"
       class:opacity-0={testPhase !== 'finished'}
     >
@@ -347,13 +347,14 @@
     </div>
 
     <div
-      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl duration-400 ease-in-out lg:mx-48"
+      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl transition-opacity lg:mx-48"
       style:max-height={maxRowHeight}
       onclick={focusInput}
       onkeydown={handleContainerKeyDown}
       role="button"
       tabindex="0"
-      class:blur-[2px]={testPhase === 'finished'}
+      class:blur-[1.5px]={testPhase === 'finished'}
+      class:opacity-0={restarting}
     >
       <input
         class="pointer-events-auto absolute opacity-0"
