@@ -21,7 +21,7 @@
   let rowHeight = $state(0);
   let scrollOffset = $state(0);
   let testStartTime = $state(0);
-  let timerDuration = $state(30);
+  let timerDuration = $state(1);
   let timeRemaining = $derived(timerDuration);
   let wpm = $state(0);
   let interval;
@@ -179,7 +179,7 @@
 
     const currentWord = currentWords[activeWordIndex];
 
-    if (testPhase != 'running') {
+    if (testPhase !== 'running') {
       // Only printable keys can start a test
       if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
         startTest();
@@ -220,7 +220,7 @@
 
       if (timeRemaining <= 0) {
         clearInterval(interval);
-        // inputElement.disabled = true;
+        inputElement.disabled = true;
         wpm = calculateWPM();
         // showTestResults();
         // testStartTime = 0;
@@ -258,8 +258,6 @@
     return Math.round(grossWPM);
   }
 
-  function showTestResults() {}
-
   async function restartTest() {
     testPhase = 'waiting';
     // We get large negative value sometimes without this
@@ -268,6 +266,7 @@
       interval = null;
     }
 
+    inputElement.disabled = false;
     currentIndex = 0;
     words = allWords.words;
     prepareWords(words);
@@ -301,8 +300,8 @@
     <div
       class="absolute flex space-x-10 rounded-lg bg-gray-100 p-2 text-2xl text-gray-400 transition-opacity duration-300"
       style="top: -2.5em; left: 50%; transform: translateX(-50%);"
-      class:opacity-0={testPhase === 'running'}
-      class:pointer-events-none={testPhase === 'running'}
+      class:opacity-0={testPhase === 'running' || testPhase === 'finished'}
+      class:pointer-events-none={testPhase === 'running' || testPhase === 'finished'}
     >
       <button
         onclick={() => (timerDuration = 15)}
@@ -322,21 +321,30 @@
     </div>
 
     <div
-      class="absolute p-2 text-8xl text-gray-400 transition-opacity duration-300"
+      class="pointer-events-none absolute p-2 text-8xl text-gray-400 transition-opacity duration-300"
       style="top: -1.2em; left: 50%; transform: translateX(-50%);"
-      class:opacity-0={testPhase != 'running'}
+      class:opacity-0={testPhase !== 'running'}
       ontransitionend={() => (timeRemaining = timerDuration)}
     >
       {timeRemaining}
     </div>
 
     <div
-      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl lg:mx-48"
+      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-200 sm:text-7xl"
+      style="top: -1.4em; left: 50%; transform: translateX(-50%);"
+      class:opacity-0={testPhase !== 'finished'}
+    >
+      {wpm} wpm
+    </div>
+
+    <div
+      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl duration-400 ease-in-out lg:mx-48"
       style:max-height={maxRowHeight}
       onclick={focusInput}
       onkeydown={handleContainerKeyDown}
       role="button"
       tabindex="0"
+      class:blur-[2px]={testPhase === 'finished'}
     >
       <input
         class="pointer-events-auto absolute opacity-0"
