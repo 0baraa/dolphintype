@@ -6,7 +6,6 @@
 
   let words = [];
   let allWords;
-  let currentIndex = 0;
   let currentWords = $state([]);
   let inputElement;
   let userInput = $state('');
@@ -282,7 +281,6 @@
     }
 
     inputElement.disabled = false;
-    currentIndex = 0;
     words = allWords.words;
     prepareWords(words);
     currentWords = getNextWords(500);
