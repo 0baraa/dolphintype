@@ -371,6 +371,9 @@
       class:opacity-0={restarting}
     >
       <input
+        autocorrect="off"
+        autocomplete="off"
+        spellcheck="false"
         class="pointer-events-auto absolute opacity-0"
         type="text"
         id="typinginput"
