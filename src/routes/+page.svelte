@@ -5,6 +5,7 @@
   import { Tween } from 'svelte/motion';
 
   let words = [];
+  let allWords;
   let currentIndex = 0;
   let currentWords = $state([]);
   let inputElement;
@@ -17,11 +18,11 @@
   let maxRowHeight = $state('');
   let rowCount = $state(3);
   let rowGap = $state(20);
-  let rowHeight;
+  let rowHeight = $state(0);
   let scrollOffset = $state(0);
   let testStartTime = $state(0);
   let timerDuration = $state(30);
-  let timeRemaining = $derived(timerDuration);
+  let timeRemaining = $state(0);
   let wpm = $state(0);
 
   // Svelte tween for smooth caret animation
@@ -36,7 +37,7 @@
 
   onMount(async () => {
     const wordsResponse = await fetch('/english1k.json');
-    const allWords = await wordsResponse.json();
+    allWords = await wordsResponse.json();
 
     words = allWords.words;
     prepareWords(words);
@@ -45,9 +46,7 @@
 
     // Pre-fill the charElements array with empty arrays so Svelte can bind to them.
     // We create an array of empty arrays, one for each word.
-    charElements = Array(currentWords.length)
-      .fill(0)
-      .map(() => []);
+    prefillCharElements();
 
     // Set initial caret position correctly after mount using tick()
     await tick();
@@ -139,6 +138,12 @@
     };
   });
 
+  function prefillCharElements() {
+    charElements = Array(currentWords.length)
+      .fill(0)
+      .map(() => []);
+  }
+
   function prepareWords(wordsArray) {
     words = fisherYatesShuffle([...wordsArray]);
     currentIndex = 0;
@@ -210,8 +215,9 @@
 
       if (timeRemaining <= 0) {
         clearInterval(interval);
-        inputElement.disabled = true;
+        // inputElement.disabled = true;
         wpm = calculateWPM();
+        // showTestResults();
       }
     }, 1000);
   }
@@ -245,7 +251,21 @@
     return Math.round(grossWPM);
   }
 
-  function restartTest() {}
+  function showTestResults() {}
+
+  async function restartTest() {
+    currentIndex = 0;
+    words = allWords.words;
+    prepareWords(words);
+    currentWords = getNextWords(500);
+    activeWordIndex = 0;
+    userInput = '';
+    wordCorrectness = [];
+    typedWords = [];
+    testStartTime = 0;
+    scrollOffset = 0;
+    focusInput();
+  }
 
   function focusInput() {
     inputElement?.focus();
@@ -272,17 +292,17 @@
       <button
         onclick={() => (timerDuration = 15)}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
-        class:text-gray-600={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
+        class:text-gray-700={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
       >
       <button
         onclick={() => (timerDuration = 30)}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
-        class:text-gray-600={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
+        class:text-gray-700={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
       <button
         onclick={() => (timerDuration = 60)}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
-        class:text-gray-600={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
+        class:text-gray-700={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
       >
     </div>
 
@@ -304,6 +324,7 @@
       />
 
       <div
+        id="words-container"
         class="flex flex-wrap justify-start gap-x-4 transition-transform duration-150 ease-in-out"
         style:row-gap="{rowGap}px"
         style:transform="translateY({scrollOffset}px)"
@@ -332,7 +353,7 @@
                 >
                   {char}
                 </span>
-              {/each}{#each inputForThisWord.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
+              {/each}{#each inputForThisWord?.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
                 <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
                   {extraChar}
                 </span>
@@ -353,13 +374,13 @@
       ></div>
     </div>
 
-    <div
+    <button
+      onclick={restartTest}
       class="absolute flex cursor-pointer rounded-lg bg-gray-100 p-2 text-sm duration-300 hover:bg-gray-300 md:space-x-10 md:text-2xl"
       style="top: 11rem; left: 50%; transform: translateX(-50%);"
-      class:opacity-0={testStartTime != 0}
-      class:pointer-events-none={testStartTime != 0}
+      tabindex="0"
     >
-      <img src="/restart.svg" alt="Timer" width="30" height="30" />
-    </div>
+      <img src="/restart.svg" alt="restart icon" width="30" height="30" />
+    </button>
   </div>
 </main>
