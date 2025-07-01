@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { tick } from 'svelte';
-  import { quadOut } from 'svelte/easing';
+  import { linear, quadOut } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
 
   let words = [];
@@ -34,7 +34,7 @@
     { top: 0, left: 0, height: 0 },
     {
       delay: 0,
-      easing: quadOut,
+      easing: linear,
       duration: 65
     }
   );
