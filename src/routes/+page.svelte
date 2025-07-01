@@ -362,7 +362,7 @@
         class:text-gray-700={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
       <button
-        onclick={(e) => {
+        onclick={() => {
           timerDuration = 60;
           focusInput();
         }}
@@ -401,6 +401,7 @@
       onmousedown={(e) => e.preventDefault()}
     >
       <input
+        autocapitalize="off"
         autocorrect="off"
         autocomplete="off"
         spellcheck="false"
