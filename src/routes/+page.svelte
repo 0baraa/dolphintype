@@ -321,6 +321,7 @@
           timerDuration = 15;
           focusInput();
         }}
+        onmousedown={(e) => e.preventDefault()}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-300 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
       >
@@ -329,14 +330,16 @@
           timerDuration = 30;
           focusInput();
         }}
+        onmousedown={(e) => e.preventDefault()}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-300 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
       <button
-        onclick={() => {
+        onclick={(e) => {
           timerDuration = 60;
           focusInput();
         }}
+        onmousedown={(e) => e.preventDefault()}
         class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
         class:text-gray-700={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
       >
@@ -441,6 +444,7 @@
       class="absolute flex cursor-pointer rounded-lg bg-gray-100 p-2 text-sm duration-300 hover:bg-gray-300 md:space-x-10 md:text-2xl"
       style="top: 11rem; left: 50%; transform: translateX(-50%);"
       tabindex="0"
+      onmousedown={(e) => e.preventDefault()}
     >
       <img src="/restart.svg" alt="restart icon" width="30" height="30" />
     </button>
