@@ -27,6 +27,7 @@
   let testPhase = $state('waiting');
   let restarting = $state(false);
   let isFocused = $state(true);
+  let spaceHandledByKeydown = false;
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -199,7 +200,7 @@
       }
     }
 
-    if (event.key === ' ') {
+    if (event.key === ' ' || event.code === 'Space') {
       event.preventDefault();
 
       if (userInput === '') {
@@ -211,6 +212,8 @@
       typedWords[activeWordIndex] = userInput;
       userInput = '';
       activeWordIndex++;
+
+      spaceHandledByKeydown = true; // mark space handled here
     } else if (event.key === 'Backspace') {
       const isPreviousWordCorrect = wordCorrectness[activeWordIndex - 1];
       if (activeWordIndex > 0 && userInput === '' && !isPreviousWordCorrect) {
@@ -220,6 +223,30 @@
       }
     } else if (userInput.length > currentWord.length + 2) {
       event.preventDefault();
+    }
+  }
+
+  function handleInput(e) {
+    const value = e.target.value;
+
+    if (spaceHandledByKeydown) {
+      // Reset flag and skip to avoid double handling space input
+      spaceHandledByKeydown = false;
+      return;
+    }
+
+    if (value.endsWith(' ')) {
+      // Get the word content without the space
+      const wordContent = value.slice(0, -1);
+
+      // Don't advance on empty word
+      if (wordContent === '') return;
+
+      const currentWord = currentWords[activeWordIndex];
+      wordCorrectness[activeWordIndex] = wordContent === currentWord;
+      typedWords[activeWordIndex] = wordContent;
+      userInput = '';
+      activeWordIndex++;
     }
   }
 
@@ -383,6 +410,7 @@
         bind:value={userInput}
         bind:this={inputElement}
         onkeydown={handleKeydown}
+        oninput={handleInput}
         onfocus={() => (isFocused = true)}
         onblur={() => (isFocused = false)}
       />
