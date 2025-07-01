@@ -363,7 +363,7 @@
     </div>
 
     <div
-      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl transition-opacity lg:mx-48"
+      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl transition-opacity lg:max-w-325"
       style:max-height={maxRowHeight}
       onclick={focusInput}
       onkeydown={handleContainerKeyDown}
