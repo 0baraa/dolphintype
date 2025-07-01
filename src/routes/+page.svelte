@@ -7,7 +7,7 @@
   let words = [];
   let allWords;
   let currentWords = $state([]);
-  let inputElement;
+  let inputElement = $state(null);
   let userInput = $state('');
   let activeWordIndex = $state(0);
   let typedWords = $state([]);
@@ -26,6 +26,7 @@
   let interval;
   let testPhase = $state('waiting');
   let restarting = $state(false);
+  let isFocused = $state(true);
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -365,8 +366,9 @@
       onkeydown={handleContainerKeyDown}
       role="button"
       tabindex="0"
-      class:blur-[1.5px]={testPhase === 'finished'}
+      class:blur-[1.5px]={!isFocused || testPhase === 'finished'}
       class:opacity-0={restarting}
+      onmousedown={(e) => e.preventDefault()}
     >
       <input
         autocorrect="off"
@@ -378,6 +380,8 @@
         bind:value={userInput}
         bind:this={inputElement}
         onkeydown={handleKeydown}
+        onfocus={() => (isFocused = true)}
+        onblur={() => (isFocused = false)}
       />
 
       <div
@@ -427,7 +431,8 @@
         style:top="{caretPosition.current.top}px"
         style:left="{caretPosition.current.left}px"
         style:height="{caretPosition.current.height}px"
-        class:blink-caret={testPhase === 'waiting'}
+        class:blink-caret={testPhase === 'waiting' && isFocused}
+        class:hidden={!isFocused}
       ></div>
     </div>
 
