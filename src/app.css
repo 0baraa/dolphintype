@@ -20,3 +20,27 @@
     animation: blink-caret 1s steps(1, start) infinite;
   }
 }
+
+:root {
+  --font-family: monospace;
+  --color-bg: #282a36;
+  --color-text-default: #6272a4;
+  --color-text-active: #f8f8f2;
+  --color-text-correct: #50fa7b;
+  --color-text-incorrect: #ff5555;
+  --color-bg-hover: #44475a;
+  --color-caret: #f8f8f2;
+  --decoration-incorrect: #ff5555;
+}
+
+.theme-light {
+  --font-family: 'arial';
+  --color-bg: #fef4f4;
+  --color-text-default: #8c7373;
+  --color-text-active: #564448;
+  --color-text-correct: #42c68b;
+  --color-text-incorrect: #d00000;
+  --color-bg-hover: #fae0e4;
+  --color-caret: #564448;
+  --decoration-incorrect: #d00000;
+}

@@ -29,6 +29,7 @@
   let restarting = $state(false);
   let isFocused = $state(true);
   let spaceHandledByKeydown = false;
+  let currentTheme = $state('theme-light');
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -334,48 +335,62 @@
       focusInput();
     }
   }
+
+  function toggleTheme() {
+    currentTheme = currentTheme === 'theme-dark' ? 'theme-light' : 'theme-dark';
+    focusInput();
+  }
 </script>
 
-<main class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+<main
+  class="flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out"
+  class:theme-dark={currentTheme === 'theme-dark'}
+  class:theme-light={currentTheme === 'theme-light'}
+  style="background-color: var(--color-bg);"
+>
+  <button
+    class="absolute top-4 right-4 cursor-pointer rounded-lg border-none p-2 hover:[background-color:var(--color-bg-hover)]"
+    style="background-color: var(--color-bg-hover); color: var(--color-text-active);"
+    onclick={toggleTheme}
+  >
+    Toggle Theme
+  </button>
   <div class="relative">
     <div
-      class="absolute flex space-x-10 rounded-lg bg-gray-100 p-2 text-2xl text-gray-400 transition-opacity duration-300"
-      style="top: -2.5em; left: 50%; transform: translateX(-50%);"
+      class="absolute flex space-x-10 rounded-lg p-2 text-2xl transition-opacity duration-300"
+      style="top: -2.5em; left: 50%; transform: translateX(-50%); color: var(--color-text-default);"
       class:opacity-0={testPhase === 'running' || testPhase === 'finished'}
       class:pointer-events-none={testPhase === 'running' || testPhase === 'finished'}
     >
       <button
-        onclick={() => {
-          timerDuration = 15;
-          focusInput();
-        }}
+        class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:[background-color:var(--color-bg-hover)]"
+        style={timerDuration === 15 ? 'color: var(--color-text-active)' : ''}
+        onclick={() => (timerDuration = 15)}
         onmousedown={(e) => e.preventDefault()}
-        class="cursor-pointer rounded-lg p-2 transition-colors duration-300 hover:bg-gray-300"
-        class:text-gray-700={timerDuration === 15}>15<span class="text-[0.85em]">s</span></button
       >
+        15<span class="text-[0.85em]">s</span>
+      </button>
       <button
-        onclick={() => {
-          timerDuration = 30;
-          focusInput();
-        }}
+        class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:[background-color:var(--color-bg-hover)]"
+        style={timerDuration === 30 ? 'color: var(--color-text-active)' : ''}
+        onclick={() => (timerDuration = 30)}
         onmousedown={(e) => e.preventDefault()}
-        class="cursor-pointer rounded-lg p-2 transition-colors duration-300 hover:bg-gray-300"
-        class:text-gray-700={timerDuration === 30}>30<span class="text-[0.85em]">s</span></button
       >
+        30<span class="text-[0.85em]">s</span>
+      </button>
       <button
-        onclick={() => {
-          timerDuration = 60;
-          focusInput();
-        }}
+        class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:[background-color:var(--color-bg-hover)]"
+        style={timerDuration === 60 ? 'color: var(--color-text-active)' : ''}
+        onclick={() => (timerDuration = 60)}
         onmousedown={(e) => e.preventDefault()}
-        class="cursor-pointer rounded-lg p-2 transition-colors duration-150 hover:bg-gray-300"
-        class:text-gray-700={timerDuration === 60}>60<span class="text-[0.85em]">s</span></button
       >
+        60<span class="text-[0.85em]">s</span>
+      </button>
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-300"
-      style="top: -1.5em; left: 0.85em;"
+      class="pointer-events-none absolute p-2 text-4xl transition-opacity duration-300"
+      style="top: -1.5em; left: 0.85em; color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'running'}
       ontransitionend={() => (timeRemaining = timerDuration)}
     >
@@ -383,8 +398,8 @@
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-300"
-      style="top: -1.4em; left: 0.85em;"
+      class="pointer-events-none absolute p-2 text-4xl transition-opacity duration-300"
+      style="top: -1.4em; left: 0.85em; color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'finished'}
     >
       {wpm} wpm
@@ -393,6 +408,7 @@
     <div
       class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl transition-opacity lg:max-w-325"
       style:max-height={maxRowHeight}
+      style="font-family: var(--font-family);"
       onclick={focusInput}
       onkeydown={handleContainerKeyDown}
       role="button"
@@ -430,53 +446,61 @@
           {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
 
           <div
-            class:underline={!isWordCorrect && isCompleted}
-            class:decoration-red-500={!isWordCorrect}
-            class:decoration-3={!isWordCorrect}
+            style={!isWordCorrect && isCompleted
+              ? 'text-decoration underline; text-decoration-color: var(--decoration-incorrect); text-decoration-thickness: 3px;'
+              : ''}
           >
             {#if isCompleted || isActive}
               {#each word as char, j (j)}
                 {@const isTyped = j < (inputForThisWord?.length || 0)}
                 {@const isCorrect = isTyped && inputForThisWord[j] === char}
                 <span
-                  class:text-green-500={isTyped && isCorrect}
-                  class:text-red-500={isTyped && !isCorrect}
-                  class:text-gray-500={!isTyped && isActive}
-                  class:text-gray-400={isCompleted && !isTyped}
+                  style="color: {isTyped && isCorrect
+                    ? 'var(--color-text-correct)'
+                    : isTyped && !isCorrect
+                      ? 'var(--color-text-incorrect)'
+                      : isCompleted && !isTyped
+                        ? 'var(--color-text-default)'
+                        : 'var(--color-text-active)'};"
                   bind:this={charElements[i][j]}
                 >
                   {char}
                 </span>
               {/each}{#each inputForThisWord?.length > word.length ? inputForThisWord.slice(word.length) : '' as extraChar, k (k)}
-                <span class="text-red-500" bind:this={charElements[i][word.length + k]}>
+                <span
+                  style="color: var(--color-text-incorrect);"
+                  bind:this={charElements[i][word.length + k]}
+                >
                   {extraChar}
                 </span>
               {/each}
             {:else}
-              <span class="text-gray-400">{word}</span>
+              <span style="color: var(--color-text-default);">{word}</span>
             {/if}
           </div>
         {/each}
       </div>
 
       <div
-        class="absolute w-1 rounded-sm bg-gray-600"
+        class="absolute w-[3px] rounded-sm {testPhase === 'waiting' && isFocused
+          ? 'blink-caret'
+          : ''}"
         style:top="{caretPosition.current.top}px"
         style:left="{caretPosition.current.left}px"
         style:height="{caretPosition.current.height}px"
-        class:blink-caret={testPhase === 'waiting' && isFocused}
+        style="background-color: var(--color-caret);"
         class:hidden={!isFocused}
       ></div>
     </div>
 
     <button
+      class="absolute flex cursor-pointer rounded-lg p-2 duration-300 hover:[background-color:var(--color-bg-hover)]"
+      style="color: var(--color-text-default); top: 11.75rem; left: 50%; transform: translateX(-50%);"
       onclick={restartTest}
-      class="absolute cursor-pointer rounded-lg bg-gray-100 p-2 duration-300 hover:bg-gray-300"
-      style="top: 11.75rem; left: 50%; transform: translateX(-50%);"
       tabindex="0"
       onmousedown={(e) => e.preventDefault()}
     >
-      <RotateCw size={30} color="#364153" />
+      <RotateCw size={30} />
     </button>
   </div>
 </main>
