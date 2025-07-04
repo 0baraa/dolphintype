@@ -1,8 +1,9 @@
 <script>
   import { onMount } from 'svelte';
   import { tick } from 'svelte';
-  import { linear, quadOut } from 'svelte/easing';
+  import { linear } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
+  import { RotateCw } from 'lucide-svelte';
 
   let words = [];
   let allWords;
@@ -470,12 +471,12 @@
 
     <button
       onclick={restartTest}
-      class="absolute flex cursor-pointer rounded-lg bg-gray-100 p-2 text-sm duration-300 hover:bg-gray-300 md:space-x-10 md:text-2xl"
-      style="top: 11rem; left: 50%; transform: translateX(-50%);"
+      class="absolute cursor-pointer rounded-lg bg-gray-100 p-2 duration-300 hover:bg-gray-300"
+      style="top: 11.75rem; left: 50%; transform: translateX(-50%);"
       tabindex="0"
       onmousedown={(e) => e.preventDefault()}
     >
-      <img src="/restart.svg" alt="restart icon" width="30" height="30" />
+      <RotateCw size={30} color="#364153" />
     </button>
   </div>
 </main>
