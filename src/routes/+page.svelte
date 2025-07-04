@@ -445,11 +445,7 @@
           {@const isWordCorrect = i in wordCorrectness ? wordCorrectness[i] : true}
           {@const inputForThisWord = isCompleted ? typedWords[i] : isActive ? userInput : ''}
 
-          <div
-            style={!isWordCorrect && isCompleted
-              ? 'text-decoration underline; text-decoration-color: var(--decoration-incorrect); text-decoration-thickness: 3px;'
-              : ''}
-          >
+          <div class:underline-incorrect={!isWordCorrect && isCompleted}>
             {#if isCompleted || isActive}
               {#each word as char, j (j)}
                 {@const isTyped = j < (inputForThisWord?.length || 0)}
