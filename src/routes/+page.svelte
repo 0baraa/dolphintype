@@ -373,8 +373,8 @@
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-8xl text-gray-400 transition-opacity duration-300"
-      style="top: -1.2em; left: 50%; transform: translateX(-50%);"
+      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-300"
+      style="top: -1.5em; left: 0.85em;"
       class:opacity-0={testPhase !== 'running'}
       ontransitionend={() => (timeRemaining = timerDuration)}
     >
@@ -382,8 +382,8 @@
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-300 sm:text-7xl"
-      style="top: -1.4em; left: 50%; transform: translateX(-50%);"
+      class="pointer-events-none absolute p-2 text-4xl text-gray-400 transition-opacity duration-300"
+      style="top: -1.4em; left: 0.85em;"
       class:opacity-0={testPhase !== 'finished'}
     >
       {wpm} wpm
@@ -418,7 +418,7 @@
 
       <div
         id="words-container"
-        class="flex flex-wrap justify-start gap-x-4 transition-transform duration-150 ease-in-out"
+        class="flex flex-wrap justify-start gap-x-4 p-2 transition-transform duration-150 ease-in-out"
         style:row-gap="{rowGap}px"
         style:transform="translateY({scrollOffset}px)"
       >
