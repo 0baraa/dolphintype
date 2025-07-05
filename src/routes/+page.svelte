@@ -373,7 +373,7 @@
       {#each [15, 30, 60] as time, t (t)}
         <button
           class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
-          class:text-[var(--color-text-active)]={timerDuration === time}
+          class:text-[var(--color-text-selected)]={timerDuration === time}
           onclick={() => (timerDuration = time)}
           onmousedown={(e) => e.preventDefault()}
         >
