@@ -4,6 +4,7 @@
   import { linear } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
   import { RotateCw, Palette } from 'lucide-svelte';
+  import { fade } from 'svelte/transition';
 
   let words = [];
   let allWords;
@@ -31,6 +32,21 @@
   let spaceHandledByKeydown = false;
   let currentTheme = $state('theme-dark');
   let showPaletteMenu = $state(false);
+
+  const themePresets = [
+    { id: 'theme-dark', label: 'Dark' },
+    { id: 'theme-light', label: 'Light' },
+    { id: 'theme-solarized-dark', label: 'Solarized Dark' },
+    { id: 'theme-solarized-light', label: 'Solarized Light' },
+    { id: 'theme-nord', label: 'Nord' },
+    { id: 'theme-gruvbox', label: 'Gruvbox' },
+    { id: 'theme-monokai', label: 'Monokai' },
+    { id: 'theme-tokyo-night', label: 'Tokyo Night' },
+    { id: 'theme-one-light', label: 'One Light' },
+    { id: 'theme-cobalt2', label: 'Cobalt2' },
+    { id: 'theme-synthwave', label: 'Synthwave' },
+    { id: 'theme-cyberpunk', label: 'Cyberpunk' }
+  ];
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -255,6 +271,7 @@
 
   function startTest() {
     testPhase = 'running';
+    showPaletteMenu = false;
     testStartTime = Date.now();
 
     interval = setInterval(() => {
@@ -336,26 +353,56 @@
       focusInput();
     }
   }
-
-  function toggleTheme() {
-    currentTheme = currentTheme === 'theme-dark' ? 'theme-light' : 'theme-dark';
-    focusInput();
-  }
 </script>
 
 <main
-  class="flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out"
-  class:theme-dark={currentTheme === 'theme-dark'}
-  class:theme-light={currentTheme === 'theme-light'}
+  class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out ${currentTheme}`}
   style="background-color: var(--color-bg);"
 >
-  <button
-    class="absolute top-4 right-4 cursor-pointer rounded-lg border-none p-2 hover:[background-color:var(--color-bg-hover)]"
-    style="background-color: var(--color-bg-hover); color: var(--color-text-active);"
-    onclick={toggleTheme}
-  >
-    Toggle Theme
-  </button>
+  <!-- Palette Menu -->
+  {#if showPaletteMenu}
+    <div
+      class="absolute top-[1.5rem] z-50 flex flex-col space-y-2 overflow-auto rounded-lg
+     bg-[var(--color-bg)] p-4 text-sm transition-all duration-300 lg:max-w-200"
+      style="color: var(--color-text-default); left: 50%; transform: translateX(-50%);"
+      transition:fade={{ duration: 200 }}
+    >
+      <label class="flex flex-col">
+        Caret
+        <input
+          type="color"
+          oninput={(e) =>
+            document.documentElement.style.setProperty('--color-caret', e.target.value)}
+        />
+      </label>
+
+      <label class="flex flex-col">
+        Underline
+        <input
+          type="color"
+          oninput={(e) =>
+            document.documentElement.style.setProperty('--decoration-incorrect', e.target.value)}
+        />
+      </label>
+
+      <div class="flex flex-wrap">
+        {#each themePresets as theme, t (t)}
+          <button
+            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class:text-[var(--color-text-selected)]={currentTheme === theme.id}
+            onclick={() => {
+              currentTheme = theme.id;
+              focusInput();
+            }}
+            onmousedown={(e) => e.preventDefault()}
+          >
+            {theme.label}
+          </button>
+        {/each}
+      </div>
+    </div>
+  {/if}
+
   <div class="relative">
     <div
       class="absolute flex items-center space-x-10 rounded-lg p-2 text-2xl text-[var(--color-text-default)] transition-opacity duration-300"
@@ -374,47 +421,16 @@
         <button
           class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
           class:text-[var(--color-text-selected)]={timerDuration === time}
-          onclick={() => (timerDuration = time)}
+          onclick={() => {
+            timerDuration = time;
+            focusInput();
+          }}
           onmousedown={(e) => e.preventDefault()}
         >
           {time}<span class="text-[0.85em]">s</span>
         </button>
       {/each}
     </div>
-
-    {#if showPaletteMenu}
-      <div
-        class="absolute top-16 right-4 z-50 flex flex-col space-y-2 rounded-lg border bg-[var(--color-bg)] p-4 text-sm shadow-lg"
-        style="color: var(--color-text-default); min-width: 200px;"
-      >
-        <div class="mb-2 text-base font-bold">Customize Theme</div>
-
-        <label class="flex flex-col">
-          Caret Color
-          <input
-            type="color"
-            oninput={(e) =>
-              document.documentElement.style.setProperty('--color-caret', e.target.value)}
-          />
-        </label>
-
-        <label class="flex flex-col">
-          Underline Color
-          <input
-            type="color"
-            oninput={(e) =>
-              document.documentElement.style.setProperty('--color-underline', e.target.value)}
-          />
-        </label>
-
-        <hr class="my-2 border-[var(--color-text-default)]/30" />
-
-        <div class="mb-1 text-base font-bold">Presets</div>
-        <button onclick={() => (currentTheme = 'theme-light')}>Light</button>
-        <button onclick={() => (currentTheme = 'theme-dark')}>Dark</button>
-        <button onclick={() => (currentTheme = 'theme-nord')}>Solarized</button>
-      </div>
-    {/if}
 
     <div
       class="pointer-events-none absolute p-2 text-4xl transition-opacity duration-300"
