@@ -182,3 +182,263 @@
   --decoration-incorrect: #ff4344;
   --color-text-selected: #ff8b00;
 }
+
+.theme-dracula {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #282a36;
+  --color-text-default: #f8f8f2;
+  --color-text-active: #bd93f9;
+  --color-text-correct: #50fa7b;
+  --color-text-incorrect: #ff5555;
+  --color-bg-hover: #44475a;
+  --color-caret: #ff79c6;
+  --decoration-incorrect: #ff5555;
+  --color-text-selected: #f1fa8c;
+}
+
+.theme-material-ocean {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #0f111a;
+  --color-text-default: #93b5bb;
+  --color-text-active: #ffffff;
+  --color-text-correct: #c3e88d;
+  --color-text-incorrect: #ff5370;
+  --color-bg-hover: #1f222c;
+  --color-caret: #f07178;
+  --decoration-incorrect: #ff5370;
+  --color-text-selected: #c792ea;
+}
+
+.theme-night-owl {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #011627;
+  --color-text-default: #82aaff;
+  --color-text-active: #d6deeb;
+  --color-text-correct: #c3e88d;
+  --color-text-incorrect: #ef5350;
+  --color-bg-hover: #073642;
+  --color-caret: #ffcb6b;
+  --decoration-incorrect: #ef5350;
+  --color-text-selected: #c792ea;
+}
+
+.theme-shades-of-purple {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #2d2b55;
+  --color-text-default: #8c76c7;
+  --color-text-active: #fad000;
+  --color-text-correct: #a2ff00;
+  --color-text-incorrect: #f28686;
+  --color-bg-hover: #3e3d64;
+  --color-caret: #adadff;
+  --decoration-incorrect: #f28686;
+  --color-text-selected: #ff62ff;
+}
+
+.theme-ayu-dark {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #0f1419;
+  --color-text-default: #c5c5c5;
+  --color-text-active: #f8f8f2;
+  --color-text-correct: #a2cc53;
+  --color-text-incorrect: #ea6c73;
+  --color-bg-hover: #1e252e;
+  --color-caret: #f29668;
+  --decoration-incorrect: #ea6c73;
+  --color-text-selected: #59c2ff;
+}
+
+.theme-ayu-mirage {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #1f2428;
+  --color-text-default: #c5c5c5;
+  --color-text-active: #f8f8f2;
+  --color-text-correct: #a2cc53;
+  --color-text-incorrect: #ea6c73;
+  --color-bg-hover: #292f34;
+  --color-caret: #f29668;
+  --decoration-incorrect: #ea6c73;
+  --color-text-selected: #59c2ff;
+}
+
+.theme-ayu-light {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #fafafa;
+  --color-text-default: #5c6773;
+  --color-text-active: #2b303b;
+  --color-text-correct: #86b300;
+  --color-text-incorrect: #f07178;
+  --color-bg-hover: #eff0f1;
+  --color-caret: #2b303b;
+  --decoration-incorrect: #f07178;
+  --color-text-selected: #4d93ff;
+}
+
+.theme-zenburn {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #3f3f3f;
+  --color-text-default: #dcdcdc;
+  --color-text-active: #f0e0d0;
+  --color-text-correct: #7f9f7f;
+  --color-text-incorrect: #cc9393;
+  --color-bg-hover: #505050;
+  --color-caret: #dcdcdc;
+  --decoration-incorrect: #cc9393;
+  --color-text-selected: #ffcf7f;
+}
+
+.theme-tomorrow {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #ffffff;
+  --color-text-default: #4d4d4c;
+  --color-text-active: #1d1f21;
+  --color-text-correct: #8c8c8c;
+  --color-text-incorrect: #c82829;
+  --color-bg-hover: #f5f5f5;
+  --color-caret: #1d1f21;
+  --decoration-incorrect: #c82829;
+  --color-text-selected: #cc6633;
+}
+
+.theme-tomorrow-night {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #1d1f21;
+  --color-text-default: #c5c8c6;
+  --color-text-active: #e0e0e0;
+  --color-text-correct: #b4b7b4;
+  --color-text-incorrect: #cc342b;
+  --color-bg-hover: #2d3032;
+  --color-caret: #ffffff;
+  --decoration-incorrect: #cc342b;
+  --color-text-selected: #de935f;
+}
+
+.theme-tomorrow-night-bright {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #000000;
+  --color-text-default: #eaeaea;
+  --color-text-active: #ffffff;
+  --color-text-correct: #ae81ff;
+  --color-text-incorrect: #d54e53;
+  --color-bg-hover: #1a1a1a;
+  --color-caret: #ffffff;
+  --decoration-incorrect: #d54e53;
+  --color-text-selected: #fd971f;
+}
+
+.theme-tomorrow-night-eighties {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #2d2d2d;
+  --color-text-default: #cccccc;
+  --color-text-active: #f8f8f8;
+  --color-text-correct: #b9ca4a;
+  --color-text-incorrect: #f27777;
+  --color-bg-hover: #3d3d3d;
+  --color-caret: #f8f8f8;
+  --decoration-incorrect: #f27777;
+  --color-text-selected: #fc9867;
+}
+
+.theme-oceanic-next {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #1b2b34;
+  --color-text-default: #657b83;
+  --color-text-active: #d8dee9;
+  --color-text-correct: #90cd75;
+  --color-text-incorrect: #ec5f67;
+  --color-bg-hover: #2c3e50;
+  --color-caret: #c0c5ce;
+  --decoration-incorrect: #ec5f67;
+  --color-text-selected: #f99157;
+}
+
+.theme-flatland {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #3f3f3f;
+  --color-text-default: #d0d0d0;
+  --color-text-active: #ffffff;
+  --color-text-correct: #8c8c8c;
+  --color-text-incorrect: #de555b;
+  --color-bg-hover: #4a4a4a;
+  --color-caret: #ffffff;
+  --decoration-incorrect: #de555b;
+  --color-text-selected: #f7a201;
+}
+
+.theme-seth {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #2d3034;
+  --color-text-default: #969696;
+  --color-text-active: #ffffff;
+  --color-text-correct: #76a06e;
+  --color-text-incorrect: #f05050;
+  --color-bg-hover: #3d4044;
+  --color-caret: #e0e0e0;
+  --decoration-incorrect: #f05050;
+  --color-text-selected: #e0d16a;
+}
+
+.theme-panda {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #292a2b;
+  --color-text-default: #e6e6e6;
+  --color-text-active: #f8f8f2;
+  --color-text-correct: #a2ff00;
+  --color-text-incorrect: #ff628c;
+  --color-bg-hover: #3d3e3f;
+  --color-caret: #ffb86c;
+  --decoration-incorrect: #ff628c;
+  --color-text-selected: #fad000;
+}
+
+.theme-spacemacs {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #282c34;
+  --color-text-default: #abb2bf;
+  --color-text-active: #e06c75;
+  --color-text-correct: #98c379;
+  --color-text-incorrect: #e06c75;
+  --color-bg-hover: #3a3f4e;
+  --color-caret: #56b6c2;
+  --decoration-incorrect: #e06c75;
+  --color-text-selected: #d19a66;
+}
+
+.theme-code-dark {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #1e1e1e;
+  --color-text-default: #d4d4d4;
+  --color-text-active: #ffffff;
+  --color-text-correct: #4ec9b0;
+  --color-text-incorrect: #f44747;
+  --color-bg-hover: #2d2d2d;
+  --color-caret: #d4d4d4;
+  --decoration-incorrect: #f44747;
+  --color-text-selected: #d7ba7d;
+}
+
+.theme-andromeda {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #262a34;
+  --color-text-default: #a9b1d6;
+  --color-text-active: #c0caf5;
+  --color-text-correct: #9ece6a;
+  --color-text-incorrect: #f7768e;
+  --color-bg-hover: #2f3442;
+  --color-caret: #f19d2b;
+  --decoration-incorrect: #f7768e;
+  --color-text-selected: #d2a67e;
+}
+
+.theme-material-darker {
+  --font-family: 'Menlo', 'Consolas', monospace;
+  --color-bg: #212121;
+  --color-text-default: #b0bec5;
+  --color-text-active: #ffffff;
+  --color-text-correct: #82b1ff;
+  --color-text-incorrect: #ff5370;
+  --color-bg-hover: #313131;
+  --color-caret: #ffeb3b;
+  --decoration-incorrect: #ff5370;
+  --color-text-selected: #eeff41;
+}

@@ -45,7 +45,27 @@
     { id: 'theme-one-light', label: 'One Light' },
     { id: 'theme-cobalt2', label: 'Cobalt2' },
     { id: 'theme-synthwave', label: 'Synthwave' },
-    { id: 'theme-cyberpunk', label: 'Cyberpunk' }
+    { id: 'theme-cyberpunk', label: 'Cyberpunk' },
+    { id: 'theme-dracula', label: 'Dracula' },
+    { id: 'theme-material-ocean', label: 'Material Ocean' },
+    { id: 'theme-night-owl', label: 'Night Owl' },
+    { id: 'theme-shades-of-purple', label: 'Shades of Purple' },
+    { id: 'theme-ayu-dark', label: 'Ayu Dark' },
+    { id: 'theme-ayu-mirage', label: 'Ayu Mirage' },
+    { id: 'theme-ayu-light', label: 'Ayu Light' },
+    { id: 'theme-zenburn', label: 'Zenburn' },
+    { id: 'theme-tomorrow', label: 'Tomorrow' },
+    { id: 'theme-tomorrow-night', label: 'Tomorrow Night' },
+    { id: 'theme-tomorrow-night-bright', label: 'Tomorrow Night Bright' },
+    { id: 'theme-tomorrow-night-eighties', label: 'Tomorrow Night Eighties' },
+    { id: 'theme-oceanic-next', label: 'Oceanic Next' },
+    { id: 'theme-flatland', label: 'Flatland' },
+    { id: 'theme-seth', label: 'Seth' },
+    { id: 'theme-panda', label: 'Panda' },
+    { id: 'theme-spacemacs', label: 'Spacemacs' },
+    { id: 'theme-code-dark', label: 'Code Dark' },
+    { id: 'theme-andromeda', label: 'Andromeda' },
+    { id: 'theme-material-darker', label: 'Material Darker' }
   ];
 
   // Svelte tween for smooth caret animation
@@ -355,17 +375,27 @@
   }
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
   class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out ${currentTheme}`}
   style="background-color: var(--color-bg);"
+  onclick={() => {
+    showPaletteMenu = false;
+    focusInput();
+  }}
 >
   <!-- Palette Menu -->
   {#if showPaletteMenu}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
-      class="absolute top-[1.5rem] z-50 flex flex-col space-y-2 overflow-auto rounded-lg
-     bg-[var(--color-bg)] p-4 text-sm transition-all duration-300 lg:max-w-200"
-      style="color: var(--color-text-default); left: 50%; transform: translateX(-50%);"
+      class="absolute z-50 flex w-full max-w-md
+      flex-col space-y-2 rounded-lg border bg-[var(--color-bg)] p-4
+      text-sm transition-all duration-300"
+      style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%);"
       transition:fade={{ duration: 200 }}
+      onclick={(e) => e.stopPropagation()}
     >
       <label class="flex flex-col">
         Caret
@@ -391,6 +421,7 @@
             class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id}
             onclick={() => {
+              showPaletteMenu = false;
               currentTheme = theme.id;
               focusInput();
             }}
@@ -412,7 +443,10 @@
     >
       <button
         class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
-        onclick={() => (showPaletteMenu = !showPaletteMenu)}
+        onclick={(e) => {
+          e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element[cite: 414, 440].
+          showPaletteMenu = !showPaletteMenu;
+        }}
       >
         <Palette />
       </button>
@@ -457,7 +491,7 @@
       onkeydown={handleContainerKeyDown}
       role="button"
       tabindex="0"
-      class:blur-[1.5px]={!isFocused || testPhase === 'finished'}
+      class:blur-[1.5px]={!isFocused && testPhase !== 'finished'}
       class:opacity-0={restarting}
       onmousedown={(e) => e.preventDefault()}
     >
