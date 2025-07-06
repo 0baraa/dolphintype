@@ -43,6 +43,18 @@
   let bgHoverColor = $state('');
   let textSelectedColor = $state('');
 
+  const cssVars = [
+    '--color-bg',
+    '--color-text-default',
+    '--color-text-active',
+    '--color-text-correct',
+    '--color-text-incorrect',
+    '--color-caret',
+    '--decoration-incorrect',
+    '--color-bg-hover',
+    '--color-text-selected'
+  ];
+
   const themePresets = [
     { id: 'theme-dark', label: 'Dark' },
     { id: 'theme-light', label: 'Light' },
@@ -398,7 +410,7 @@
   }
 
   function updateCssVar(varName, value) {
-    document.documentElement.style.setProperty(varName, value);
+    document.querySelector('main')?.style.setProperty(varName, value);
   }
 </script>
 
@@ -512,9 +524,26 @@
           <button
             class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id}
-            onclick={() => {
+            onclick={async () => {
               showPaletteMenu = false;
               currentTheme = theme.id;
+              const main = document.querySelector('main');
+              cssVars.forEach((v) => main?.style.removeProperty(v));
+
+              // Wait to let the theme class apply
+              await tick();
+
+              // Update the input fields to reflect current theme values
+              const styles = getComputedStyle(document.querySelector('main'));
+              caretColor = styles.getPropertyValue('--color-caret').trim();
+              underlineColor = styles.getPropertyValue('--decoration-incorrect').trim();
+              bgColor = styles.getPropertyValue('--color-bg').trim();
+              textDefaultColor = styles.getPropertyValue('--color-text-default').trim();
+              textActiveColor = styles.getPropertyValue('--color-text-active').trim();
+              textCorrectColor = styles.getPropertyValue('--color-text-correct').trim();
+              textIncorrectColor = styles.getPropertyValue('--color-text-incorrect').trim();
+              bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim();
+              textSelectedColor = styles.getPropertyValue('--color-text-selected').trim();
               focusInput();
             }}
             onmousedown={(e) => e.preventDefault()}
