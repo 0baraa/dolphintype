@@ -101,7 +101,7 @@
   );
 
   onMount(async () => {
-    const wordsResponse = await fetch('/english200.json');
+    const wordsResponse = await fetch('/wordlists/english200.json');
     allWords = await wordsResponse.json();
 
     words = allWords.words;
