@@ -33,6 +33,16 @@
   let currentTheme = $state('theme-dark');
   let showPaletteMenu = $state(false);
 
+  let caretColor = $state('');
+  let underlineColor = $state('');
+  let bgColor = $state('');
+  let textDefaultColor = $state('');
+  let textActiveColor = $state('');
+  let textCorrectColor = $state('');
+  let textIncorrectColor = $state('');
+  let bgHoverColor = $state('');
+  let textSelectedColor = $state('');
+
   const themePresets = [
     { id: 'theme-dark', label: 'Dark' },
     { id: 'theme-light', label: 'Light' },
@@ -125,6 +135,19 @@
   });
 
   $effect(() => {
+    if (showPaletteMenu) {
+      const styles = getComputedStyle(document.documentElement);
+      caretColor = styles.getPropertyValue('--color-caret').trim() || '#f8f8f2';
+      underlineColor = styles.getPropertyValue('--decoration-incorrect').trim() || '#ff5555';
+      bgColor = styles.getPropertyValue('--color-bg').trim() || '#282a36';
+      textDefaultColor = styles.getPropertyValue('--color-text-default').trim() || '#6272a4';
+      textActiveColor = styles.getPropertyValue('--color-text-active').trim() || '#6272a4';
+      textCorrectColor = styles.getPropertyValue('--color-text-correct').trim() || '#50fa7b';
+      textIncorrectColor = styles.getPropertyValue('--color-text-incorrect').trim() || '#ff5555';
+      bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim() || '#44475a';
+      textSelectedColor = styles.getPropertyValue('--color-text-selected').trim() || '#ffb86c';
+    }
+
     // Effect dependencies
     const wordIndex = activeWordIndex;
     const charIndex = userInput.length;
@@ -373,6 +396,10 @@
       focusInput();
     }
   }
+
+  function updateCssVar(varName, value) {
+    document.documentElement.style.setProperty(varName, value);
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -397,23 +424,88 @@
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
     >
-      <label class="flex flex-col">
-        Caret
-        <input
-          type="color"
-          oninput={(e) =>
-            document.documentElement.style.setProperty('--color-caret', e.target.value)}
-        />
-      </label>
+      <div class="grid grid-cols-3 gap-4">
+        <label class="flex flex-col items-center text-center">
+          Background
+          <input
+            type="color"
+            bind:value={bgColor}
+            oninput={() => updateCssVar('--color-bg', bgColor)}
+          />
+        </label>
 
-      <label class="flex flex-col">
-        Underline
-        <input
-          type="color"
-          oninput={(e) =>
-            document.documentElement.style.setProperty('--decoration-incorrect', e.target.value)}
-        />
-      </label>
+        <label class="flex flex-col items-center text-center">
+          Text
+          <input
+            type="color"
+            bind:value={textDefaultColor}
+            oninput={() => updateCssVar('--color-text-default', textDefaultColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Active Text
+          <input
+            type="color"
+            bind:value={textActiveColor}
+            oninput={() => updateCssVar('--color-text-active', textActiveColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Correct Text
+          <input
+            type="color"
+            bind:value={textCorrectColor}
+            oninput={() => updateCssVar('--color-text-correct', textCorrectColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Incorrect Text
+          <input
+            type="color"
+            bind:value={textIncorrectColor}
+            oninput={() => updateCssVar('--color-text-incorrect', textIncorrectColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Caret
+          <input
+            type="color"
+            bind:value={caretColor}
+            oninput={() => updateCssVar('--color-caret', caretColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Underline
+          <input
+            type="color"
+            bind:value={underlineColor}
+            oninput={() => updateCssVar('--decoration-incorrect', underlineColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Hover
+          <input
+            type="color"
+            bind:value={bgHoverColor}
+            oninput={() => updateCssVar('--color-bg-hover', bgHoverColor)}
+          />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Selected Text
+          <input
+            type="color"
+            bind:value={textSelectedColor}
+            oninput={() => updateCssVar('--color-text-selected', textSelectedColor)}
+          />
+        </label>
+      </div>
 
       <div class="flex flex-wrap">
         {#each themePresets as theme, t (t)}
@@ -436,7 +528,7 @@
 
   <div class="relative">
     <div
-      class="absolute flex items-center space-x-10 rounded-lg p-2 text-2xl text-[var(--color-text-default)] transition-opacity duration-300"
+      class="absolute flex items-center space-x-3 rounded-lg p-2 text-2xl text-[var(--color-text-default)] transition-opacity duration-300 sm:space-x-10"
       style="top: -2.5em; left: 50%; transform: translateX(-50%);"
       class:opacity-0={testPhase === 'running' || testPhase === 'finished'}
       class:pointer-events-none={testPhase === 'running' || testPhase === 'finished'}
