@@ -148,16 +148,7 @@
 
   $effect(() => {
     if (showPaletteMenu) {
-      const styles = getComputedStyle(document.documentElement);
-      caretColor = styles.getPropertyValue('--color-caret').trim() || '#f8f8f2';
-      underlineColor = styles.getPropertyValue('--decoration-incorrect').trim() || '#ff5555';
-      bgColor = styles.getPropertyValue('--color-bg').trim() || '#282a36';
-      textDefaultColor = styles.getPropertyValue('--color-text-default').trim() || '#6272a4';
-      textActiveColor = styles.getPropertyValue('--color-text-active').trim() || '#6272a4';
-      textCorrectColor = styles.getPropertyValue('--color-text-correct').trim() || '#50fa7b';
-      textIncorrectColor = styles.getPropertyValue('--color-text-incorrect').trim() || '#ff5555';
-      bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim() || '#44475a';
-      textSelectedColor = styles.getPropertyValue('--color-text-selected').trim() || '#ffb86c';
+      syncPaletteInputs();
     }
 
     // Effect dependencies
@@ -419,6 +410,20 @@
   function updateCssVar(varName, value) {
     document.querySelector('main')?.style.setProperty(varName, value);
   }
+
+  function syncPaletteInputs() {
+    const styles = getComputedStyle(document.querySelector('main'));
+
+    caretColor = styles.getPropertyValue('--color-caret').trim();
+    underlineColor = styles.getPropertyValue('--decoration-incorrect').trim();
+    bgColor = styles.getPropertyValue('--color-bg').trim();
+    textDefaultColor = styles.getPropertyValue('--color-text-default').trim();
+    textActiveColor = styles.getPropertyValue('--color-text-active').trim();
+    textCorrectColor = styles.getPropertyValue('--color-text-correct').trim();
+    textIncorrectColor = styles.getPropertyValue('--color-text-incorrect').trim();
+    bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim();
+    textSelectedColor = styles.getPropertyValue('--color-text-selected').trim();
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -541,16 +546,8 @@
               await tick();
 
               // Update the input fields to reflect current theme values
-              const styles = getComputedStyle(document.querySelector('main'));
-              caretColor = styles.getPropertyValue('--color-caret').trim();
-              underlineColor = styles.getPropertyValue('--decoration-incorrect').trim();
-              bgColor = styles.getPropertyValue('--color-bg').trim();
-              textDefaultColor = styles.getPropertyValue('--color-text-default').trim();
-              textActiveColor = styles.getPropertyValue('--color-text-active').trim();
-              textCorrectColor = styles.getPropertyValue('--color-text-correct').trim();
-              textIncorrectColor = styles.getPropertyValue('--color-text-incorrect').trim();
-              bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim();
-              textSelectedColor = styles.getPropertyValue('--color-text-selected').trim();
+              syncPaletteInputs();
+
               focusInput();
             }}
             onmousedown={(e) => e.preventDefault()}
