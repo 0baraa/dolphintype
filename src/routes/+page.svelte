@@ -269,7 +269,14 @@
 
     if (testPhase !== 'running') {
       // Only printable keys can start a test
-      if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      if (
+        event.key.length === 1 &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey &&
+        event.key !== ' ' &&
+        event.code !== 'Space'
+      ) {
         startTest();
       }
     }
