@@ -589,7 +589,7 @@
           <button
             class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id}
-            onmouseenter={() => {
+            onmouseenter={async () => {
               const main = document.querySelector('main');
               hoveredTheme = theme.id;
 
@@ -602,8 +602,11 @@
                   main.style.removeProperty(v); // Remove so class styles can take effect
                 }
               });
+
+              await tick(); // Wait for DOM to update with the new theme class
+              syncPaletteInputs(); // update the input fields to match the preview
             }}
-            onmouseleave={() => {
+            onmouseleave={async () => {
               hoveredTheme = null;
               const main = document.querySelector('main');
 
@@ -611,6 +614,9 @@
               Object.entries(customCssBackup).forEach(([key, value]) => {
                 main.style.setProperty(key, value);
               });
+
+              await tick();
+              syncPaletteInputs(); // update inputs back to current theme values
             }}
             onclick={async () => {
               showPaletteMenu = false;
