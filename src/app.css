@@ -97,6 +97,31 @@
   }
 }
 
+/* For WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-text-default);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-active);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-text-default) var(--color-bg);
+}
+
 :root {
   --font-family: 'JetBrains Mono';
   --font-family-secondary: 'JetBrains Mono';

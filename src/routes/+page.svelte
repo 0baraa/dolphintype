@@ -48,6 +48,8 @@
   let hoveredTheme = $state(null);
   let customCssBackup = {};
 
+  let paletteMenuTitle = $derived(getThemeLabel(hoveredTheme ?? currentTheme));
+
   const cssVars = [
     '--font-family',
     '--font-family-secondary',
@@ -453,6 +455,11 @@
     bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim();
     textSelectedColor = styles.getPropertyValue('--color-text-selected').trim();
   }
+
+  function getThemeLabel(themeId) {
+    const theme = themePresets.find((preset) => preset.id === themeId);
+    return theme ? theme.label : themeId; // Fallback to id if label not found
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -470,100 +477,22 @@
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
-      class="absolute z-50 flex w-full max-w-md
-      flex-col space-y-2 rounded-lg border bg-[var(--color-bg)] p-4
-      text-sm transition-all duration-300"
+      class="absolute z-50 flex max-h-120 w-full max-w-md flex-col
+      space-y-2 overflow-y-auto rounded-lg border bg-[var(--color-bg)] p-4 text-xs
+      transition-all duration-300 sm:max-h-screen sm:text-sm"
       style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%);"
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
     >
-      <div class="grid grid-cols-3 gap-4">
-        <label class="flex flex-col items-center text-center">
-          Background
-          <input
-            type="color"
-            bind:value={bgColor}
-            oninput={() => updateCssVar('--color-bg', bgColor)}
-          />
-        </label>
+      <div>{paletteMenuTitle}</div>
 
-        <label class="flex flex-col items-center text-center">
-          Text
-          <input
-            type="color"
-            bind:value={textDefaultColor}
-            oninput={() => updateCssVar('--color-text-default', textDefaultColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Active Text
-          <input
-            type="color"
-            bind:value={textActiveColor}
-            oninput={() => updateCssVar('--color-text-active', textActiveColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Correct Text
-          <input
-            type="color"
-            bind:value={textCorrectColor}
-            oninput={() => updateCssVar('--color-text-correct', textCorrectColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Incorrect Text
-          <input
-            type="color"
-            bind:value={textIncorrectColor}
-            oninput={() => updateCssVar('--color-text-incorrect', textIncorrectColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Caret
-          <input
-            type="color"
-            bind:value={caretColor}
-            oninput={() => updateCssVar('--color-caret', caretColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Underline
-          <input
-            type="color"
-            bind:value={underlineColor}
-            oninput={() => updateCssVar('--decoration-incorrect', underlineColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Hover
-          <input
-            type="color"
-            bind:value={bgHoverColor}
-            oninput={() => updateCssVar('--color-bg-hover', bgHoverColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Selected Text
-          <input
-            type="color"
-            bind:value={textSelectedColor}
-            oninput={() => updateCssVar('--color-text-selected', textSelectedColor)}
-          />
-        </label>
-
-        <label class="flex flex-col items-center text-center">
-          Main Font
+      <div class="mb-6 flex flex-col justify-center space-y-4">
+        <label class="flex items-center">
+          <span class="mr-4 inline-block w-28">Main Font</span>
           <select
             bind:value={mainFont}
             onchange={() => updateCssVar('--font-family', `"${mainFont}"`)}
+            class="cursor-pointer rounded border bg-transparent px-3 py-1 text-[var(--color-text-default)]"
           >
             {#each fontFamilies as font, f (f)}
               <option value={font}>{font}</option>
@@ -571,11 +500,12 @@
           </select>
         </label>
 
-        <label class="flex flex-col items-center text-center">
-          Other Font
+        <label class="flex items-center">
+          <span class="mr-4 inline-block w-28">Other Font</span>
           <select
             bind:value={otherFont}
             onchange={() => updateCssVar('--font-family-secondary', `"${otherFont}"`)}
+            class="cursor-pointer rounded border bg-transparent px-3 py-1 text-[var(--color-text-default)]"
           >
             {#each fontFamilies as font, f (f)}
               <option value={font}>{font}</option>
@@ -584,7 +514,99 @@
         </label>
       </div>
 
-      <div class="flex flex-wrap">
+      <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Background</span>
+          <input
+            type="color"
+            bind:value={bgColor}
+            oninput={() => updateCssVar('--color-bg', bgColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Text</span>
+          <input
+            type="color"
+            bind:value={textDefaultColor}
+            oninput={() => updateCssVar('--color-text-default', textDefaultColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Active Text</span>
+          <input
+            type="color"
+            bind:value={textActiveColor}
+            oninput={() => updateCssVar('--color-text-active', textActiveColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Correct Text</span>
+          <input
+            type="color"
+            bind:value={textCorrectColor}
+            oninput={() => updateCssVar('--color-text-correct', textCorrectColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Incorrect Text</span>
+          <input
+            type="color"
+            bind:value={textIncorrectColor}
+            oninput={() => updateCssVar('--color-text-incorrect', textIncorrectColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Caret</span>
+          <input
+            type="color"
+            bind:value={caretColor}
+            oninput={() => updateCssVar('--color-caret', caretColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Underline</span>
+          <input
+            type="color"
+            bind:value={underlineColor}
+            oninput={() => updateCssVar('--decoration-incorrect', underlineColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Hover</span>
+          <input
+            type="color"
+            bind:value={bgHoverColor}
+            oninput={() => updateCssVar('--color-bg-hover', bgHoverColor)}
+            class="cursor-pointer"
+          />
+        </label>
+
+        <label class="flex items-center justify-between">
+          <span class="mr-4 inline-block w-28">Selected Text</span>
+          <input
+            type="color"
+            bind:value={textSelectedColor}
+            oninput={() => updateCssVar('--color-text-selected', textSelectedColor)}
+            class="cursor-pointer"
+          />
+        </label>
+      </div>
+
+      <div class="auto flex flex-wrap">
         {#each themePresets as theme, t (t)}
           <button
             class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
