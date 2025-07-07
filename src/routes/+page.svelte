@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { tick } from 'svelte';
-  import { linear } from 'svelte/easing';
+  import { cubicOut, linear, quintOut } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
   import { RotateCw, Palette } from 'lucide-svelte';
   import { fade } from 'svelte/transition';
@@ -33,6 +33,8 @@
   let currentTheme = $state('theme-dark');
   let showPaletteMenu = $state(false);
 
+  let mainFont = $state('JetBrains Mono');
+  let otherFont = $state('JetBrains Mono');
   let caretColor = $state('');
   let underlineColor = $state('');
   let bgColor = $state('');
@@ -47,6 +49,8 @@
   let customCssBackup = {};
 
   const cssVars = [
+    '--font-family',
+    '--font-family-secondary',
     '--color-bg',
     '--color-text-default',
     '--color-text-active',
@@ -91,6 +95,19 @@
     { id: 'theme-code-dark', label: 'Code Dark' },
     { id: 'theme-andromeda', label: 'Andromeda' },
     { id: 'theme-material-darker', label: 'Material Darker' }
+  ];
+
+  const fontFamilies = [
+    'JetBrains Mono',
+    'DM Mono',
+    'Fira Mono',
+    'Inter',
+    'Merriweather',
+    'Montserrat',
+    'Oswald',
+    'Outfit',
+    'Playfair Display',
+    'Source Sans Pro'
   ];
 
   // Svelte tween for smooth caret animation
@@ -417,6 +434,15 @@
   function syncPaletteInputs() {
     const styles = getComputedStyle(document.querySelector('main'));
 
+    mainFont =
+      styles.getPropertyValue('--font-family')?.replace(/['"]/g, '').split(',')[0]?.trim() ||
+      'JetBrains Mono';
+    otherFont =
+      styles
+        .getPropertyValue('--font-family-secondary')
+        ?.replace(/['"]/g, '')
+        .split(',')[0]
+        ?.trim() || 'JetBrains Mono';
     caretColor = styles.getPropertyValue('--color-caret').trim();
     underlineColor = styles.getPropertyValue('--decoration-incorrect').trim();
     bgColor = styles.getPropertyValue('--color-bg').trim();
@@ -433,7 +459,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
   class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out ${hoveredTheme || currentTheme}`}
-  style="background-color: var(--color-bg);"
+  style="background-color: var(--color-bg); font-family: var(--font-family-secondary);"
   onclick={() => {
     showPaletteMenu = false;
     focusInput();
@@ -531,6 +557,30 @@
             bind:value={textSelectedColor}
             oninput={() => updateCssVar('--color-text-selected', textSelectedColor)}
           />
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Main Font
+          <select
+            bind:value={mainFont}
+            onchange={() => updateCssVar('--font-family', `"${mainFont}"`)}
+          >
+            {#each fontFamilies as font, f (f)}
+              <option value={font}>{font}</option>
+            {/each}
+          </select>
+        </label>
+
+        <label class="flex flex-col items-center text-center">
+          Other Font
+          <select
+            bind:value={otherFont}
+            onchange={() => updateCssVar('--font-family-secondary', `"${otherFont}"`)}
+          >
+            {#each fontFamilies as font, f (f)}
+              <option value={font}>{font}</option>
+            {/each}
+          </select>
         </label>
       </div>
 

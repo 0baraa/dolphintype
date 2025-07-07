@@ -99,6 +99,7 @@
 
 :root {
   --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #282a36;
   --color-text-default: #6272a4;
   --color-text-active: #6272a4;
@@ -112,6 +113,7 @@
 
 .theme-light {
   --font-family: 'DM Mono';
+  --font-family-secondary: 'DM Mono';
   --color-bg: #fef4f4;
   --color-text-default: #8c7373;
   --color-text-active: #564448;
@@ -125,6 +127,7 @@
 
 .theme-solarized-dark {
   --font-family: 'Fira Mono';
+  --font-family-secondary: 'DM Mono';
   --color-bg: #002b36;
   --color-text-default: #839496;
   --color-text-active: #eee8d5;
@@ -138,6 +141,7 @@
 
 .theme-nord {
   --font-family: 'Inter';
+  --font-family-secondary: 'DM Mono';
   --color-bg: #2e3440;
   --color-text-default: #d8dee9;
   --color-text-active: #eceff4;
