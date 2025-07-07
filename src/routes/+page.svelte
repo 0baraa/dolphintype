@@ -44,7 +44,6 @@
   let textSelectedColor = $state('');
 
   let hoveredTheme = $state(null);
-  let isHoverPreview = false;
   let customCssBackup = {};
 
   const cssVars = [
@@ -553,8 +552,6 @@
                   main.style.removeProperty(v); // Remove so class styles can take effect
                 }
               });
-
-              isHoverPreview = true;
             }}
             onmouseleave={() => {
               hoveredTheme = null;
@@ -564,8 +561,6 @@
               Object.entries(customCssBackup).forEach(([key, value]) => {
                 main.style.setProperty(key, value);
               });
-
-              isHoverPreview = false;
             }}
             onclick={async () => {
               showPaletteMenu = false;
