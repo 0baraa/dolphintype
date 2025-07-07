@@ -47,6 +47,7 @@
 
   let hoveredTheme = $state(null);
   let customCssBackup = {};
+  let isCustomTheme = $state(false);
 
   let paletteMenuTitle = $derived(getThemeLabel(hoveredTheme ?? currentTheme));
 
@@ -430,6 +431,7 @@
   }
 
   function updateCssVar(varName, value) {
+    isCustomTheme = true;
     document.querySelector('main')?.style.setProperty(varName, value);
   }
 
@@ -457,8 +459,12 @@
   }
 
   function getThemeLabel(themeId) {
+    if (!hoveredTheme && isCustomTheme === true) {
+      return 'Custom';
+    }
+
     const theme = themePresets.find((preset) => preset.id === themeId);
-    return theme ? theme.label : themeId; // Fallback to id if label not found
+    return theme ? theme.label : themeId;
   }
 </script>
 
@@ -610,7 +616,7 @@
         {#each themePresets as theme, t (t)}
           <button
             class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
-            class:text-[var(--color-text-selected)]={currentTheme === theme.id}
+            class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
             onmouseenter={async () => {
               const main = document.querySelector('main');
               hoveredTheme = theme.id;
@@ -641,6 +647,7 @@
               syncPaletteInputs(); // update inputs back to current theme values
             }}
             onclick={async () => {
+              isCustomTheme = false;
               showPaletteMenu = false;
               currentTheme = theme.id;
               hoveredTheme = null;
