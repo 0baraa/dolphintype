@@ -43,6 +43,10 @@
   let bgHoverColor = $state('');
   let textSelectedColor = $state('');
 
+  let hoveredTheme = $state(null);
+  let isHoverPreview = false;
+  let customCssBackup = {};
+
   const cssVars = [
     '--color-bg',
     '--color-text-default',
@@ -429,7 +433,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
-  class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out ${currentTheme}`}
+  class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out ${hoveredTheme || currentTheme}`}
   style="background-color: var(--color-bg);"
   onclick={() => {
     showPaletteMenu = false;
@@ -536,9 +540,39 @@
           <button
             class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id}
+            onmouseenter={() => {
+              const main = document.querySelector('main');
+              hoveredTheme = theme.id;
+
+              // Save all custom styles so we can restore them later
+              customCssBackup = {};
+              cssVars.forEach((v) => {
+                const value = main.style.getPropertyValue(v);
+                if (value) {
+                  customCssBackup[v] = value;
+                  main.style.removeProperty(v); // Remove so class styles can take effect
+                }
+              });
+
+              isHoverPreview = true;
+            }}
+            onmouseleave={() => {
+              hoveredTheme = null;
+              const main = document.querySelector('main');
+
+              // Restore previous inline custom styles
+              Object.entries(customCssBackup).forEach(([key, value]) => {
+                main.style.setProperty(key, value);
+              });
+
+              isHoverPreview = false;
+            }}
             onclick={async () => {
               showPaletteMenu = false;
               currentTheme = theme.id;
+              hoveredTheme = null;
+              customCssBackup = {};
+
               const main = document.querySelector('main');
               cssVars.forEach((v) => main?.style.removeProperty(v));
 
