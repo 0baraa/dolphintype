@@ -32,6 +32,8 @@
   let spaceHandledByKeydown = false;
   let currentTheme = $state('theme-dark');
   let showPaletteMenu = $state(false);
+  let currentTestMode = $state('time');
+  let prevBreakpoint = window.innerWidth >= 640 ? 'sm-up' : 'below-sm';
 
   let mainFont = $state('JetBrains Mono');
   let otherFont = $state('JetBrains Mono');
@@ -136,29 +138,7 @@
     // We create an array of empty arrays, one for each word.
     prefillCharElements();
 
-    // Set initial caret position correctly after mount using tick()
-    await tick();
-
-    const initialChar = charElements[0]?.[0];
-    if (initialChar) {
-      // Get the parent div of the first character, which is our word div
-      const rowElement = initialChar.parentElement;
-
-      if (rowElement) {
-        rowHeight = rowElement.offsetHeight; // This is the true height of one line of words
-        const buffer = 10;
-
-        // Calculate the total height of rows plus n-1 gaps between them
-
-        maxRowHeight = `${rowHeight * rowCount + rowGap * (rowCount - 1) + buffer}px`;
-      }
-
-      caretPosition.set({
-        top: initialChar.offsetTop,
-        left: initialChar.offsetLeft - 2,
-        height: initialChar.offsetHeight
-      });
-    }
+    await updateRowMetrics();
 
     inputElement.focus();
 
@@ -276,6 +256,13 @@
 
   function handleWindowResize() {
     windowSize = { width: window.innerWidth, height: window.innerHeight };
+
+    const currentBreakpoint = window.innerWidth >= 640 ? 'sm-up' : 'below-sm';
+
+    if (currentBreakpoint !== prevBreakpoint) {
+      prevBreakpoint = currentBreakpoint;
+      updateRowMetrics(); // only recalculate on breakpoint boundary
+    }
   }
 
   function handleKeydown(event) {
@@ -465,6 +452,32 @@
 
     const theme = themePresets.find((preset) => preset.id === themeId);
     return theme ? theme.label : themeId;
+  }
+
+  async function updateRowMetrics() {
+    // Set initial caret position correctly after mount using tick()
+    await tick();
+
+    const initialChar = charElements[0]?.[0];
+    if (initialChar) {
+      // Get the parent div of the first character, which is our word div
+      const rowElement = initialChar.parentElement;
+
+      if (rowElement) {
+        rowHeight = rowElement.offsetHeight; // This is the true height of one line of words
+        const buffer = 10;
+
+        // Calculate the total height of rows plus n-1 gaps between them
+
+        maxRowHeight = `${rowHeight * rowCount + rowGap * (rowCount - 1) + buffer}px`;
+      }
+
+      caretPosition.set({
+        top: initialChar.offsetTop,
+        left: initialChar.offsetLeft - 2,
+        height: initialChar.offsetHeight
+      });
+    }
   }
 </script>
 
@@ -674,20 +687,46 @@
   {/if}
 
   <div class="relative">
+    <!-- Desktop Options -->
     <div
-      class="absolute flex items-center space-x-3 rounded-lg p-2 text-2xl text-[var(--color-text-default)] transition-opacity duration-300 sm:space-x-10"
-      style="top: -2.5em; left: 50%; transform: translateX(-50%);"
+      class="absolute -top-[3.5em] flex items-center space-x-0.5 rounded-lg p-2 text-base
+       text-[var(--color-text-default)] transition-opacity duration-300 sm:-top-[2.5em]
+       sm:space-x-3 sm:text-2xl md:space-x-10"
+      style="left: 50%; transform: translateX(-50%);"
       class:opacity-0={testPhase === 'running' || testPhase === 'finished'}
       class:pointer-events-none={testPhase === 'running' || testPhase === 'finished'}
     >
       <button
         class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
         onclick={(e) => {
-          e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element[cite: 414, 440].
+          e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element
           showPaletteMenu = !showPaletteMenu;
         }}
       >
-        <Palette />
+        <Palette class="h-4 w-4 sm:h-6 sm:w-6" />
+      </button>
+      <div>|</div>
+      <button
+        class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+        class:text-[var(--color-text-selected)]={currentTestMode === 'time'}
+        onmousedown={(e) => e.preventDefault()}
+        onclick={() => {
+          currentTestMode = 'time';
+          focusInput();
+        }}
+      >
+        time
+      </button>
+      <button
+        class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+        class:text-[var(--color-text-selected)]={currentTestMode === 'words'}
+        onmousedown={(e) => e.preventDefault()}
+        onclick={() => {
+          currentTestMode = 'words';
+          focusInput();
+        }}
+      >
+        words
       </button>
       <div>|</div>
       {#each [15, 30, 60] as time, t (t)}
@@ -706,8 +745,8 @@
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-4xl transition-opacity duration-300"
-      style="top: -1.5em; left: 0.85em; color: var(--color-text-default);"
+      class="pointer-events-none absolute -top-[1.75em] left-[1.3em] p-2 text-2xl transition-opacity duration-300 sm:-top-[1.5em] sm:left-[0.85em] sm:text-4xl"
+      style="color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'running'}
       ontransitionend={() => (timeRemaining = timerDuration)}
     >
@@ -715,15 +754,15 @@
     </div>
 
     <div
-      class="pointer-events-none absolute p-2 text-4xl transition-opacity duration-300"
-      style="top: -1.4em; left: 0.85em; color: var(--color-text-default);"
+      class="pointer-events-none absolute -top-[1.7em] left-[1.3em] p-2 text-2xl transition-opacity duration-300 sm:-top-[1.5em] sm:left-[0.85em] sm:text-4xl"
+      style="color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'finished'}
     >
       {wpm} wpm
     </div>
 
     <div
-      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-4xl transition-opacity lg:max-w-325"
+      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-2xl transition-opacity sm:text-4xl lg:max-w-325"
       style:max-height={maxRowHeight}
       style="font-family: var(--font-family);"
       onclick={focusInput}
@@ -752,7 +791,7 @@
 
       <div
         id="words-container"
-        class="flex flex-wrap justify-start gap-x-4 p-2 transition-transform duration-150 ease-in-out"
+        class="flex flex-wrap justify-start gap-x-2.5 p-2 transition-transform duration-150 ease-in-out sm:gap-x-4"
         style:row-gap="{rowGap}px"
         style:transform="translateY({scrollOffset}px)"
       >
@@ -807,13 +846,13 @@
     </div>
 
     <button
-      class="absolute flex cursor-pointer rounded-lg p-2 duration-300 hover:[background-color:var(--color-bg-hover)]"
-      style="color: var(--color-text-default); top: 11.75rem; left: 50%; transform: translateX(-50%);"
+      class="absolute top-[10em] flex cursor-pointer rounded-lg p-2 duration-300 hover:[background-color:var(--color-bg-hover)] sm:top-[11.75em]"
+      style="color: var(--color-text-default); left: 50%; transform: translateX(-50%);"
       onclick={restartTest}
       tabindex="0"
       onmousedown={(e) => e.preventDefault()}
     >
-      <RotateCw size={30} />
+      <RotateCw class="h-6 w-6 sm:h-7 sm:w-7" />
     </button>
   </div>
 </main>
