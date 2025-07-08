@@ -312,7 +312,7 @@
         activeWordIndex--;
         userInput = typedWords[activeWordIndex];
       }
-    } else if (userInput.length > currentWord.length + 2) {
+    } else if (userInput.length > currentWord.length + 2 && event.key.length === 1) {
       event.preventDefault();
     }
   }
