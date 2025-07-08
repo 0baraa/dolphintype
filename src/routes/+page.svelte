@@ -35,6 +35,7 @@
   let currentTestMode = $state('time');
   let prevBreakpoint = window.innerWidth >= 640 ? 'sm-up' : 'below-sm';
   let selectedWordsCount = $state(25);
+  let restartButton;
 
   let mainFont = $state('JetBrains Mono');
   let otherFont = $state('JetBrains Mono');
@@ -496,6 +497,12 @@
       });
     }
   }
+
+  async function resetTabOrder() {
+    restartButton?.focus();
+    await tick(); // or use setTimeout(() => restartBtn.blur(), 0);
+    restartButton?.blur();
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -717,6 +724,7 @@
         class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
         onclick={(e) => {
           e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element
+          resetTabOrder();
           if (showPaletteMenu) focusInput();
           showPaletteMenu = !showPaletteMenu;
         }}
@@ -733,6 +741,7 @@
             currentTestMode = 'time';
             restartTest();
           }
+          resetTabOrder();
           focusInput();
         }}
       >
@@ -747,6 +756,7 @@
             currentTestMode = 'words';
             restartTest();
           }
+          resetTabOrder();
           focusInput();
         }}
       >
@@ -760,6 +770,7 @@
             class:text-[var(--color-text-selected)]={timerDuration === time}
             onclick={() => {
               timerDuration = time;
+              resetTabOrder();
               focusInput();
             }}
             onmousedown={(e) => e.preventDefault()}
@@ -779,6 +790,7 @@
                 selectedWordsCount = wordCount;
                 restartTest();
               }
+              resetTabOrder();
               focusInput();
             }}
             onmousedown={(e) => e.preventDefault()}
@@ -912,6 +924,7 @@
     </div>
 
     <button
+      bind:this={restartButton}
       class="absolute top-[10em] flex cursor-pointer rounded-lg p-2 duration-300 hover:[background-color:var(--color-bg-hover)] sm:top-[11.75em]"
       style="color: var(--color-text-default); left: 50%; transform: translateX(-50%);"
       onclick={restartTest}
