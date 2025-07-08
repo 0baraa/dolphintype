@@ -97,6 +97,12 @@
   }
 }
 
+/* Black text in drop down */
+select option {
+  color: black;
+  background-color: white; /* optional: prevent dark dropdown bg */
+}
+
 /* For WebKit (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 8px;
