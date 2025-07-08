@@ -885,6 +885,19 @@
             {/if}
           </div>
         {/each}
+        <!-- Workaround to make words mode words left align when set to 10 -->
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
+        <div class="invisible">asdf</div>
       </div>
 
       <div
