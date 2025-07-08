@@ -564,7 +564,7 @@
             type="color"
             bind:value={bgColor}
             oninput={() => updateCssVar('--color-bg', bgColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -574,7 +574,7 @@
             type="color"
             bind:value={textDefaultColor}
             oninput={() => updateCssVar('--color-text-default', textDefaultColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -584,7 +584,7 @@
             type="color"
             bind:value={textActiveColor}
             oninput={() => updateCssVar('--color-text-active', textActiveColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -594,7 +594,7 @@
             type="color"
             bind:value={textCorrectColor}
             oninput={() => updateCssVar('--color-text-correct', textCorrectColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -604,7 +604,7 @@
             type="color"
             bind:value={textIncorrectColor}
             oninput={() => updateCssVar('--color-text-incorrect', textIncorrectColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -614,7 +614,7 @@
             type="color"
             bind:value={caretColor}
             oninput={() => updateCssVar('--color-caret', caretColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -624,7 +624,7 @@
             type="color"
             bind:value={underlineColor}
             oninput={() => updateCssVar('--decoration-incorrect', underlineColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -634,7 +634,7 @@
             type="color"
             bind:value={bgHoverColor}
             oninput={() => updateCssVar('--color-bg-hover', bgHoverColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
 
@@ -644,7 +644,7 @@
             type="color"
             bind:value={textSelectedColor}
             oninput={() => updateCssVar('--color-text-selected', textSelectedColor)}
-            class="cursor-pointer"
+            class="cursor-pointer rounded border sm:border-none"
           />
         </label>
       </div>
