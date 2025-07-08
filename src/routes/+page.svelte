@@ -769,7 +769,7 @@
       onkeydown={handleContainerKeyDown}
       role="button"
       tabindex="0"
-      class:blur-[1.5px]={!isFocused && testPhase !== 'finished'}
+      class:blur-[1.5px]={!isFocused && testPhase !== 'finished' && !showPaletteMenu}
       class:opacity-0={restarting}
       onmousedown={(e) => e.preventDefault()}
     >
