@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { tick } from 'svelte';
-  import { cubicOut, linear, quintOut } from 'svelte/easing';
+  import { linear } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
   import { RotateCw, Palette } from 'lucide-svelte';
   import { fade } from 'svelte/transition';
@@ -34,6 +34,7 @@
   let showPaletteMenu = $state(false);
   let currentTestMode = $state('time');
   let prevBreakpoint = window.innerWidth >= 640 ? 'sm-up' : 'below-sm';
+  let selectedWordsCount = $state(25);
 
   let mainFont = $state('JetBrains Mono');
   let otherFont = $state('JetBrains Mono');
@@ -278,7 +279,7 @@
         event.key !== ' ' &&
         event.code !== 'Space'
       ) {
-        startTest();
+        startTest(currentTestMode);
       }
     }
 
@@ -287,6 +288,13 @@
 
       if (userInput === '') {
         return;
+      }
+
+      if (currentTestMode === 'words') {
+        if (activeWordIndex === currentWords.length - 1) {
+          endTest();
+          return;
+        }
       }
 
       wordCorrectness[activeWordIndex] = userInput === currentWord;
@@ -332,22 +340,28 @@
     }
   }
 
-  function startTest() {
+  function startTest(testMode) {
     testPhase = 'running';
     showPaletteMenu = false;
     testStartTime = Date.now();
 
-    interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
-      timeRemaining = timerDuration - elapsed;
+    if (testMode === 'time') {
+      interval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - testStartTime) / 1000);
+        timeRemaining = timerDuration - elapsed;
 
-      if (timeRemaining <= 0) {
-        clearInterval(interval);
-        inputElement.disabled = true;
-        wpm = calculateWPM();
-        testPhase = 'finished';
-      }
-    }, 1000);
+        if (timeRemaining <= 0) {
+          clearInterval(interval);
+          endTest();
+        }
+      }, 1000);
+    }
+  }
+
+  function endTest() {
+    inputElement.disabled = true;
+    wpm = calculateWPM();
+    testPhase = 'finished';
   }
 
   function calculateWPM() {
@@ -394,7 +408,10 @@
     inputElement.disabled = false;
     words = allWords.words;
     prepareWords(words);
-    currentWords = getNextWords(500);
+
+    if (currentTestMode === 'time') currentWords = getNextWords(500);
+    else currentWords = getNextWords(selectedWordsCount);
+
     activeWordIndex = 0;
     userInput = '';
     wordCorrectness = [];
@@ -702,6 +719,7 @@
           e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element
           showPaletteMenu = !showPaletteMenu;
         }}
+        onmousedown={(e) => e.preventDefault()}
       >
         <Palette class="h-4 w-4 sm:h-6 sm:w-6" />
       </button>
@@ -711,7 +729,10 @@
         class:text-[var(--color-text-selected)]={currentTestMode === 'time'}
         onmousedown={(e) => e.preventDefault()}
         onclick={() => {
-          currentTestMode = 'time';
+          if (currentTestMode !== 'time') {
+            currentTestMode = 'time';
+            restartTest();
+          }
           focusInput();
         }}
       >
@@ -722,35 +743,67 @@
         class:text-[var(--color-text-selected)]={currentTestMode === 'words'}
         onmousedown={(e) => e.preventDefault()}
         onclick={() => {
-          currentTestMode = 'words';
+          if (currentTestMode !== 'words') {
+            currentTestMode = 'words';
+            restartTest();
+          }
           focusInput();
         }}
       >
         words
       </button>
       <div>|</div>
-      {#each [15, 30, 60] as time, t (t)}
-        <button
-          class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
-          class:text-[var(--color-text-selected)]={timerDuration === time}
-          onclick={() => {
-            timerDuration = time;
-            focusInput();
-          }}
-          onmousedown={(e) => e.preventDefault()}
-        >
-          {time}<span class="text-[0.85em]">s</span>
-        </button>
-      {/each}
+      {#if currentTestMode === 'time'}
+        {#each [15, 30, 60] as time, t (t)}
+          <button
+            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class:text-[var(--color-text-selected)]={timerDuration === time}
+            onclick={() => {
+              timerDuration = time;
+              focusInput();
+            }}
+            onmousedown={(e) => e.preventDefault()}
+          >
+            {time}<span class="text-[0.85em]">s</span>
+          </button>
+        {/each}
+      {/if}
+
+      {#if currentTestMode === 'words'}
+        {#each [10, 25, 50, 100] as wordCount, w (w)}
+          <button
+            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class:text-[var(--color-text-selected)]={selectedWordsCount === wordCount}
+            onclick={() => {
+              if (selectedWordsCount !== wordCount) {
+                selectedWordsCount = wordCount;
+                restartTest();
+              }
+              focusInput();
+            }}
+            onmousedown={(e) => e.preventDefault()}
+          >
+            {wordCount}
+          </button>
+        {/each}
+      {/if}
     </div>
 
     <div
       class="pointer-events-none absolute -top-[1.75em] left-[1.3em] p-2 text-2xl transition-opacity duration-300 sm:-top-[1.5em] sm:left-[0.85em] sm:text-4xl"
       style="color: var(--color-text-default);"
-      class:opacity-0={testPhase !== 'running'}
+      class:opacity-0={currentTestMode !== 'time' || testPhase !== 'running'}
       ontransitionend={() => (timeRemaining = timerDuration)}
     >
       {timeRemaining}
+    </div>
+
+    <div
+      class="pointer-events-none absolute -top-[1.75em] left-[1.3em] p-2 text-2xl transition-opacity duration-300 sm:-top-[1.5em] sm:left-[0.85em] sm:text-4xl"
+      style="color: var(--color-text-default);"
+      class:opacity-0={currentTestMode !== 'words' || testPhase !== 'running'}
+    >
+      {activeWordIndex}/{currentWords.length}
     </div>
 
     <div
@@ -764,6 +817,7 @@
     <div
       class="no-ligatures relative mx-8 cursor-text overflow-hidden text-2xl transition-opacity sm:text-4xl lg:max-w-325"
       style:max-height={maxRowHeight}
+      style:min-height={maxRowHeight}
       style="font-family: var(--font-family);"
       onclick={focusInput}
       onkeydown={handleContainerKeyDown}
