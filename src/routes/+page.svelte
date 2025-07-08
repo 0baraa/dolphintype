@@ -717,9 +717,9 @@
         class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
         onclick={(e) => {
           e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element
+          if (showPaletteMenu) focusInput();
           showPaletteMenu = !showPaletteMenu;
         }}
-        onmousedown={(e) => e.preventDefault()}
       >
         <Palette class="h-4 w-4 sm:h-6 sm:w-6" />
       </button>
@@ -823,7 +823,6 @@
       onkeydown={handleContainerKeyDown}
       role="button"
       tabindex="0"
-      class:blur-[1.5px]={!isFocused && testPhase !== 'finished' && !showPaletteMenu}
       class:opacity-0={restarting}
       onmousedown={(e) => e.preventDefault()}
     >
