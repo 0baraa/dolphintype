@@ -286,7 +286,7 @@
       }
     }
 
-    if (event.key.length === 1) totalKeyStrokes++;
+    if (event.key.length === 1 && userInput.length < currentWord.length + 3) totalKeyStrokes++;
 
     if (event.key === ' ' || event.code === 'Space') {
       event.preventDefault();
@@ -372,15 +372,11 @@
 
   function calculateStats() {
     // Calculate correct characters from all completed words
-    console.log(activeWordIndex);
-    console.log(wordCorrectness);
-    // currentWords
     let totalCorrectChars = 0;
 
     for (let i = 0; i < activeWordIndex; i++) {
       // for each char in currentWords[i], if that is the same as typedWords[i]
       for (let j = 0; j < currentWords[i].length; j++) {
-        console.log(currentWords[i], typedWords[i]);
         if (currentWords[i][j] === typedWords[i][j]) {
           totalCorrectChars++;
         }
