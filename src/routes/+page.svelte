@@ -370,7 +370,7 @@
     let totalCorrectChars = 0;
     for (let i = 0; i < activeWordIndex; i++) {
       if (wordCorrectness[i] === true) {
-        totalCorrectChars += currentWords[i].length + 1;
+        totalCorrectChars += currentWords[i].length + 1; // include trailing space
       }
     }
 
@@ -384,11 +384,16 @@
       }
     }
 
-    // Calculate WPM using the standard formula (a word is 5 characters)
-    // We use the actual elapsed time for accuracy, but cap it at the test duration.
+    // Calculate elapsed time in minutes
+    // In time mode: use the smaller of elapsed time or timer duration
+    // In words mode: use actual elapsed time (don't cap it)
     const elapsedSeconds = (Date.now() - testStartTime) / 1000;
-    const elapsedMinutes = Math.min(elapsedSeconds, timerDuration) / 60;
+    const elapsedMinutes =
+      currentTestMode === 'time'
+        ? Math.min(elapsedSeconds, timerDuration) / 60
+        : elapsedSeconds / 60;
 
+    // Calculate WPM using the standard formula (a word is 5 characters)
     const grossWPM = totalCorrectChars / 5 / elapsedMinutes;
 
     return Math.round(grossWPM);
