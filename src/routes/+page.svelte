@@ -847,7 +847,25 @@
       style="color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'finished'}
     >
-      {wpm} wpm {accuracy}% acc
+      <span class="mr-7"><span class=" text-[var(--color-text-correct)]">{wpm}</span> wpm</span
+      ><span class="text-[var(--color-text-correct)]">{accuracy}%</span> acc
+    </div>
+
+    <div
+      class="pointer-events-none absolute -top-[-8.2em] left-[1.8em] p-2 text-lg transition-opacity duration-300
+       sm:-top-[-7.4em] sm:left-[1.4em] sm:text-2xl"
+      style="color: var(--color-text-correct);"
+      class:opacity-0={testPhase !== 'finished'}
+    >
+      test type
+      <div class="text-[var(--color-text-default)]">
+        <div>english</div>
+        {#if currentTestMode === 'time'}
+          <div>time {timerDuration}<span>s</span></div>
+        {:else}
+          <div>words {selectedWordsCount}</div>
+        {/if}
+      </div>
     </div>
 
     <div
