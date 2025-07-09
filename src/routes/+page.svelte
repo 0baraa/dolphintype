@@ -36,6 +36,8 @@
   let prevBreakpoint = window.innerWidth >= 640 ? 'sm-up' : 'below-sm';
   let selectedWordsCount = $state(25);
   let restartButton;
+  let totalKeyStrokes = $state(0);
+  let accuracy = $state(0);
 
   let mainFont = $state('JetBrains Mono');
   let otherFont = $state('JetBrains Mono');
@@ -284,6 +286,8 @@
       }
     }
 
+    if (event.key.length === 1) totalKeyStrokes++;
+
     if (event.key === ' ' || event.code === 'Space') {
       event.preventDefault();
 
@@ -291,17 +295,18 @@
         return;
       }
 
+      wordCorrectness[activeWordIndex] = userInput === currentWord;
+      typedWords[activeWordIndex] = userInput;
+      userInput = '';
+
       if (currentTestMode === 'words') {
         if (activeWordIndex === currentWords.length - 1) {
+          activeWordIndex++;
           endTest();
           return;
         }
       }
 
-      wordCorrectness[activeWordIndex] = userInput === currentWord;
-
-      typedWords[activeWordIndex] = userInput;
-      userInput = '';
       activeWordIndex++;
 
       spaceHandledByKeydown = true; // mark space handled here
@@ -361,28 +366,44 @@
 
   function endTest() {
     inputElement.disabled = true;
-    wpm = calculateWPM();
+    calculateStats();
     testPhase = 'finished';
   }
 
-  function calculateWPM() {
+  function calculateStats() {
     // Calculate correct characters from all completed words
+    console.log(activeWordIndex);
+    console.log(wordCorrectness);
+    // currentWords
     let totalCorrectChars = 0;
+
     for (let i = 0; i < activeWordIndex; i++) {
-      if (wordCorrectness[i] === true) {
-        totalCorrectChars += currentWords[i].length + 1; // include trailing space
+      // for each char in currentWords[i], if that is the same as typedWords[i]
+      for (let j = 0; j < currentWords[i].length; j++) {
+        console.log(currentWords[i], typedWords[i]);
+        if (currentWords[i][j] === typedWords[i][j]) {
+          totalCorrectChars++;
+        }
       }
+      if (wordCorrectness[i]) totalCorrectChars++;
     }
 
-    // Add correct characters from the final active word (the one the user was typing when the test ended)
-    const activeWord = currentWords[activeWordIndex];
-    if (activeWord) {
-      for (let i = 0; i < userInput.length; i++) {
-        if (userInput[i] === activeWord[i]) {
+    // Get correct chars in the latest word
+    if (currentTestMode === 'time') {
+      const activeWord = currentWords[activeWordIndex];
+      for (let j = 0; j < activeWord.length; j++) {
+        if (userInput[j] === activeWord[j]) {
           totalCorrectChars++;
         }
       }
     }
+
+    const missedChars = currentWords.slice(0, activeWordIndex).reduce((sum, w, i) => {
+      const typed = typedWords[i] || '';
+      return sum + Math.max(0, w.length - typed.length);
+    }, 0);
+
+    const adjustedKeyStrokes = totalKeyStrokes + missedChars;
 
     // Calculate elapsed time in minutes
     // In time mode: use the smaller of elapsed time or timer duration
@@ -396,7 +417,8 @@
     // Calculate WPM using the standard formula (a word is 5 characters)
     const grossWPM = totalCorrectChars / 5 / elapsedMinutes;
 
-    return Math.round(grossWPM);
+    wpm = Math.round(grossWPM);
+    accuracy = Math.round((totalCorrectChars / adjustedKeyStrokes) * 100);
   }
 
   async function restartTest() {
@@ -411,6 +433,7 @@
       interval = null;
     }
 
+    totalKeyStrokes = 0;
     inputElement.disabled = false;
     words = allWords.words;
     prepareWords(words);
@@ -828,7 +851,7 @@
       style="color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'finished'}
     >
-      {wpm} wpm
+      {wpm} wpm {accuracy}% acc
     </div>
 
     <div
