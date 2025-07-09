@@ -843,11 +843,13 @@
     </div>
 
     <div
-      class="pointer-events-none absolute -top-[1.7em] left-[1.3em] p-2 text-2xl transition-opacity duration-300 sm:-top-[1.5em] sm:left-[0.85em] sm:text-4xl"
+      class="pointer-events-none absolute -top-[1.7em] left-[1.65em] p-2 text-xl transition-opacity
+       duration-300 sm:-top-[1.5em] sm:left-[0.85em] sm:text-4xl"
       style="color: var(--color-text-default);"
       class:opacity-0={testPhase !== 'finished'}
     >
-      <span class="mr-7"><span class=" text-[var(--color-text-correct)]">{wpm}</span> wpm</span
+      <span class="mr-5 md:mr-7"
+        ><span class=" text-[var(--color-text-correct)]">{wpm}</span> wpm</span
       ><span class="text-[var(--color-text-correct)]">{accuracy}%</span> acc
     </div>
 
