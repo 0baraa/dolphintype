@@ -532,7 +532,66 @@
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
     >
-      <div>{paletteMenuTitle}</div>
+      <div class="pl-2 font-bold">{paletteMenuTitle}</div>
+
+      <div class="auto flex flex-wrap">
+        {#each themePresets as theme, t (t)}
+          <button
+            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
+            onmouseenter={async () => {
+              const main = document.querySelector('main');
+              hoveredTheme = theme.id;
+
+              // Save all custom styles so we can restore them later
+              customCssBackup = {};
+              cssVars.forEach((v) => {
+                const value = main.style.getPropertyValue(v);
+                if (value) {
+                  customCssBackup[v] = value;
+                  main.style.removeProperty(v); // Remove so class styles can take effect
+                }
+              });
+
+              await tick(); // Wait for DOM to update with the new theme class
+              syncPaletteInputs(); // update the input fields to match the preview
+            }}
+            onmouseleave={async () => {
+              hoveredTheme = null;
+              const main = document.querySelector('main');
+
+              // Restore previous inline custom styles
+              Object.entries(customCssBackup).forEach(([key, value]) => {
+                main.style.setProperty(key, value);
+              });
+
+              await tick();
+              syncPaletteInputs(); // update inputs back to current theme values
+            }}
+            onclick={async () => {
+              isCustomTheme = false;
+              showPaletteMenu = false;
+              currentTheme = theme.id;
+              hoveredTheme = null;
+              customCssBackup = {};
+
+              const main = document.querySelector('main');
+              cssVars.forEach((v) => main?.style.removeProperty(v));
+
+              // Wait to let the theme class apply
+              await tick();
+
+              // Update the input fields to reflect current theme values
+              syncPaletteInputs();
+
+              focusInput();
+            }}
+            onmousedown={(e) => e.preventDefault()}
+          >
+            {theme.label}
+          </button>
+        {/each}
+      </div>
 
       <div class="mb-6 flex flex-col justify-center space-y-4">
         <label class="flex items-center">
@@ -652,65 +711,6 @@
             class="cursor-pointer rounded border sm:border-none"
           />
         </label>
-      </div>
-
-      <div class="auto flex flex-wrap">
-        {#each themePresets as theme, t (t)}
-          <button
-            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
-            class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
-            onmouseenter={async () => {
-              const main = document.querySelector('main');
-              hoveredTheme = theme.id;
-
-              // Save all custom styles so we can restore them later
-              customCssBackup = {};
-              cssVars.forEach((v) => {
-                const value = main.style.getPropertyValue(v);
-                if (value) {
-                  customCssBackup[v] = value;
-                  main.style.removeProperty(v); // Remove so class styles can take effect
-                }
-              });
-
-              await tick(); // Wait for DOM to update with the new theme class
-              syncPaletteInputs(); // update the input fields to match the preview
-            }}
-            onmouseleave={async () => {
-              hoveredTheme = null;
-              const main = document.querySelector('main');
-
-              // Restore previous inline custom styles
-              Object.entries(customCssBackup).forEach(([key, value]) => {
-                main.style.setProperty(key, value);
-              });
-
-              await tick();
-              syncPaletteInputs(); // update inputs back to current theme values
-            }}
-            onclick={async () => {
-              isCustomTheme = false;
-              showPaletteMenu = false;
-              currentTheme = theme.id;
-              hoveredTheme = null;
-              customCssBackup = {};
-
-              const main = document.querySelector('main');
-              cssVars.forEach((v) => main?.style.removeProperty(v));
-
-              // Wait to let the theme class apply
-              await tick();
-
-              // Update the input fields to reflect current theme values
-              syncPaletteInputs();
-
-              focusInput();
-            }}
-            onmousedown={(e) => e.preventDefault()}
-          >
-            {theme.label}
-          </button>
-        {/each}
       </div>
     </div>
   {/if}
