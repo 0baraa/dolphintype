@@ -684,6 +684,21 @@
     await tick(); // or use setTimeout(() => restartBtn.blur(), 0);
     restartButton?.blur();
   }
+
+  async function handleFontChange(fontName, cssVar) {
+    try {
+      // Wait for the font to be loaded and ready for use
+      await document.fonts.load(`1em "${fontName}"`);
+
+      // Once loaded, apply the new font by updating the CSS variable
+      document.querySelector('main')?.style.setProperty(cssVar, `"${fontName}"`);
+      isCustomTheme = true;
+      saveSettings();
+    } catch (error) {
+      console.error(`Failed to load font: ${fontName}`, error);
+      // You could add logic here to revert the selection if the font fails to load
+    }
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -716,7 +731,7 @@
           <span class="mr-4 inline-block w-28">main font</span>
           <select
             bind:value={mainFont}
-            onchange={() => updateCssVar('--font-family', `"${mainFont}"`)}
+            onchange={() => handleFontChange(mainFont, '--font-family')}
             class="cursor-pointer rounded border bg-transparent px-3 py-1 text-[var(--color-text-default)]"
           >
             {#each fontFamilies as font, f (f)}
@@ -729,7 +744,7 @@
           <span class="mr-4 inline-block w-28">other font</span>
           <select
             bind:value={otherFont}
-            onchange={() => updateCssVar('--font-family-secondary', `"${otherFont}"`)}
+            onchange={() => handleFontChange(otherFont, '--font-family-secondary')}
             class="cursor-pointer rounded border bg-transparent px-3 py-1 text-[var(--color-text-default)]"
           >
             {#each fontFamilies as font, f (f)}
