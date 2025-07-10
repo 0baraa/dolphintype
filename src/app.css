@@ -1,71 +1,307 @@
+/* AtkinsonHyperlegible-Regular */
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Boon-Regular */
+@font-face {
+  font-family: 'Boon';
+  src: url('/fonts/Boon-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* CascadiaMono-Regular */
+@font-face {
+  font-family: 'Cascadia Mono';
+  src: url('/fonts/CascadiaMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Comfortaa-Regular */
+@font-face {
+  font-family: 'Comfortaa';
+  src: url('/fonts/Comfortaa-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ComingSoon-Regular */
+@font-face {
+  font-family: 'Coming Soon';
+  src: url('/fonts/ComingSoon-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* CommitMono-Regular */
+@font-face {
+  font-family: 'Commit Mono';
+  src: url('/fonts/CommitMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* FiraCode-Regular */
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/FiraCode-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Geist-Medium */
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500; /* Medium weight */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* GeistMono-Medium */
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500; /* Medium weight */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Hack-Regular */
+@font-face {
+  font-family: 'Hack';
+  src: url('/fonts/Hack-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* IBMPlexMono-Regular */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* IBMPlexSans-SemiBold */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('/fonts/IBMPlexSans-SemiBold.woff2') format('woff2');
+  font-weight: 600; /* SemiBold weight */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inconsolata-Regular */
+@font-face {
+  font-family: 'Inconsolata';
+  src: url('/fonts/Inconsolata-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Itim-Regular */
+@font-face {
+  font-family: 'Itim';
+  src: url('/fonts/Itim-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* JetBrainsMono-Regular */
 @font-face {
   font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono.woff2') format('woff2');
-  font-weight: normal;
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* Kanit-Regular */
 @font-face {
-  font-family: 'DM Mono';
-  src: url('/fonts/DMMono.woff') format('woff');
-  font-weight: normal;
+  font-family: 'Kanit';
+  src: url('/fonts/Kanit-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* Lalezar-Regular */
 @font-face {
-  font-family: 'Fira Mono';
-  src: url('/fonts/FiraMono.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Lalezar';
+  src: url('/fonts/Lalezar-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* Lato-Regular */
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Lato';
+  src: url('/fonts/Lato-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* LexendDeca-Regular */
 @font-face {
-  font-family: 'Merriweather';
-  src: url('/fonts/Merriweather.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Lexend Deca';
+  src: url('/fonts/LexendDeca-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* Mononoki-Regular */
+@font-face {
+  font-family: 'Mononoki';
+  src: url('/fonts/Mononoki-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Montserrat-Regular */
 @font-face {
   font-family: 'Montserrat';
-  src: url('/fonts/Montserrat.woff2') format('woff2');
-  font-weight: normal;
+  src: url('/fonts/Montserrat-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* Nunito-Bold */
 @font-face {
-  font-family: 'Oswald';
-  src: url('/fonts/Oswald.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-Bold.woff2') format('woff2');
+  font-weight: 700; /* Bold weight */
   font-style: normal;
+  font-display: swap;
 }
 
+/* OpenDyslexic-Regular */
 @font-face {
-  font-family: 'Outfit';
-  src: url('/fonts/Outfit.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Open Dyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* OverpassMono-Regular */
 @font-face {
-  font-family: 'Playfair Display';
-  src: url('/fonts/PlayFairDisplay.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Overpass Mono';
+  src: url('/fonts/OverpassMono-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
+/* Oxygen-Regular */
 @font-face {
-  font-family: 'Source Sans Pro';
-  src: url('/fonts/SourceSansPro.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'Oxygen';
+  src: url('/fonts/Oxygen-Regular.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+/* Parkinsans-Regular */
+@font-face {
+  font-family: 'Parkinsans';
+  src: url('/fonts/Parkinsans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* RobotoMono-Regular */
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('/fonts/RobotoMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto-Regular */
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Sarabun-Bold */
+@font-face {
+  font-family: 'Sarabun';
+  src: url('/fonts/Sarabun-Bold.woff2') format('woff2');
+  font-weight: 700; /* Bold weight */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SourceCodePro-Regular */
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('/fonts/SourceCodePro-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* TitilliumWeb-Regular */
+@font-face {
+  font-family: 'Titillium Web';
+  src: url('/fonts/TitilliumWeb-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* UbuntuMono-Regular */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  src: url('/fonts/UbuntuMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Ubuntu-Regular */
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('/fonts/Ubuntu-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Vazirmatn-Regular */
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @import 'tailwindcss';
@@ -95,6 +331,10 @@
     text-decoration-color: var(--decoration-incorrect);
     text-decoration-thickness: 3px;
   }
+}
+
+body {
+  font-family: 'JetBrains Mono', 'Roboto', 'Noto Sans', sans-serif;
 }
 
 /* Black text in drop down */

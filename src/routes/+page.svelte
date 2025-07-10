@@ -109,19 +109,59 @@
   ];
 
   const fontFamilies = [
+    'Atkinson Hyperlegible',
+    'Boon',
+    'Cascadia Mono',
+    'Comfortaa',
+    'Coming Soon',
+    'Commit Mono',
+    'Fira Code',
+    'Geist',
+    'Geist Mono',
+    'Hack',
+    'IBM Plex Mono',
+    'IBM Plex Sans',
+    'Inconsolata',
+    'Itim',
     'JetBrains Mono',
-    'DM Mono',
-    'Fira Mono',
-    'Inter',
-    'Merriweather',
+    'Kanit',
+    'Lalezar',
+    'Lato',
+    'Lexend Deca',
+    'Mononoki',
     'Montserrat',
-    'Oswald',
-    'Outfit',
-    'Playfair Display',
-    'Source Sans Pro'
+    'Nunito',
+    'Open Dyslexic',
+    'Overpass Mono',
+    'Oxygen',
+    'Parkinsans',
+    'Roboto Mono',
+    'Roboto',
+    'Sarabun',
+    'Source Code Pro',
+    'Titillium Web',
+    'Ubuntu Mono',
+    'Ubuntu',
+    'Vazirmatn'
   ];
 
-  const wordlists = ['english', 'english1k', 'spanish', 'french'];
+  const wordlists = [
+    'english',
+    'english1k',
+    'english5k',
+    'czech',
+    'dutch',
+    'french',
+    'german',
+    'hungarian',
+    'italian',
+    'polish',
+    'portuguese',
+    'romanian',
+    'spanish',
+    'turkish',
+    'ukrainian'
+  ];
 
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
@@ -564,65 +604,6 @@
     >
       <div class="pl-2 font-bold">{paletteMenuTitle}</div>
 
-      <div class="auto flex flex-wrap">
-        {#each themePresets as theme, t (t)}
-          <button
-            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
-            class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
-            onmouseenter={async () => {
-              const main = document.querySelector('main');
-              hoveredTheme = theme.id;
-
-              // Save all custom styles so we can restore them later
-              customCssBackup = {};
-              cssVars.forEach((v) => {
-                const value = main.style.getPropertyValue(v);
-                if (value) {
-                  customCssBackup[v] = value;
-                  main.style.removeProperty(v); // Remove so class styles can take effect
-                }
-              });
-
-              await tick(); // Wait for DOM to update with the new theme class
-              syncPaletteInputs(); // update the input fields to match the preview
-            }}
-            onmouseleave={async () => {
-              hoveredTheme = null;
-              const main = document.querySelector('main');
-
-              // Restore previous inline custom styles
-              Object.entries(customCssBackup).forEach(([key, value]) => {
-                main.style.setProperty(key, value);
-              });
-
-              await tick();
-              syncPaletteInputs(); // update inputs back to current theme values
-            }}
-            onclick={async () => {
-              isCustomTheme = false;
-              showPaletteMenu = false;
-              currentTheme = theme.id;
-              hoveredTheme = null;
-              customCssBackup = {};
-
-              const main = document.querySelector('main');
-              cssVars.forEach((v) => main?.style.removeProperty(v));
-
-              // Wait to let the theme class apply
-              await tick();
-
-              // Update the input fields to reflect current theme values
-              syncPaletteInputs();
-
-              focusInput();
-            }}
-            onmousedown={(e) => e.preventDefault()}
-          >
-            {theme.label}
-          </button>
-        {/each}
-      </div>
-
       <div class="mb-6 flex flex-col justify-center space-y-4">
         <label class="flex items-center">
           <span class="mr-4 inline-block w-28">Main Font</span>
@@ -742,9 +723,69 @@
           />
         </label>
       </div>
+
+      <div class="auto flex flex-wrap">
+        {#each themePresets as theme, t (t)}
+          <button
+            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
+            onmouseenter={async () => {
+              const main = document.querySelector('main');
+              hoveredTheme = theme.id;
+
+              // Save all custom styles so we can restore them later
+              customCssBackup = {};
+              cssVars.forEach((v) => {
+                const value = main.style.getPropertyValue(v);
+                if (value) {
+                  customCssBackup[v] = value;
+                  main.style.removeProperty(v); // Remove so class styles can take effect
+                }
+              });
+
+              await tick(); // Wait for DOM to update with the new theme class
+              syncPaletteInputs(); // update the input fields to match the preview
+            }}
+            onmouseleave={async () => {
+              hoveredTheme = null;
+              const main = document.querySelector('main');
+
+              // Restore previous inline custom styles
+              Object.entries(customCssBackup).forEach(([key, value]) => {
+                main.style.setProperty(key, value);
+              });
+
+              await tick();
+              syncPaletteInputs(); // update inputs back to current theme values
+            }}
+            onclick={async () => {
+              isCustomTheme = false;
+              showPaletteMenu = false;
+              currentTheme = theme.id;
+              hoveredTheme = null;
+              customCssBackup = {};
+
+              const main = document.querySelector('main');
+              cssVars.forEach((v) => main?.style.removeProperty(v));
+
+              // Wait to let the theme class apply
+              await tick();
+
+              // Update the input fields to reflect current theme values
+              syncPaletteInputs();
+
+              focusInput();
+            }}
+            onmousedown={(e) => e.preventDefault()}
+          >
+            {theme.label}
+          </button>
+        {/each}
+      </div>
     </div>
   {/if}
 
+  <!-- Setting Menu -->
   {#if showSettingsMenu}
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -760,7 +801,7 @@
       <div class="flex flex-col items-stretch space-y-2">
         {#each wordlists as wl, w (w)}
           <button
-            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class="cursor-pointer rounded-lg p-1 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentWordlist === wl}
             onclick={() => {
               showSettingsMenu = false;
