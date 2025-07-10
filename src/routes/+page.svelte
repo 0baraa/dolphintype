@@ -705,7 +705,7 @@
       class="absolute z-50 flex max-h-120 w-full max-w-md flex-col
       space-y-2 overflow-y-auto rounded-lg border bg-[var(--color-bg)] p-4 text-xs
       transition-all duration-300 sm:max-h-screen sm:text-sm"
-      style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%);"
+      style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'JetBrains Mono', monospace;"
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
     >
@@ -713,7 +713,7 @@
 
       <div class="mb-6 flex flex-col justify-center space-y-4">
         <label class="flex items-center">
-          <span class="mr-4 inline-block w-28">Main Font</span>
+          <span class="mr-4 inline-block w-28">main font</span>
           <select
             bind:value={mainFont}
             onchange={() => updateCssVar('--font-family', `"${mainFont}"`)}
@@ -726,7 +726,7 @@
         </label>
 
         <label class="flex items-center">
-          <span class="mr-4 inline-block w-28">Other Font</span>
+          <span class="mr-4 inline-block w-28">other font</span>
           <select
             bind:value={otherFont}
             onchange={() => updateCssVar('--font-family-secondary', `"${otherFont}"`)}
@@ -741,7 +741,7 @@
 
       <div class="grid grid-cols-2 gap-x-6 gap-y-4">
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Background</span>
+          <span class="mr-4 inline-block w-28">background</span>
           <input
             type="color"
             bind:value={bgColor}
@@ -751,7 +751,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Text</span>
+          <span class="mr-4 inline-block w-28">text</span>
           <input
             type="color"
             bind:value={textDefaultColor}
@@ -761,7 +761,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Active Text</span>
+          <span class="mr-4 inline-block w-28">active text</span>
           <input
             type="color"
             bind:value={textActiveColor}
@@ -771,7 +771,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Correct Text</span>
+          <span class="mr-4 inline-block w-28">correct text</span>
           <input
             type="color"
             bind:value={textCorrectColor}
@@ -781,7 +781,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Incorrect Text</span>
+          <span class="mr-4 inline-block w-28">incorrect Text</span>
           <input
             type="color"
             bind:value={textIncorrectColor}
@@ -791,7 +791,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Caret</span>
+          <span class="mr-4 inline-block w-28">caret</span>
           <input
             type="color"
             bind:value={caretColor}
@@ -801,7 +801,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Underline</span>
+          <span class="mr-4 inline-block w-28">underline</span>
           <input
             type="color"
             bind:value={underlineColor}
@@ -811,7 +811,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Hover</span>
+          <span class="mr-4 inline-block w-28">hover</span>
           <input
             type="color"
             bind:value={bgHoverColor}
@@ -821,7 +821,7 @@
         </label>
 
         <label class="flex items-center justify-between">
-          <span class="mr-4 inline-block w-28">Selected Text</span>
+          <span class="mr-4 inline-block w-28">selected text</span>
           <input
             type="color"
             bind:value={textSelectedColor}
@@ -834,7 +834,7 @@
       <div class="auto flex flex-wrap">
         {#each themePresets as theme, t (t)}
           <button
-            class="m-3 cursor-pointer rounded-lg p-1 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class="m-2 cursor-pointer rounded-lg p-1 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
             onmouseenter={async () => {
               const main = document.querySelector('main');
