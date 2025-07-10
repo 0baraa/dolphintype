@@ -3,7 +3,7 @@
   import { tick } from 'svelte';
   import { linear } from 'svelte/easing';
   import { Tween } from 'svelte/motion';
-  import { RotateCw, Palette } from 'lucide-svelte';
+  import { RotateCw, Palette, Settings } from 'lucide-svelte';
   import { fade } from 'svelte/transition';
 
   let words = [];
@@ -38,6 +38,8 @@
   let restartButton;
   let totalKeyStrokes = $state(0);
   let accuracy = $state(0);
+  let currentWordlist = $state('english');
+  let showSettingsMenu = $state(false);
 
   let mainFont = $state('JetBrains Mono');
   let otherFont = $state('JetBrains Mono');
@@ -119,6 +121,8 @@
     'Source Sans Pro'
   ];
 
+  const wordlists = ['english', 'english1k', 'spanish', 'french'];
+
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
     { top: 0, left: 0, height: 0 },
@@ -130,7 +134,7 @@
   );
 
   onMount(async () => {
-    const wordsResponse = await fetch('/wordlists/english200.json');
+    const wordsResponse = await fetch(`/wordlists/${currentWordlist}.json`);
     allWords = await wordsResponse.json();
 
     words = allWords.words;
@@ -349,6 +353,7 @@
   function startTest(testMode) {
     testPhase = 'running';
     showPaletteMenu = false;
+    showSettingsMenu = false;
     testStartTime = Date.now();
 
     if (testMode === 'time') {
@@ -536,6 +541,7 @@
   style="background-color: var(--color-bg); font-family: var(--font-family-secondary);"
   onclick={() => {
     showPaletteMenu = false;
+    showSettingsMenu = false;
     focusInput();
   }}
 >
@@ -734,11 +740,41 @@
     </div>
   {/if}
 
+  {#if showSettingsMenu}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div
+      class="absolute z-50 flex max-h-120 w-full max-w-md flex-col
+      space-y-2 overflow-y-auto rounded-lg border bg-[var(--color-bg)] p-4 text-xs
+      transition-all duration-300 sm:max-h-screen sm:text-sm"
+      style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%);"
+      transition:fade={{ duration: 200 }}
+      onclick={(e) => e.stopPropagation()}
+    >
+      <div class="pl-2 font-bold">word list</div>
+      <div class="flex flex-col items-stretch space-y-2">
+        {#each wordlists as wl, w (w)}
+          <button
+            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class:text-[var(--color-text-selected)]={currentWordlist === wl}
+            onclick={() => {
+              showSettingsMenu = false;
+              currentWordlist = wl;
+              focusInput();
+            }}
+          >
+            {wl}
+          </button>
+        {/each}
+      </div>
+    </div>
+  {/if}
+
   <div class="relative">
     <!-- Desktop Options -->
     <div
-      class="absolute -top-[3.5em] flex items-center space-x-0.5 rounded-lg p-2 text-base
-       text-[var(--color-text-default)] transition-opacity duration-300 sm:-top-[2.5em]
+      class="absolute -top-[3.5em] flex items-center space-x-0.5 rounded-lg p-2 text-sm text-[var(--color-text-default)]
+       transition-opacity duration-300 max-[350px]:text-xs sm:-top-[2.5em]
        sm:space-x-3 sm:text-2xl md:space-x-10"
       style="left: 50%; transform: translateX(-50%);"
       class:opacity-0={testPhase === 'running' || testPhase === 'finished'}
@@ -749,8 +785,21 @@
         onclick={(e) => {
           e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element
           resetTabOrder();
+          if (showSettingsMenu) focusInput();
+          showSettingsMenu = !showSettingsMenu;
+          showPaletteMenu = false;
+        }}
+      >
+        <Settings class="h-4 w-4 sm:h-6 sm:w-6" />
+      </button>
+      <button
+        class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+        onclick={(e) => {
+          e.stopPropagation(); // Calls event.stopPropagation(), preventing the event reaching the next element
+          resetTabOrder();
           if (showPaletteMenu) focusInput();
           showPaletteMenu = !showPaletteMenu;
+          showSettingsMenu = false;
         }}
       >
         <Palette class="h-4 w-4 sm:h-6 sm:w-6" />
