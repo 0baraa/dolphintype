@@ -371,419 +371,251 @@ select option {
 :root {
   --font-family: 'JetBrains Mono';
   --font-family-secondary: 'JetBrains Mono';
-  --color-bg: #282a36;
-  --color-text-default: #6272a4;
-  --color-text-active: #6272a4;
-  --color-text-correct: #50fa7b;
+  --color-bg: #18191f;
+  --color-text-default: #bac0d1;
+  --color-text-active: #bac0d1;
+  --color-text-correct: #2aef5b;
   --color-text-incorrect: #ff5555;
-  --color-bg-hover: #44475a;
-  --color-caret: #f8f8f2;
+  --color-bg-hover: #1d1e24;
+  --color-caret: #2aef5b;
   --decoration-incorrect: #ff5555;
-  --color-text-selected: #ffb86c;
+  --color-text-selected: #2aef5b;
 }
 
 .theme-light {
-  --font-family: 'DM Mono';
-  --font-family-secondary: 'DM Mono';
-  --color-bg: #fef4f4;
-  --color-text-default: #8c7373;
-  --color-text-active: #564448;
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #faf9f6;
+  --color-text-default: #857171;
+  --color-text-active: #857171;
   --color-text-correct: #42c68b;
   --color-text-incorrect: #d00000;
-  --color-bg-hover: #fae0e4;
+  --color-bg-hover: #eadddd;
   --color-caret: #564448;
   --decoration-incorrect: #d00000;
-  --color-text-selected: #d67a00;
+  --color-text-selected: #42c68b;
 }
 
-.theme-solarized-dark {
-  --font-family: 'Fira Mono';
-  --font-family-secondary: 'DM Mono';
-  --color-bg: #002b36;
-  --color-text-default: #839496;
-  --color-text-active: #eee8d5;
-  --color-text-correct: #859900;
-  --color-text-incorrect: #dc322f;
-  --color-bg-hover: #073642;
-  --color-caret: #eee8d5;
-  --decoration-incorrect: #dc322f;
-  --color-text-selected: #b58900;
+.theme-abyss {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #212b36;
+  --color-text-default: #9ba4b5;
+  --color-text-active: #9ba4b5;
+  --color-text-correct: #5ad8a6;
+  --color-text-incorrect: #e94560;
+  --color-bg-hover: #313f4e;
+  --color-caret: #e94560;
+  --decoration-incorrect: #e94560;
+  --color-text-selected: #5ad8a6;
 }
 
-.theme-nord {
-  --font-family: 'Inter';
-  --font-family-secondary: 'DM Mono';
-  --color-bg: #2e3440;
-  --color-text-default: #d8dee9;
-  --color-text-active: #eceff4;
-  --color-text-correct: #a3be8c;
-  --color-text-incorrect: #bf616a;
-  --color-bg-hover: #3b4252;
-  --color-caret: #d8dee9;
-  --decoration-incorrect: #bf616a;
-  --color-text-selected: #88c0d0;
+.theme-midnight-plum {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #15121c;
+  --color-text-default: #c2bed1;
+  --color-text-active: #c2bed1;
+  --color-text-correct: #a1de93;
+  --color-text-incorrect: #f37121;
+  --color-bg-hover: #201b2a;
+  --color-caret: #f37121;
+  --decoration-incorrect: #f37121;
+  --color-text-selected: #a1de93;
 }
 
-.theme-gruvbox {
-  --font-family: 'Merriweather';
-  --color-bg: #282828;
-  --color-text-default: #a89984;
-  --color-text-active: #ebdbb2;
-  --color-text-correct: #b8bb26;
-  --color-text-incorrect: #fb4934;
-  --color-bg-hover: #3c3836;
-  --color-caret: #ebdbb2;
-  --decoration-incorrect: #fb4934;
-  --color-text-selected: #fabd2f;
+.theme-forest-night {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #2b352e;
+  --color-text-default: #bcc5bc;
+  --color-text-active: #bcc5bc;
+  --color-text-correct: #6bcb77;
+  --color-text-incorrect: #ff6767;
+  --color-bg-hover: #3f4a43;
+  --color-caret: #ff6767;
+  --decoration-incorrect: #ff6767;
+  --color-text-selected: #6bcb77;
 }
 
-.theme-monokai {
-  --font-family: 'Montserrat';
-  --color-bg: #272822;
-  --color-text-default: #f8f8f2;
-  --color-text-active: #f9f8f5;
-  --color-text-correct: #a6e22e;
-  --color-text-incorrect: #f92672;
-  --color-bg-hover: #3e3d32;
-  --color-caret: #f8f8f2;
-  --decoration-incorrect: #f92672;
-  --color-text-selected: #fd971f;
-}
-
-.theme-tokyo-night {
-  --font-family: 'Oswald';
-  --color-bg: #1a1b26;
-  --color-text-default: #a9b1d6;
-  --color-text-active: #c0caf5;
-  --color-text-correct: #9ece6a;
-  --color-text-incorrect: #f7768e;
-  --color-bg-hover: #292e42;
-  --color-caret: #c0caf5;
-  --decoration-incorrect: #f7768e;
-  --color-text-selected: #7aa2f7;
-}
-
-.theme-solarized-light {
-  --font-family: 'Outfit';
-  --color-bg: #fdf6e3;
-  --color-text-default: #657b83;
-  --color-text-active: #073642;
-  --color-text-correct: #859900;
-  --color-text-incorrect: #dc322f;
-  --color-bg-hover: #eee8d5;
-  --color-caret: #073642;
-  --decoration-incorrect: #dc322f;
-  --color-text-selected: #b58900;
-}
-
-.theme-one-light {
-  --font-family: 'Playfair Display';
-  --color-bg: #fafafa;
-  --color-text-default: #a0a1a7;
-  --color-text-active: #383a42;
-  --color-text-correct: #50a14f;
-  --color-text-incorrect: #e45649;
-  --color-bg-hover: #f0f0f1;
-  --color-caret: #383a42;
-  --decoration-incorrect: #e45649;
-  --color-text-selected: #c18401;
-}
-
-.theme-cobalt2 {
-  --font-family: 'Source Sans Pro';
-  --color-bg: #002240;
-  --color-text-default: #a5a5a5;
-  --color-text-active: #ffffff;
-  --color-text-correct: #9eff47;
-  --color-text-incorrect: #ff3b30;
-  --color-bg-hover: #003360;
-  --color-caret: #ffc600;
-  --decoration-incorrect: #ff3b30;
-  --color-text-selected: #ffc600;
-}
-
-.theme-synthwave {
-  --font-family: 'JetBrains Mono'; /* Cycle back to JetBrains Mono */
-  --color-bg: #2b213a;
-  --color-text-default: #b0a9cb;
-  --color-text-active: #ffffff;
-  --color-text-correct: #72f1b8;
-  --color-text-incorrect: #fe4450;
-  --color-bg-hover: #3c2f50;
-  --color-caret: #f97e72;
-  --decoration-incorrect: #fe4450;
-  --color-text-selected: #f1fa8c;
-}
-
-.theme-cyberpunk {
-  --font-family: 'DM Mono';
-  --color-bg: #0d0f41;
-  --color-text-default: #9596e0;
-  --color-text-active: #e4eeff;
-  --color-text-correct: #00f9a2;
-  --color-text-incorrect: #ff4344;
-  --color-bg-hover: #1e205e;
-  --color-caret: #ff8b00;
-  --decoration-incorrect: #ff4344;
-  --color-text-selected: #ff8b00;
-}
-
-.theme-dracula {
-  --font-family: 'Fira Mono';
-  --color-bg: #282a36;
-  --color-text-default: #f8f8f2;
-  --color-text-active: #bd93f9;
-  --color-text-correct: #50fa7b;
-  --color-text-incorrect: #ff5555;
-  --color-bg-hover: #44475a;
-  --color-caret: #ff79c6;
-  --decoration-incorrect: #ff5555;
-  --color-text-selected: #f1fa8c;
-}
-
-.theme-material-ocean {
-  --font-family: 'Inter';
-  --color-bg: #0f111a;
-  --color-text-default: #93b5bb;
-  --color-text-active: #ffffff;
-  --color-text-correct: #c3e88d;
-  --color-text-incorrect: #ff5370;
-  --color-bg-hover: #1f222c;
-  --color-caret: #f07178;
-  --decoration-incorrect: #ff5370;
-  --color-text-selected: #c792ea;
-}
-
-.theme-night-owl {
-  --font-family: 'Merriweather';
-  --color-bg: #011627;
-  --color-text-default: #82aaff;
-  --color-text-active: #d6deeb;
-  --color-text-correct: #c3e88d;
-  --color-text-incorrect: #ef5350;
-  --color-bg-hover: #073642;
-  --color-caret: #ffcb6b;
-  --decoration-incorrect: #ef5350;
-  --color-text-selected: #c792ea;
-}
-
-.theme-shades-of-purple {
-  --font-family: 'Montserrat';
-  --color-bg: #2d2b55;
-  --color-text-default: #8c76c7;
-  --color-text-active: #fad000;
-  --color-text-correct: #a2ff00;
-  --color-text-incorrect: #f28686;
-  --color-bg-hover: #3e3d64;
-  --color-caret: #adadff;
-  --decoration-incorrect: #f28686;
-  --color-text-selected: #ff62ff;
-}
-
-.theme-ayu-dark {
-  --font-family: 'Oswald';
-  --color-bg: #0f1419;
-  --color-text-default: #c5c5c5;
-  --color-text-active: #f8f8f2;
-  --color-text-correct: #a2cc53;
-  --color-text-incorrect: #ea6c73;
-  --color-bg-hover: #1e252e;
-  --color-caret: #f29668;
-  --decoration-incorrect: #ea6c73;
-  --color-text-selected: #59c2ff;
-}
-
-.theme-ayu-mirage {
-  --font-family: 'Outfit';
-  --color-bg: #1f2428;
-  --color-text-default: #c5c5c5;
-  --color-text-active: #f8f8f2;
-  --color-text-correct: #a2cc53;
-  --color-text-incorrect: #ea6c73;
-  --color-bg-hover: #292f34;
-  --color-caret: #f29668;
-  --decoration-incorrect: #ea6c73;
-  --color-text-selected: #59c2ff;
-}
-
-.theme-ayu-light {
-  --font-family: 'Playfair Display';
-  --color-bg: #fafafa;
-  --color-text-default: #5c6773;
-  --color-text-active: #2b303b;
-  --color-text-correct: #86b300;
-  --color-text-incorrect: #f07178;
-  --color-bg-hover: #eff0f1;
-  --color-caret: #2b303b;
-  --decoration-incorrect: #f07178;
-  --color-text-selected: #4d93ff;
-}
-
-.theme-zenburn {
-  --font-family: 'Source Sans Pro';
-  --color-bg: #3f3f3f;
-  --color-text-default: #dcdcdc;
-  --color-text-active: #f0e0d0;
-  --color-text-correct: #7f9f7f;
-  --color-text-incorrect: #cc9393;
-  --color-bg-hover: #505050;
-  --color-caret: #dcdcdc;
-  --decoration-incorrect: #cc9393;
-  --color-text-selected: #ffcf7f;
-}
-
-.theme-tomorrow {
-  --font-family: 'JetBrains Mono'; /* Cycle back to JetBrains Mono */
-  --color-bg: #ffffff;
-  --color-text-default: #4d4d4c;
-  --color-text-active: #1d1f21;
-  --color-text-correct: #8c8c8c;
-  --color-text-incorrect: #c82829;
-  --color-bg-hover: #f5f5f5;
-  --color-caret: #1d1f21;
-  --decoration-incorrect: #c82829;
-  --color-text-selected: #cc6633;
-}
-
-.theme-tomorrow-night {
-  --font-family: 'DM Mono';
-  --color-bg: #1d1f21;
-  --color-text-default: #c5c8c6;
-  --color-text-active: #e0e0e0;
-  --color-text-correct: #b4b7b4;
-  --color-text-incorrect: #cc342b;
-  --color-bg-hover: #2d3032;
-  --color-caret: #ffffff;
-  --decoration-incorrect: #cc342b;
-  --color-text-selected: #de935f;
-}
-
-.theme-tomorrow-night-bright {
-  --font-family: 'Fira Mono';
-  --color-bg: #000000;
-  --color-text-default: #eaeaea;
-  --color-text-active: #ffffff;
-  --color-text-correct: #ae81ff;
-  --color-text-incorrect: #d54e53;
-  --color-bg-hover: #1a1a1a;
-  --color-caret: #ffffff;
-  --decoration-incorrect: #d54e53;
-  --color-text-selected: #fd971f;
-}
-
-.theme-tomorrow-night-eighties {
-  --font-family: 'Inter';
-  --color-bg: #2d2d2d;
-  --color-text-default: #cccccc;
-  --color-text-active: #f8f8f8;
-  --color-text-correct: #b9ca4a;
-  --color-text-incorrect: #f27777;
-  --color-bg-hover: #3d3d3d;
-  --color-caret: #f8f8f8;
-  --decoration-incorrect: #f27777;
-  --color-text-selected: #fc9867;
-}
-
-.theme-oceanic-next {
-  --font-family: 'Merriweather';
-  --color-bg: #1b2b34;
-  --color-text-default: #657b83;
-  --color-text-active: #d8dee9;
-  --color-text-correct: #90cd75;
-  --color-text-incorrect: #ec5f67;
-  --color-bg-hover: #2c3e50;
-  --color-caret: #c0c5ce;
-  --decoration-incorrect: #ec5f67;
-  --color-text-selected: #f99157;
-}
-
-.theme-flatland {
-  --font-family: 'Montserrat';
-  --color-bg: #3f3f3f;
-  --color-text-default: #d0d0d0;
-  --color-text-active: #ffffff;
-  --color-text-correct: #8c8c8c;
-  --color-text-incorrect: #de555b;
-  --color-bg-hover: #4a4a4a;
-  --color-caret: #ffffff;
-  --decoration-incorrect: #de555b;
-  --color-text-selected: #f7a201;
-}
-
-.theme-seth {
-  --font-family: 'Oswald';
-  --color-bg: #2d3034;
-  --color-text-default: #969696;
-  --color-text-active: #ffffff;
-  --color-text-correct: #76a06e;
-  --color-text-incorrect: #f05050;
-  --color-bg-hover: #3d4044;
-  --color-caret: #e0e0e0;
-  --decoration-incorrect: #f05050;
-  --color-text-selected: #e0d16a;
-}
-
-.theme-panda {
-  --font-family: 'Outfit';
-  --color-bg: #292a2b;
-  --color-text-default: #e6e6e6;
-  --color-text-active: #f8f8f2;
-  --color-text-correct: #a2ff00;
-  --color-text-incorrect: #ff628c;
-  --color-bg-hover: #3d3e3f;
-  --color-caret: #ffb86c;
-  --decoration-incorrect: #ff628c;
-  --color-text-selected: #fad000;
-}
-
-.theme-spacemacs {
-  --font-family: 'Playfair Display';
-  --color-bg: #282c34;
+.theme-slate-grey {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #1f263a;
   --color-text-default: #abb2bf;
-  --color-text-active: #e06c75;
+  --color-text-active: #abb2bf;
   --color-text-correct: #98c379;
   --color-text-incorrect: #e06c75;
-  --color-bg-hover: #3a3f4e;
-  --color-caret: #56b6c2;
+  --color-bg-hover: #3e4451;
+  --color-caret: #e06c75;
   --decoration-incorrect: #e06c75;
-  --color-text-selected: #d19a66;
+  --color-text-selected: #98c379;
 }
 
-.theme-code-dark {
-  --font-family: 'Source Sans Pro';
-  --color-bg: #1e1e1e;
-  --color-text-default: #d4d4d4;
+.theme-warm-graphite {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #252525;
+  --color-text-default: #a6a6a6;
+  --color-text-active: #a6a6a6;
+  --color-text-correct: #7fff00;
+  --color-text-incorrect: #ff4500;
+  --color-bg-hover: #363636;
+  --color-caret: #ff4500;
+  --decoration-incorrect: #ff4500;
+  --color-text-selected: #7fff00;
+}
+
+.theme-arctic-night {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #2d3a4b;
+  --color-text-default: #c8d8ed;
+  --color-text-active: #c8d8ed;
+  --color-text-correct: #74d2e7;
+  --color-text-incorrect: #ff6b6b;
+  --color-bg-hover: #3f526b;
+  --color-caret: #ff6b6b;
+  --decoration-incorrect: #ff6b6b;
+  --color-text-selected: #74d2e7;
+}
+
+.theme-violet-dark {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #2a213d;
+  --color-text-default: #c7bfff;
+  --color-text-active: #c7bfff;
+  --color-text-correct: #6fef4b;
+  --color-text-incorrect: #ff8080;
+  --color-bg-hover: #3d3256;
+  --color-caret: #ff8080;
+  --decoration-incorrect: #ff8080;
+  --color-text-selected: #6fef4b;
+}
+
+.theme-desert-dusk {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #362d2b;
+  --color-text-default: #d6c6b0;
+  --color-text-active: #d6c6b0;
+  --color-text-correct: #a3d86f;
+  --color-text-incorrect: #e75a7c;
+  --color-bg-hover: #4d4341;
+  --color-caret: #e75a7c;
+  --decoration-incorrect: #e75a7c;
+  --color-text-selected: #a3d86f;
+}
+
+.theme-console {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #0c0c0c;
+  --color-text-default: #00ff00;
+  --color-text-active: #00ff00;
+  --color-text-correct: #00cc00;
+  --color-text-incorrect: #ff0000;
+  --color-bg-hover: #1a1a1a;
+  --color-caret: #ff0000;
+  --decoration-incorrect: #ff0000;
+  --color-text-selected: #00cc00;
+}
+
+.theme-ink {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #000000;
+  --color-text-default: #ffffff;
   --color-text-active: #ffffff;
-  --color-text-correct: #4ec9b0;
-  --color-text-incorrect: #f44747;
-  --color-bg-hover: #2d2d2d;
-  --color-caret: #d4d4d4;
-  --decoration-incorrect: #f44747;
-  --color-text-selected: #d7ba7d;
+  --color-text-correct: #51ff00;
+  --color-text-incorrect: #ff3333;
+  --color-bg-hover: #131212;
+  --color-caret: #51ff00;
+  --decoration-incorrect: #ff3333;
+  --color-text-selected: #51ff00;
 }
 
-.theme-andromeda {
-  --font-family: 'JetBrains Mono'; /* Cycle back to JetBrains Mono */
-  --color-bg: #262a34;
-  --color-text-default: #a9b1d6;
-  --color-text-active: #c0caf5;
-  --color-text-correct: #9ece6a;
-  --color-text-incorrect: #f7768e;
-  --color-bg-hover: #2f3442;
-  --color-caret: #f19d2b;
-  --decoration-incorrect: #f7768e;
-  --color-text-selected: #d2a67e;
+.theme-blank {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #ffffff;
+  --color-text-default: #000000;
+  --color-text-active: #000000;
+  --color-text-correct: #58c625;
+  --color-text-incorrect: #ff0000;
+  --color-bg-hover: #f2e6e6;
+  --color-caret: #58c625;
+  --decoration-incorrect: #ff0000;
+  --color-text-selected: #58c625;
 }
 
-.theme-material-darker {
-  --font-family: 'DM Mono';
-  --color-bg: #212121;
-  --color-text-default: #b0bec5;
+.theme-cloud {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #f5f7f8;
+  --color-text-default: #607d8b;
+  --color-text-active: #607d8b;
+  --color-text-correct: #4caf50;
+  --color-text-incorrect: #e53935;
+  --color-bg-hover: #e8ecef;
+  --color-caret: #455a64;
+  --decoration-incorrect: #e53935;
+  --color-text-selected: #4caf50;
+}
+
+.theme-morning-dew {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #ebf3eb;
+  --color-text-default: #798e7b;
+  --color-text-active: #798e7b;
+  --color-text-correct: #6aa84f;
+  --color-text-incorrect: #c62828;
+  --color-bg-hover: #eef0ee;
+  --color-caret: #4b554c;
+  --decoration-incorrect: #c62828;
+  --color-text-selected: #6aa84f;
+}
+
+.theme-peach {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #b53512;
+  --color-text-default: #ffffff;
   --color-text-active: #ffffff;
-  --color-text-correct: #82b1ff;
-  --color-text-incorrect: #ff5370;
-  --color-bg-hover: #313131;
-  --color-caret: #ffeb3b;
-  --decoration-incorrect: #ff5370;
-  --color-text-selected: #eeff41;
+  --color-text-correct: #8c8d48;
+  --color-text-incorrect: #d32f2f;
+  --color-bg-hover: #aa310f;
+  --color-caret: #8c8d48;
+  --decoration-incorrect: #d32f2f;
+  --color-text-selected: #8c8d48;
+}
+
+.theme-azure-mist {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #f0f8ff;
+  --color-text-default: #36454f;
+  --color-text-active: #36454f;
+  --color-text-correct: #00bfff;
+  --color-text-incorrect: #ff69b4;
+  --color-bg-hover: #e6f2ff;
+  --color-caret: #ff69b4;
+  --decoration-incorrect: #ff69b4;
+  --color-text-selected: #00bfff;
+}
+
+.theme-eagle {
+  --font-family: 'JetBrains Mono';
+  --font-family-secondary: 'JetBrains Mono';
+  --color-bg: #002623;
+  --color-text-default: #b9a779;
+  --color-text-active: #b9a779;
+  --color-text-correct: #edebe0;
+  --color-text-incorrect: #cc5555;
+  --color-bg-hover: #3e5a4b;
+  --color-caret: #edebe0;
+  --decoration-incorrect: #cc5555;
+  --color-text-selected: #edebe0;
 }

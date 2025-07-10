@@ -74,38 +74,24 @@
   ];
 
   const themePresets = [
-    { id: 'theme-dark', label: 'Dark' },
-    { id: 'theme-light', label: 'Light' },
-    { id: 'theme-solarized-dark', label: 'Solarized Dark' },
-    { id: 'theme-solarized-light', label: 'Solarized Light' },
-    { id: 'theme-nord', label: 'Nord' },
-    { id: 'theme-gruvbox', label: 'Gruvbox' },
-    { id: 'theme-monokai', label: 'Monokai' },
-    { id: 'theme-tokyo-night', label: 'Tokyo Night' },
-    { id: 'theme-one-light', label: 'One Light' },
-    { id: 'theme-cobalt2', label: 'Cobalt2' },
-    { id: 'theme-synthwave', label: 'Synthwave' },
-    { id: 'theme-cyberpunk', label: 'Cyberpunk' },
-    { id: 'theme-dracula', label: 'Dracula' },
-    { id: 'theme-material-ocean', label: 'Material Ocean' },
-    { id: 'theme-night-owl', label: 'Night Owl' },
-    { id: 'theme-shades-of-purple', label: 'Shades of Purple' },
-    { id: 'theme-ayu-dark', label: 'Ayu Dark' },
-    { id: 'theme-ayu-mirage', label: 'Ayu Mirage' },
-    { id: 'theme-ayu-light', label: 'Ayu Light' },
-    { id: 'theme-zenburn', label: 'Zenburn' },
-    { id: 'theme-tomorrow', label: 'Tomorrow' },
-    { id: 'theme-tomorrow-night', label: 'Tomorrow Night' },
-    { id: 'theme-tomorrow-night-bright', label: 'Tomorrow Night Bright' },
-    { id: 'theme-tomorrow-night-eighties', label: 'Tomorrow Night Eighties' },
-    { id: 'theme-oceanic-next', label: 'Oceanic Next' },
-    { id: 'theme-flatland', label: 'Flatland' },
-    { id: 'theme-seth', label: 'Seth' },
-    { id: 'theme-panda', label: 'Panda' },
-    { id: 'theme-spacemacs', label: 'Spacemacs' },
-    { id: 'theme-code-dark', label: 'Code Dark' },
-    { id: 'theme-andromeda', label: 'Andromeda' },
-    { id: 'theme-material-darker', label: 'Material Darker' }
+    { id: 'theme-dark', label: 'dolphin dark' },
+    { id: 'theme-light', label: 'dolphin light' },
+    { id: 'theme-ink', label: 'ink' },
+    { id: 'theme-abyss', label: 'abyss' },
+    { id: 'theme-midnight-plum', label: 'midnight' },
+    { id: 'theme-blank', label: 'blank' },
+    { id: 'theme-forest-night', label: 'forest' },
+    { id: 'theme-cloud', label: 'cloud' },
+    { id: 'theme-slate-grey', label: 'slate' },
+    { id: 'theme-eagle', label: 'eagle' },
+    { id: 'theme-warm-graphite', label: 'graphite' },
+    { id: 'theme-arctic-night', label: 'arctic' },
+    { id: 'theme-morning-dew', label: 'morning dew' },
+    { id: 'theme-violet-dark', label: 'violet' },
+    { id: 'theme-desert-dusk', label: 'desert dusk' },
+    { id: 'theme-console', label: 'console' },
+    { id: 'theme-peach', label: 'peach' },
+    { id: 'theme-azure-mist', label: 'azure' }
   ];
 
   const fontFamilies = [
@@ -153,11 +139,13 @@
     'dutch',
     'french',
     'german',
+    'greek',
     'hungarian',
     'italian',
     'polish',
     'portuguese',
     'romanian',
+    'russian',
     'spanish',
     'turkish',
     'ukrainian'
@@ -602,7 +590,7 @@
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
     >
-      <div class="pl-2 font-bold">{paletteMenuTitle}</div>
+      <div class="font-bold">{paletteMenuTitle}</div>
 
       <div class="mb-6 flex flex-col justify-center space-y-4">
         <label class="flex items-center">
@@ -727,7 +715,7 @@
       <div class="auto flex flex-wrap">
         {#each themePresets as theme, t (t)}
           <button
-            class="cursor-pointer rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class="m-3 cursor-pointer rounded-lg p-1 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
             onmouseenter={async () => {
               const main = document.querySelector('main');
