@@ -151,6 +151,16 @@
     'ukrainian'
   ];
 
+  const STORAGE_KEYS = {
+    TEST_MODE: 'typingTest_currentTestMode',
+    TIMER_DURATION: 'typingTest_timerDuration',
+    WORDS_COUNT: 'typingTest_selectedWordsCount',
+    CURRENT_THEME: 'typingTest_currentTheme',
+    IS_CUSTOM_THEME: 'typingTest_isCustomTheme',
+    CUSTOM_THEME_VARS: 'typingTest_customThemeVars',
+    WORDLIST: 'typingTest_wordlist'
+  };
+
   // Svelte tween for smooth caret animation
   const caretPosition = new Tween(
     { top: 0, left: 0, height: 0 },
@@ -162,11 +172,20 @@
   );
 
   onMount(async () => {
+    // Load settings first
+    loadSettings();
+
+    // Fetch wordlist
     await fetchWordlist(false);
     words = allWords.words;
     prepareWords(words);
 
-    currentWords = getNextWords(500);
+    // Use correct word count based on current test mode
+    if (currentTestMode === 'time') {
+      currentWords = getNextWords(500);
+    } else {
+      currentWords = getNextWords(selectedWordsCount);
+    }
 
     // Pre-fill the charElements array with empty arrays so Svelte can bind to them.
     // We create an array of empty arrays, one for each word.
@@ -244,6 +263,104 @@
     };
   });
 
+  function saveSettings() {
+    try {
+      // Save basic settings
+      localStorage.setItem(STORAGE_KEYS.TEST_MODE, currentTestMode);
+      localStorage.setItem(STORAGE_KEYS.TIMER_DURATION, timerDuration.toString());
+      localStorage.setItem(STORAGE_KEYS.WORDS_COUNT, selectedWordsCount.toString());
+      localStorage.setItem(STORAGE_KEYS.CURRENT_THEME, currentTheme);
+      localStorage.setItem(STORAGE_KEYS.IS_CUSTOM_THEME, isCustomTheme.toString());
+      localStorage.setItem(STORAGE_KEYS.WORDLIST, currentWordlist);
+
+      // Save custom theme variables if it's a custom theme
+      if (isCustomTheme) {
+        const customThemeVars = {
+          mainFont,
+          otherFont,
+          caretColor,
+          underlineColor,
+          bgColor,
+          textDefaultColor,
+          textActiveColor,
+          textCorrectColor,
+          textIncorrectColor,
+          bgHoverColor,
+          textSelectedColor
+        };
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_THEME_VARS, JSON.stringify(customThemeVars));
+      }
+    } catch (error) {
+      console.error('Failed to save settings to localStorage:', error);
+    }
+  }
+
+  function loadSettings() {
+    try {
+      // Load basic settings
+      const savedTestMode = localStorage.getItem(STORAGE_KEYS.TEST_MODE);
+      if (savedTestMode) currentTestMode = savedTestMode;
+
+      const savedTimerDuration = localStorage.getItem(STORAGE_KEYS.TIMER_DURATION);
+      if (savedTimerDuration) timerDuration = parseInt(savedTimerDuration);
+
+      const savedWordsCount = localStorage.getItem(STORAGE_KEYS.WORDS_COUNT);
+      if (savedWordsCount) selectedWordsCount = parseInt(savedWordsCount);
+
+      const savedWordlist = localStorage.getItem(STORAGE_KEYS.WORDLIST);
+      if (savedWordlist) currentWordlist = savedWordlist;
+
+      const savedTheme = localStorage.getItem(STORAGE_KEYS.CURRENT_THEME);
+      if (savedTheme) currentTheme = savedTheme;
+
+      const savedIsCustomTheme = localStorage.getItem(STORAGE_KEYS.IS_CUSTOM_THEME);
+      if (savedIsCustomTheme) isCustomTheme = savedIsCustomTheme === 'true';
+
+      // Load custom theme variables if it's a custom theme
+      if (isCustomTheme) {
+        const savedCustomThemeVars = localStorage.getItem(STORAGE_KEYS.CUSTOM_THEME_VARS);
+        if (savedCustomThemeVars) {
+          const customVars = JSON.parse(savedCustomThemeVars);
+
+          // Apply the custom theme variables
+          mainFont = customVars.mainFont || mainFont;
+          otherFont = customVars.otherFont || otherFont;
+          caretColor = customVars.caretColor || caretColor;
+          underlineColor = customVars.underlineColor || underlineColor;
+          bgColor = customVars.bgColor || bgColor;
+          textDefaultColor = customVars.textDefaultColor || textDefaultColor;
+          textActiveColor = customVars.textActiveColor || textActiveColor;
+          textCorrectColor = customVars.textCorrectColor || textCorrectColor;
+          textIncorrectColor = customVars.textIncorrectColor || textIncorrectColor;
+          bgHoverColor = customVars.bgHoverColor || bgHoverColor;
+          textSelectedColor = customVars.textSelectedColor || textSelectedColor;
+
+          // Apply the custom CSS variables to the DOM
+          applyCSSVariables();
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load settings from localStorage:', error);
+    }
+  }
+
+  function applyCSSVariables() {
+    const main = document.querySelector('main');
+    if (!main) return;
+
+    main.style.setProperty('--font-family', `"${mainFont}"`);
+    main.style.setProperty('--font-family-secondary', `"${otherFont}"`);
+    main.style.setProperty('--color-caret', caretColor);
+    main.style.setProperty('--decoration-incorrect', underlineColor);
+    main.style.setProperty('--color-bg', bgColor);
+    main.style.setProperty('--color-text-default', textDefaultColor);
+    main.style.setProperty('--color-text-active', textActiveColor);
+    main.style.setProperty('--color-text-correct', textCorrectColor);
+    main.style.setProperty('--color-text-incorrect', textIncorrectColor);
+    main.style.setProperty('--color-bg-hover', bgHoverColor);
+    main.style.setProperty('--color-text-selected', textSelectedColor);
+  }
+
   async function fetchWordlist(changingWordList) {
     const wordsResponse = await fetch(`/wordlists/${currentWordlist}.json`);
     allWords = await wordsResponse.json();
@@ -252,7 +369,8 @@
   }
 
   function prefillCharElements() {
-    charElements = Array(currentWords.length)
+    // 500 workaround
+    charElements = Array(500)
       .fill(0)
       .map(() => []);
   }
@@ -500,6 +618,7 @@
   function updateCssVar(varName, value) {
     isCustomTheme = true;
     document.querySelector('main')?.style.setProperty(varName, value);
+    saveSettings();
   }
 
   function syncPaletteInputs() {
@@ -761,7 +880,7 @@
 
               // Update the input fields to reflect current theme values
               syncPaletteInputs();
-
+              saveSettings();
               focusInput();
             }}
             onmousedown={(e) => e.preventDefault()}
@@ -794,6 +913,7 @@
             onclick={() => {
               showSettingsMenu = false;
               currentWordlist = wl;
+              saveSettings();
               fetchWordlist(true);
               focusInput();
             }}
@@ -847,6 +967,7 @@
         onclick={() => {
           if (currentTestMode !== 'time') {
             currentTestMode = 'time';
+            saveSettings();
             restartTest();
           }
           resetTabOrder();
@@ -862,6 +983,7 @@
         onclick={() => {
           if (currentTestMode !== 'words') {
             currentTestMode = 'words';
+            saveSettings();
             restartTest();
           }
           resetTabOrder();
@@ -878,6 +1000,7 @@
             class:text-[var(--color-text-selected)]={timerDuration === time}
             onclick={() => {
               timerDuration = time;
+              saveSettings();
               resetTabOrder();
               focusInput();
             }}
@@ -896,6 +1019,7 @@
             onclick={() => {
               if (selectedWordsCount !== wordCount) {
                 selectedWordsCount = wordCount;
+                saveSettings();
                 restartTest();
               }
               resetTabOrder();
