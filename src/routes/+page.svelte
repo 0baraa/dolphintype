@@ -134,9 +134,7 @@
   );
 
   onMount(async () => {
-    const wordsResponse = await fetch(`/wordlists/${currentWordlist}.json`);
-    allWords = await wordsResponse.json();
-
+    await fetchWordlist(false);
     words = allWords.words;
     prepareWords(words);
 
@@ -217,6 +215,13 @@
       height: targetCharElement.offsetHeight
     };
   });
+
+  async function fetchWordlist(changingWordList) {
+    const wordsResponse = await fetch(`/wordlists/${currentWordlist}.json`);
+    allWords = await wordsResponse.json();
+
+    if (changingWordList) restartTest();
+  }
 
   function prefillCharElements() {
     charElements = Array(currentWords.length)
@@ -760,6 +765,7 @@
             onclick={() => {
               showSettingsMenu = false;
               currentWordlist = wl;
+              fetchWordlist(true);
               focusInput();
             }}
           >
@@ -910,7 +916,7 @@
     >
       test type
       <div class="text-[var(--color-text-default)]">
-        <div>english</div>
+        <div>{currentWordlist}</div>
         {#if currentTestMode === 'time'}
           <div>time {timerDuration}<span>s</span></div>
         {:else}
