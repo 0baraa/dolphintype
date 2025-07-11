@@ -114,6 +114,7 @@
     'Lalezar',
     'Lato',
     'Lexend Deca',
+    'Merriweather',
     'Mononoki',
     'Montserrat',
     'Nunito',
@@ -624,6 +625,12 @@
   function syncPaletteInputs() {
     const styles = getComputedStyle(document.querySelector('main'));
 
+    // Helper to get and normalise a property
+    const getAndNormalise = (varName) => {
+      const value = styles.getPropertyValue(varName).trim();
+      return value ? normaliseColorToHex(value) : '';
+    };
+
     mainFont =
       styles.getPropertyValue('--font-family')?.replace(/['"]/g, '').split(',')[0]?.trim() ||
       'JetBrains Mono';
@@ -633,15 +640,41 @@
         ?.replace(/['"]/g, '')
         .split(',')[0]
         ?.trim() || 'JetBrains Mono';
-    caretColor = styles.getPropertyValue('--color-caret').trim();
-    underlineColor = styles.getPropertyValue('--decoration-incorrect').trim();
-    bgColor = styles.getPropertyValue('--color-bg').trim();
-    textDefaultColor = styles.getPropertyValue('--color-text-default').trim();
-    textActiveColor = styles.getPropertyValue('--color-text-active').trim();
-    textCorrectColor = styles.getPropertyValue('--color-text-correct').trim();
-    textIncorrectColor = styles.getPropertyValue('--color-text-incorrect').trim();
-    bgHoverColor = styles.getPropertyValue('--color-bg-hover').trim();
-    textSelectedColor = styles.getPropertyValue('--color-text-selected').trim();
+
+    // Use the helper for all color inputs
+    caretColor = getAndNormalise('--color-caret');
+    underlineColor = getAndNormalise('--decoration-incorrect');
+    bgColor = getAndNormalise('--color-bg');
+    textDefaultColor = getAndNormalise('--color-text-default');
+    textActiveColor = getAndNormalise('--color-text-active');
+    textCorrectColor = getAndNormalise('--color-text-correct');
+    textIncorrectColor = getAndNormalise('--color-text-incorrect');
+    bgHoverColor = getAndNormalise('--color-bg-hover');
+    textSelectedColor = getAndNormalise('--color-text-selected');
+  }
+
+  function normaliseColorToHex(colorStr) {
+    // Create a temporary element to apply the color to
+    const tempDiv = document.createElement('div');
+    tempDiv.style.color = colorStr;
+    document.body.appendChild(tempDiv);
+
+    // Get the computed color style, which will be in rgb(r, g, b) format
+    const computedColor = window.getComputedStyle(tempDiv).color;
+    document.body.removeChild(tempDiv);
+
+    const rgb = computedColor.match(/\d+/g);
+    if (!rgb) return '#000000';
+
+    // Convert the RGB values to a hex string
+    return `#${
+      // Start the string with #
+      parseInt(rgb[0]) // Convert the first value (red) to an integer
+        .toString(16) // Convert to hexadecimal
+        .padStart(2, '0') // Ensure it's 2 characters (e.g., '0f' not 'f')
+    }${parseInt(rgb[1]).toString(16).padStart(2, '0')}${parseInt(rgb[2])
+      .toString(16)
+      .padStart(2, '0')}`;
   }
 
   function getThemeLabel(themeId) {
