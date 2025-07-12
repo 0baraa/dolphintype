@@ -145,16 +145,20 @@
     'english5k',
     'czech',
     'dutch',
+    'finnish',
     'french',
     'german',
     'greek',
     'hungarian',
     'italian',
+    'norwegian bokmal',
+    'norwegian nynorsk',
     'polish',
     'portuguese',
     'romanian',
     'russian',
     'spanish',
+    'swedish',
     'turkish',
     'ukrainian'
   ];
@@ -385,7 +389,8 @@
   }
 
   async function fetchWordlist(changingWordList) {
-    const wordsResponse = await fetch(`/wordlists/${currentWordlist}.json`);
+    const currentWordlistFilename = currentWordlist.replace(/ /g, '_');
+    const wordsResponse = await fetch(`/wordlists/${currentWordlistFilename}.json`);
     allWords = await wordsResponse.json();
 
     if (changingWordList) restartTest();
@@ -777,7 +782,7 @@
     <div
       class="absolute z-50 flex max-h-120 w-full max-w-md flex-col
       space-y-2 overflow-y-auto rounded-lg border bg-[var(--color-bg)] p-4 text-xs
-      transition-all duration-300 sm:max-h-screen sm:text-sm"
+      transition-all duration-300 sm:max-h-140 sm:text-sm"
       style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'JetBrains Mono', monospace;"
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
@@ -972,7 +977,7 @@
     <div
       class="absolute z-50 flex max-h-120 w-full max-w-md flex-col
       space-y-2 overflow-y-auto rounded-lg border bg-[var(--color-bg)] p-4 text-xs
-      transition-all duration-300 sm:max-h-screen sm:text-sm"
+      transition-all duration-300 sm:max-h-140 sm:text-sm"
       style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%);"
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
