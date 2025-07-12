@@ -40,6 +40,13 @@
   let accuracy = $state(0);
   let currentWordlist = $state('english');
   let showSettingsMenu = $state(false);
+  let isMouseActive = $state(true);
+  let mouseIdleTimer;
+  let isTouchDevice = $state(false);
+  let isRestartButtonHidden = $derived(
+    testPhase === 'running' && !isTouchDevice && !isMouseActive && !isRestartButtonFocused
+  );
+  let isRestartButtonFocused = $state(false);
 
   let mainFont = $state('JetBrains Mono');
   let otherFont = $state('JetBrains Mono');
@@ -173,6 +180,9 @@
   );
 
   onMount(async () => {
+    isTouchDevice =
+      'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+
     // Load settings first
     loadSettings();
 
@@ -197,9 +207,12 @@
     inputElement.focus();
 
     window.addEventListener('resize', handleWindowResize);
+    window.addEventListener('mousemove', handleMouseMove); // Add mousemove listener
 
     return () => {
       window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener('mousemove', handleMouseMove); // Clean up listener
+      clearTimeout(mouseIdleTimer); // Clean up timer on component destroy
     };
   });
 
@@ -343,6 +356,15 @@
     } catch (error) {
       console.error('Failed to load settings from localStorage:', error);
     }
+  }
+
+  // New function to handle mouse movement
+  function handleMouseMove() {
+    clearTimeout(mouseIdleTimer);
+    isMouseActive = true;
+    mouseIdleTimer = setTimeout(() => {
+      isMouseActive = false;
+    }, 1000);
   }
 
   function applyCSSVariables() {
@@ -504,6 +526,7 @@
 
   function startTest(testMode) {
     testPhase = 'running';
+    if (!isTouchDevice) isRestartButtonHidden = true;
     showPaletteMenu = false;
     showSettingsMenu = false;
     testStartTime = Date.now();
@@ -737,8 +760,10 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
-  class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300 ease-in-out ${hoveredTheme || currentTheme}`}
+  class={`flex min-h-screen flex-col items-center justify-center transition-colors duration-300
+  ease-in-out ${hoveredTheme || currentTheme}`}
   style="background-color: var(--color-bg); font-family: var(--font-family-secondary);"
+  class:cursor-none={isRestartButtonHidden}
   onclick={() => {
     showPaletteMenu = false;
     showSettingsMenu = false;
@@ -978,7 +1003,7 @@
     <div
       class="absolute -top-[3.5em] flex items-center space-x-0.5 rounded-lg p-2 text-sm text-[var(--color-text-default)]
        transition-opacity duration-300 max-[350px]:text-xs sm:-top-[2.5em]
-       sm:space-x-3 sm:text-2xl md:space-x-10"
+       sm:space-x-4 sm:text-2xl lg:space-x-10"
       style="left: 50%; transform: translateX(-50%);"
       class:opacity-0={testPhase === 'running' || testPhase === 'finished'}
       class:pointer-events-none={testPhase === 'running' || testPhase === 'finished'}
@@ -1127,10 +1152,11 @@
     </div>
 
     <div
-      class="no-ligatures relative mx-8 cursor-text overflow-hidden text-2xl transition-opacity sm:text-4xl lg:max-w-325"
+      class="no-ligatures relative mx-8 overflow-hidden text-2xl transition-opacity sm:text-4xl lg:max-w-325"
       style:max-height={maxRowHeight}
       style:min-height={maxRowHeight}
       style="font-family: var(--font-family);"
+      class:cursor-text={!isRestartButtonHidden}
       onclick={focusInput}
       onkeydown={handleContainerKeyDown}
       role="button"
@@ -1225,9 +1251,13 @@
 
     <button
       bind:this={restartButton}
-      class="absolute top-[10em] flex cursor-pointer rounded-lg p-2 duration-300 hover:[background-color:var(--color-bg-hover)] sm:top-[11.75em]"
+      class="absolute top-[10em] flex cursor-pointer rounded-lg p-2 duration-300
+      hover:[background-color:var(--color-bg-hover)] sm:top-[11.75em]"
+      class:opacity-0={isRestartButtonHidden}
       style="color: var(--color-text-default); left: 50%; transform: translateX(-50%);"
       onclick={restartTest}
+      onfocus={() => (isRestartButtonFocused = true)}
+      onblur={() => (isRestartButtonFocused = false)}
       tabindex="0"
       onmousedown={(e) => e.preventDefault()}
     >
