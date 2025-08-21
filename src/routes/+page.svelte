@@ -30,7 +30,7 @@
   let restarting = $state(false);
   let isFocused = $state(true);
   let spaceHandledByKeydown = false;
-  let currentTheme = $state('theme-dark');
+  let currentTheme = $state('theme-light');
   let showPaletteMenu = $state(false);
   let currentTestMode = $state('time');
   let prevBreakpoint = window.innerWidth >= 640 ? 'sm-up' : 'below-sm';
@@ -81,8 +81,8 @@
   ];
 
   const themePresets = [
-    { id: 'theme-dark', label: 'dolphin dark' },
-    { id: 'theme-light', label: 'dolphin light' },
+    { id: 'theme-light', label: 'light' },
+    { id: 'theme-dark', label: 'dark' },
     { id: 'theme-ink', label: 'ink' },
     { id: 'theme-abyss', label: 'abyss' },
     { id: 'theme-midnight-plum', label: 'midnight' },
@@ -93,9 +93,9 @@
     { id: 'theme-eagle', label: 'eagle' },
     { id: 'theme-warm-graphite', label: 'graphite' },
     { id: 'theme-arctic-night', label: 'arctic' },
-    { id: 'theme-morning-dew', label: 'morning dew' },
+    { id: 'theme-morning-dew', label: 'dew' },
     { id: 'theme-violet-dark', label: 'violet' },
-    { id: 'theme-desert-dusk', label: 'desert dusk' },
+    { id: 'theme-desert-dusk', label: 'desert' },
     { id: 'theme-console', label: 'console' },
     { id: 'theme-peach', label: 'peach' },
     { id: 'theme-azure-mist', label: 'azure' }
