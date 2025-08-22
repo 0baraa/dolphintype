@@ -507,11 +507,24 @@
 
   function handleInput(e) {
     const value = e.target.value;
+    const currentWord = currentWords[activeWordIndex];
+    const onFinalWord = activeWordIndex === currentWords.length - 1;
 
     if (spaceHandledByKeydown) {
       // Reset flag and skip to avoid double handling space input
       spaceHandledByKeydown = false;
       return;
+    }
+
+    if (onFinalWord) {
+      if (userInput === currentWord) {
+        wordCorrectness[activeWordIndex] = true;
+        typedWords[activeWordIndex] = userInput;
+        userInput = '';
+        activeWordIndex++;
+        endTest();
+        return;
+      }
     }
 
     if (value.endsWith(' ')) {
@@ -577,6 +590,10 @@
           totalCorrectChars++;
         }
       }
+    }
+
+    if (currentTestMode === 'words') {
+      totalCorrectChars--;
     }
 
     const missedChars = currentWords.slice(0, activeWordIndex).reduce((sum, w, i) => {
