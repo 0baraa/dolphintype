@@ -1,3 +1,4 @@
+# Frontend
 node_modules
 
 # Output
@@ -21,3 +22,7 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+
+# Backend
+venv/
