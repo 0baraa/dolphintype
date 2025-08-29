@@ -3,19 +3,19 @@
 dolphintype is a modern, customisable typing website to improve your speed and accuracy ⌨️ 📊 📈
 
 <p align="center">
-  <img width="70%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview1.png" alt="Website preview english">
+  <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview1.png" alt="Website preview english">
 </p>
 
 <p align="center">
-  <img width="70%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview2.png" alt="Website preview french">
+  <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview2.png" alt="Website preview french">
 </p>
 
 <p align="center">
-  <img width="70%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview3.png" alt="Website preview greek">
+  <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview3.png" alt="Website preview greek">
 </p>
 
 <p align="center">
-  <img width="70%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview4.png" alt="Website preview ukrainian">
+  <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview4.png" alt="Website preview ukrainian">
 </p>
 
 ## Running the Frontend
