@@ -11,7 +11,15 @@ dolphintype is a modern, customisable typing website to improve your speed and a
 </p>
 
 <p align="center">
+  <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview5.png" alt="Website end test preview 2">
+</p>
+
+<p align="center">
   <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview3.png" alt="Website preview greek">
+</p>
+
+<p align="center">
+  <img width="100%" src="https://github.com/0baraa/dolphintype/blob/main/images/preview6.png" alt="Website end test preview 2">
 </p>
 
 <p align="center">
