@@ -1200,6 +1200,13 @@
         oninput={handleInput}
         onfocus={() => (isFocused = true)}
         onblur={() => (isFocused = false)}
+        oncopy={(e) => e.preventDefault()}
+        oncut={(e) => e.preventDefault()}
+        onpaste={(e) => e.preventDefault()}
+        ondragstart={(e) => e.preventDefault()}
+        ondrop={(e) => e.preventDefault()}
+        ondragover={(e) => e.preventDefault()}
+        oncontextmenu={(e) => e.preventDefault()}
       />
 
       <div
