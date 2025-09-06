@@ -48,8 +48,8 @@
   );
   let isRestartButtonFocused = $state(false);
 
-  let mainFont = $state('JetBrains Mono');
-  let otherFont = $state('JetBrains Mono');
+  let mainFont = $state('Hack');
+  let otherFont = $state('Hack');
   let caretColor = $state('');
   let underlineColor = $state('');
   let bgColor = $state('');
@@ -67,8 +67,6 @@
   let paletteMenuTitle = $derived(getThemeLabel(hoveredTheme ?? currentTheme));
 
   const cssVars = [
-    '--font-family',
-    '--font-family-secondary',
     '--color-bg',
     '--color-text-default',
     '--color-text-active',
@@ -170,7 +168,9 @@
     CURRENT_THEME: 'typingTest_currentTheme',
     IS_CUSTOM_THEME: 'typingTest_isCustomTheme',
     CUSTOM_THEME_VARS: 'typingTest_customThemeVars',
-    WORDLIST: 'typingTest_wordlist'
+    WORDLIST: 'typingTest_wordlist',
+    MAIN_FONT: 'typingtest_mainFont',
+    OTHER_FONT: 'typingtest_otherFont'
   };
 
   // Svelte tween for smooth caret animation
@@ -290,12 +290,12 @@
       localStorage.setItem(STORAGE_KEYS.CURRENT_THEME, currentTheme);
       localStorage.setItem(STORAGE_KEYS.IS_CUSTOM_THEME, isCustomTheme.toString());
       localStorage.setItem(STORAGE_KEYS.WORDLIST, currentWordlist);
+      localStorage.setItem(STORAGE_KEYS.MAIN_FONT, mainFont);
+      localStorage.setItem(STORAGE_KEYS.OTHER_FONT, otherFont);
 
       // Save custom theme variables if it's a custom theme
       if (isCustomTheme) {
         const customThemeVars = {
-          mainFont,
-          otherFont,
           caretColor,
           underlineColor,
           bgColor,
@@ -331,6 +331,15 @@
       const savedTheme = localStorage.getItem(STORAGE_KEYS.CURRENT_THEME);
       if (savedTheme) currentTheme = savedTheme;
 
+      const savedMainFont = localStorage.getItem(STORAGE_KEYS.MAIN_FONT);
+      if (savedMainFont) mainFont = savedMainFont;
+
+      const savedOtherFont = localStorage.getItem(STORAGE_KEYS.OTHER_FONT);
+      if (savedOtherFont) otherFont = savedOtherFont;
+
+      handleFontChange(mainFont, '--font-family');
+      handleFontChange(otherFont, '--font-family-secondary');
+
       const savedIsCustomTheme = localStorage.getItem(STORAGE_KEYS.IS_CUSTOM_THEME);
       if (savedIsCustomTheme) isCustomTheme = savedIsCustomTheme === 'true';
 
@@ -341,8 +350,6 @@
           const customVars = JSON.parse(savedCustomThemeVars);
 
           // Apply the custom theme variables
-          mainFont = customVars.mainFont || mainFont;
-          otherFont = customVars.otherFont || otherFont;
           caretColor = customVars.caretColor || caretColor;
           underlineColor = customVars.underlineColor || underlineColor;
           bgColor = customVars.bgColor || bgColor;
@@ -375,8 +382,6 @@
     const main = document.querySelector('main');
     if (!main) return;
 
-    main.style.setProperty('--font-family', `"${mainFont}"`);
-    main.style.setProperty('--font-family-secondary', `"${otherFont}"`);
     main.style.setProperty('--color-caret', caretColor);
     main.style.setProperty('--decoration-incorrect', underlineColor);
     main.style.setProperty('--color-bg', bgColor);
@@ -678,13 +683,13 @@
 
     mainFont =
       styles.getPropertyValue('--font-family')?.replace(/['"]/g, '').split(',')[0]?.trim() ||
-      'JetBrains Mono';
+      'Hack';
     otherFont =
       styles
         .getPropertyValue('--font-family-secondary')
         ?.replace(/['"]/g, '')
         .split(',')[0]
-        ?.trim() || 'JetBrains Mono';
+        ?.trim() || 'Hack';
 
     // Use the helper for all color inputs
     caretColor = getAndNormalise('--color-caret');
@@ -770,7 +775,6 @@
 
       // Once loaded, apply the new font by updating the CSS variable
       document.querySelector('main')?.style.setProperty(cssVar, `"${fontName}"`);
-      isCustomTheme = true;
       saveSettings();
     } catch (error) {
       console.error(`Failed to load font: ${fontName}`, error);
@@ -800,7 +804,7 @@
       class="absolute z-50 flex max-h-120 w-full max-w-md flex-col
       space-y-2 overflow-y-auto rounded-lg border bg-[var(--color-bg)] p-4 text-xs
       transition-all duration-300 sm:max-h-140 sm:text-sm"
-      style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'JetBrains Mono', monospace;"
+      style="color: var(--color-text-default); top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-family-secondary), monospace;"
       transition:fade={{ duration: 200 }}
       onclick={(e) => e.stopPropagation()}
     >
@@ -929,7 +933,7 @@
       <div class="auto flex flex-wrap">
         {#each themePresets as theme, t (t)}
           <button
-            class="m-2 cursor-pointer rounded-lg p-1 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
+            class="m-0 cursor-pointer rounded-lg p-3 transition-all duration-300 ease-in-out hover:bg-[var(--color-bg-hover)]"
             class:text-[var(--color-text-selected)]={currentTheme === theme.id && !isCustomTheme}
             onmouseenter={async () => {
               const main = document.querySelector('main');
@@ -1101,7 +1105,7 @@
             }}
             onmousedown={(e) => e.preventDefault()}
           >
-            {time}<span class="text-[0.85em]">s</span>
+            {time}
           </button>
         {/each}
       {/if}
@@ -1166,7 +1170,7 @@
       <div class="text-[var(--color-text-default)]">
         <div>{currentWordlist}</div>
         {#if currentTestMode === 'time'}
-          <div>time {timerDuration}<span>s</span></div>
+          <div>time {timerDuration}</div>
         {:else}
           <div>words {selectedWordsCount}</div>
         {/if}
@@ -1211,7 +1215,7 @@
 
       <div
         id="words-container"
-        class="flex flex-wrap justify-start gap-x-2.5 p-2 transition-transform duration-150 ease-in-out sm:gap-x-4"
+        class="flex flex-wrap justify-start gap-x-2.5 p-2 transition-transform duration-150 ease-in-out sm:gap-x-5"
         style:row-gap="{rowGap}px"
         style:transform="translateY({scrollOffset}px)"
       >
@@ -1252,18 +1256,9 @@
           </div>
         {/each}
         <!-- Workaround to make words mode words left align when set to 10 -->
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
-        <div class="invisible">asdf</div>
+        {#each { length: 15 }}
+          <div class="invisible">asdf</div>
+        {/each}
       </div>
 
       <div

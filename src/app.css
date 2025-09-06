@@ -343,7 +343,7 @@
 }
 
 body {
-  font-family: 'JetBrains Mono', 'Roboto', 'Noto Sans', sans-serif;
+  font-family: 'Hack', 'Roboto', 'Noto Sans', sans-serif;
 }
 
 /* Black text in drop down */
@@ -378,8 +378,8 @@ select option {
 }
 
 :root {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
+  --font-family: 'Hack';
+  --font-family-secondary: 'Hack';
   --color-bg: #18191f;
   --color-text-default: #bac0d1;
   --color-text-active: #bac0d1;
@@ -392,8 +392,6 @@ select option {
 }
 
 .theme-light {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #faf9f6;
   --color-text-default: #857171;
   --color-text-active: #857171;
@@ -406,8 +404,6 @@ select option {
 }
 
 .theme-abyss {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #212b36;
   --color-text-default: #9ba4b5;
   --color-text-active: #9ba4b5;
@@ -420,8 +416,6 @@ select option {
 }
 
 .theme-midnight-plum {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #15121c;
   --color-text-default: #c2bed1;
   --color-text-active: #c2bed1;
@@ -434,8 +428,6 @@ select option {
 }
 
 .theme-forest-night {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #2b352e;
   --color-text-default: #bcc5bc;
   --color-text-active: #bcc5bc;
@@ -448,8 +440,6 @@ select option {
 }
 
 .theme-slate-grey {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #1f263a;
   --color-text-default: #abb2bf;
   --color-text-active: #abb2bf;
@@ -462,8 +452,6 @@ select option {
 }
 
 .theme-warm-graphite {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #252525;
   --color-text-default: #a6a6a6;
   --color-text-active: #a6a6a6;
@@ -476,8 +464,6 @@ select option {
 }
 
 .theme-arctic-night {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #2d3a4b;
   --color-text-default: #c8d8ed;
   --color-text-active: #c8d8ed;
@@ -490,8 +476,6 @@ select option {
 }
 
 .theme-violet-dark {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #2a213d;
   --color-text-default: #c7bfff;
   --color-text-active: #c7bfff;
@@ -504,8 +488,6 @@ select option {
 }
 
 .theme-desert-dusk {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #362d2b;
   --color-text-default: #d6c6b0;
   --color-text-active: #d6c6b0;
@@ -518,8 +500,6 @@ select option {
 }
 
 .theme-console {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #0c0c0c;
   --color-text-default: #00ff00;
   --color-text-active: #00ff00;
@@ -532,8 +512,6 @@ select option {
 }
 
 .theme-ink {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #000000;
   --color-text-default: #ffffff;
   --color-text-active: #ffffff;
@@ -546,8 +524,6 @@ select option {
 }
 
 .theme-blank {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #ffffff;
   --color-text-default: #000000;
   --color-text-active: #000000;
@@ -560,8 +536,6 @@ select option {
 }
 
 .theme-cloud {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #f5f7f8;
   --color-text-default: #607d8b;
   --color-text-active: #607d8b;
@@ -574,8 +548,6 @@ select option {
 }
 
 .theme-morning-dew {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #ebf3eb;
   --color-text-default: #798e7b;
   --color-text-active: #798e7b;
@@ -588,8 +560,6 @@ select option {
 }
 
 .theme-peach {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #b53512;
   --color-text-default: #ffffff;
   --color-text-active: #ffffff;
@@ -602,8 +572,6 @@ select option {
 }
 
 .theme-azure-mist {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #f0f8ff;
   --color-text-default: #36454f;
   --color-text-active: #36454f;
@@ -616,8 +584,6 @@ select option {
 }
 
 .theme-eagle {
-  --font-family: 'JetBrains Mono';
-  --font-family-secondary: 'JetBrains Mono';
   --color-bg: #002623;
   --color-text-default: #b9a779;
   --color-text-active: #b9a779;
