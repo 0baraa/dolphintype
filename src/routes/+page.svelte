@@ -222,6 +222,10 @@
   });
 
   $effect(() => {
+    if (testPhase === 'finished' || restarting) {
+      return; // for preventing scroll when we finish test in words mode
+    }
+
     if (showPaletteMenu) {
       syncPaletteInputs();
     }
