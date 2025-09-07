@@ -568,6 +568,13 @@
   }
 
   function endTest() {
+    // If a restart is already in progress, abort ending the test
+    // This prevents the race condition where the timer ends the test
+    // at the same moment the user clicks restart
+    if (restarting) {
+      return;
+    }
+
     inputElement.disabled = true;
     calculateStats();
     testPhase = 'finished';
