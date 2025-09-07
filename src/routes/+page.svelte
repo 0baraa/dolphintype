@@ -47,6 +47,7 @@
     testPhase === 'running' && !isTouchDevice && !isMouseActive && !isRestartButtonFocused
   );
   let isRestartButtonFocused = $state(false);
+  let wordsContainerElement;
 
   let mainFont = $state('Hack');
   let otherFont = $state('Hack');
@@ -632,12 +633,20 @@
   }
 
   async function restartTest() {
+    if (restarting) {
+      return;
+    }
+
     restarting = true;
     testPhase = 'waiting';
-    scrollOffset = 0;
-    // Wait 200ms to let words box div opacity reach 0
+
+    wordsContainerElement.classList.remove('duration-150');
+    wordsContainerElement.classList.add('duration-0');
+
     await new Promise((resolve) => setTimeout(resolve, 200));
-    // We get large negative value sometimes without this
+
+    scrollOffset = 0;
+
     if (interval) {
       clearInterval(interval);
       interval = null;
@@ -647,17 +656,25 @@
     inputElement.disabled = false;
     words = allWords.words;
     prepareWords(words);
-
     if (currentTestMode === 'time') currentWords = getNextWords(500);
     else currentWords = getNextWords(selectedWordsCount);
-
     activeWordIndex = 0;
     userInput = '';
     wordCorrectness = [];
     typedWords = [];
     timeRemaining = timerDuration;
     focusInput();
+
     restarting = false;
+
+    // restore the animation class after the restart process
+    //    is visually complete, so it's ready for the next test
+    setTimeout(() => {
+      if (wordsContainerElement) {
+        wordsContainerElement.classList.remove('duration-0');
+        wordsContainerElement.classList.add('duration-150');
+      }
+    }, 300);
   }
 
   function focusInput() {
@@ -1222,6 +1239,7 @@
 
       <div
         id="words-container"
+        bind:this={wordsContainerElement}
         class="flex flex-wrap justify-start gap-x-2.5 p-2 transition-transform duration-150 ease-in-out sm:gap-x-5"
         style:row-gap="{rowGap}px"
         style:transform="translateY({scrollOffset}px)"
