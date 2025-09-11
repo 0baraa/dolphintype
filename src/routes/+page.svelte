@@ -1206,7 +1206,7 @@
     </div>
 
     <div
-      class="no-ligatures relative mx-8 overflow-hidden text-2xl transition-opacity sm:text-4xl lg:max-w-325"
+      class="no-ligatures relative mx-8 overflow-hidden text-2xl transition-opacity duration-300 sm:text-4xl lg:max-w-325"
       style:max-height={maxRowHeight}
       style:min-height={maxRowHeight}
       style="font-family: var(--font-family);"
