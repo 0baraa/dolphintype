@@ -1,0 +1,7 @@
+fastapi[standard]
+SQLAlchemy
+psycopg[binary]
+pydantic
+python-dotenv
+ruff
+alembic
